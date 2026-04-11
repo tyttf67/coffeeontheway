@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="coursoviy/coursoviy.vcxproj" Id="56f4fb46-01dc-4472-bbfa-47cbe2b2063d" />
+</Solution>
+
