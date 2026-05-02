@@ -121,4 +121,4 @@ const Test* getDefaultTests(int& count) {
     };
     count = 6;
     return tests;
-}\n
+}

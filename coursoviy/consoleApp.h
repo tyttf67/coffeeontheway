@@ -13,6 +13,7 @@ private:
 
     UserStorage& userStorage;
     User currentUser;
+    bool isLoggedIn;
     CoffeeSelector selector;
 
 public:

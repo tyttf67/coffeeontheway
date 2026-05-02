@@ -35,6 +35,9 @@
     <ClCompile Include="src\coffee.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\coffeeCatalog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\coffeeCategory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -73,9 +76,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\binaryStorage.h">
-      <Filter>Header Files\storage</Filter>
-    </ClInclude>
     <ClInclude Include="include\user.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -85,9 +85,6 @@
     <ClInclude Include="include\resultTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\storageTemplates.h">
-      <Filter>Header Files\storage</Filter>
-    </ClInclude>
     <ClInclude Include="include\storage.h">
       <Filter>Header Files\storage</Filter>
     </ClInclude>
@@ -95,6 +92,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\coffee.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\coffeeCatalog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\coffeeSelector.h">

@@ -31,8 +31,12 @@ User::User(int id, const char* name, const char* login,const char* gmail, const 
 
 User::~User() {}
 
+int User::getId() const { return id; }
+const char* User::getName() const { return name; }
 const char* User::getLogin() const { return login; }
+const char* User::getGmail() const { return gmail; }
 const char* User::getPassword() const { return password; }
+const char* User::getFavouriteDrinks() const { return favouriteDrinks; }
 
 void User::setProfile(int id, const char* name, const char* login, const char* gmail ,const char* password, const char* favouriteDrinks) {
     this->id = id;

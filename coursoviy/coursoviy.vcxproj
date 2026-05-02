@@ -140,6 +140,7 @@
     <ClCompile Include="myTestStorage.cpp" />
     <ClCompile Include="resultTestStorage.cpp" />
     <ClCompile Include="src\coffee.cpp" />
+    <ClCompile Include="src\coffeeCatalog.cpp" />
     <ClCompile Include="src\coffeeSelector.cpp" />
     <ClCompile Include="src\coffeeCategory.cpp" />
     <ClCompile Include="src\myTest.cpp" />
@@ -148,15 +149,14 @@
     <ClCompile Include="userStorage.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\binaryStorage.h" />
     <ClInclude Include="consoleApp.h" />
     <ClInclude Include="include\coffee.h" />
+    <ClInclude Include="include\coffeeCatalog.h" />
     <ClInclude Include="include\coffeeSelector.h" />
     <ClInclude Include="include\coffeeCategory.h" />
     <ClInclude Include="include\myTest.h" />
     <ClInclude Include="include\resultTest.h" />
     <ClInclude Include="include\storage.h" />
-    <ClInclude Include="include\storageTemplates.h" />
     <ClInclude Include="include\user.h" />
   </ItemGroup>
   <ItemGroup>

@@ -63,4 +63,4 @@ void Coffee::show() const {
     std::cout << "Sugar: " << (sugar ? "Yes" : "No") << '\n';
     std::cout << "Syrup: " << syrup << '\n';
     std::cout << "Description: " << description << '\n';
-}\n
+}

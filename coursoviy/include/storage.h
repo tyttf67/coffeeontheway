@@ -18,8 +18,10 @@ public:
     bool loadFromAnyFile(const char* mainFile, const char* backupFile);
 
     bool addCoffee(const Coffee& coffee);
+    void loadDefaultsIfEmpty();
     int findById(int id) const;
     bool removeCoffeeById(int id);
+    bool searchAndPrintByName(const char* query) const;
     void printAll() const;
 
     int getCount() const;

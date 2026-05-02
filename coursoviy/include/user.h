@@ -14,8 +14,12 @@ public:
     User(int id, const char* name, const char* login, const char* gmail, const char* password, const char* favouriteDrinks);
     ~User();
 
+    int getId() const;
+    const char* getName() const;
     const char* getLogin() const;
+    const char* getGmail() const;
     const char* getPassword() const;
+    const char* getFavouriteDrinks() const;
     void setProfile(int id, const char* name, const char* login, const char* gmail, const char* password, const char* favouriteDrinks);
     bool hasCredentials() const;
 

@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <cstring>
 #include "coffeeCategory.h"
 
@@ -40,26 +40,4 @@ void CoffeeCategory::show() const{
     std::cout << "Id: " << id << std::endl;
     std::cout << "Name: " << name << std::endl;
     std::cout << "Description: " << description << std::endl;
-}
-bool CoffeeCategory::writeToFile(std::ofstream& out) const {
-    if (!out.is_open()) return false;
-
-    out.write(reinterpret_cast<const char*>(&id), sizeof(id));
-    out.write(name, sizeof(name));
-    out.write(description, sizeof(description));
-
-    return out.good();
-}
-
-bool CoffeeCategory::readFromFile(std::ifstream& in) {
-    if (!in.is_open()) return false;
-
-    in.read(reinterpret_cast<char*>(&id), sizeof(id));
-    in.read(name, sizeof(name));
-    in.read(description, sizeof(description));
-
-    name[sizeof(name) - 1] = '\0';
-    description[sizeof(description) - 1] = '\0';
-
-    return in.good();
-}
+}
