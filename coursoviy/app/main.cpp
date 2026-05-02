@@ -1,11 +1,11 @@
 ﻿#include <iostream>
 #include "consoleApp.h"
-#include "coffeeStorage.h"
-#include "myTestStorage.h"
-#include "coffeeCategoryStorage.h"
-#include "coffeeSelectorStorage.h"
-#include "resultTestStorage.h"
-#include "userStorage.h"
+#include "storage.h"
+
+
+
+
+
 
 int main() {
 

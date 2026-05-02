@@ -1,4 +1,4 @@
-﻿#include "coffeeStorage.h"
+﻿#include "storage.h"
 #include <fstream>
 #include <iostream>
 
@@ -68,3 +68,4 @@ void CoffeeStorage::printAll() const {
 }
 
 int CoffeeStorage::getCount() const { return count_; }
+

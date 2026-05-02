@@ -1,11 +1,6 @@
-#pragma once
+﻿#pragma once
 
-#include "coffeeStorage.h"
-#include "myTestStorage.h"
-#include "coffeeCategoryStorage.h"
-#include "coffeeSelectorStorage.h"
-#include "resultTestStorage.h"
-#include "user.h"
+#include "storage.h"
 #include "coffeeSelector.h"
 
 class ConsoleApp {
@@ -16,7 +11,8 @@ private:
     CoffeeSelectorStorage& selectorStorage;
     ResultStorage& resultStorage;
 
-    User& user;
+    UserStorage& userStorage;
+    User currentUser;
     CoffeeSelector selector;
 
 public:
@@ -26,7 +22,7 @@ public:
         CoffeeCategoryStorage& categoryStorage,
         CoffeeSelectorStorage& selectorStorage,
         ResultStorage& resultStorage,
-        User& user
+        UserStorage& userStorage
     );
 
     void run();

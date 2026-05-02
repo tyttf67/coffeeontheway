@@ -1,4 +1,4 @@
-﻿#include "resultTestStorage.h"
+﻿
 #include <fstream>
 #include <iostream>
 
@@ -66,3 +66,4 @@ void ResultStorage::printAll() const {
 }
 
 int ResultStorage::getCount() const { return count_; }
+

@@ -149,20 +149,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\binaryStorage.h" />
-    <ClInclude Include="coffeeCategoryStorage.h" />
-    <ClInclude Include="coffeeSelectorStorage.h" />
-    <ClInclude Include="coffeeStorage.h" />
     <ClInclude Include="consoleApp.h" />
     <ClInclude Include="include\coffee.h" />
     <ClInclude Include="include\coffeeSelector.h" />
     <ClInclude Include="include\coffeeCategory.h" />
     <ClInclude Include="include\myTest.h" />
     <ClInclude Include="include\resultTest.h" />
+    <ClInclude Include="include\storage.h" />
     <ClInclude Include="include\storageTemplates.h" />
     <ClInclude Include="include\user.h" />
-    <ClInclude Include="myTestStorage.h" />
-    <ClInclude Include="resultTestStorage.h" />
-    <ClInclude Include="userStorage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="coffee.dat" />

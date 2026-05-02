@@ -88,29 +88,14 @@
     <ClInclude Include="include\storageTemplates.h">
       <Filter>Header Files\storage</Filter>
     </ClInclude>
+    <ClInclude Include="include\storage.h">
+      <Filter>Header Files\storage</Filter>
+    </ClInclude>
     <ClInclude Include="include\coffeeCategory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\coffee.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="coffeeStorage.h">
-      <Filter>Header Files\storage</Filter>
-    </ClInclude>
-    <ClInclude Include="coffeeCategoryStorage.h">
-      <Filter>Header Files\storage</Filter>
-    </ClInclude>
-    <ClInclude Include="coffeeSelectorStorage.h">
-      <Filter>Header Files\storage</Filter>
-    </ClInclude>
-    <ClInclude Include="myTestStorage.h">
-      <Filter>Header Files\storage</Filter>
-    </ClInclude>
-    <ClInclude Include="resultTestStorage.h">
-      <Filter>Header Files\storage</Filter>
-    </ClInclude>
-    <ClInclude Include="userStorage.h">
-      <Filter>Header Files\storage</Filter>
     </ClInclude>
     <ClInclude Include="include\coffeeSelector.h">
       <Filter>Service</Filter>
