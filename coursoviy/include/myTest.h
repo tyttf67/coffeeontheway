@@ -1,35 +1,27 @@
 #pragma once
-#include <string>
-using namespace std;
 
 class Test {
+public:
+    struct AnswerOption {
+        char key;
+        char text[120];
+        int coffeeIndex;
+    };
 
-    private:
-	int id;
-	string textQuestion;
-	string optionA;
-	string optionB;
-	string optionC;
-	string optionD;
-	string optionE;
-	string optionF;
+private:
+    int id;
+    char textQuestion[256];
+    AnswerOption answers[3];
 
 public:
-	Test();
-	Test(
-		int id, string textQuestion,
-		string A, string B, string C,
-		string D, string E, string F
-	);
-	~Test();
+    Test();
+    Test(int id, const char textQuestion[], const AnswerOption answers[3]);
+    ~Test();
 
-	int getId() const;
-	string getQuestion() const;
+    int getId() const;
+    int getCoffeeIndexForChoice(char choice) const;
 
-	void show() const;
-
-
-
-
-
+    void show() const;
 };
+
+const Test* getDefaultTests(int& count);

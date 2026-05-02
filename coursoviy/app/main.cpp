@@ -1,28 +1,57 @@
 ﻿#include <iostream>
-#include "coffee.h"
-#include "coffeeCategory.h"
-#include "myTest.h"
-#include "resultTest.h"
-#include "user.h"
-
-using namespace std;
+#include "consoleApp.h"
+#include "coffeeStorage.h"
+#include "myTestStorage.h"
+#include "coffeeCategoryStorage.h"
+#include "coffeeSelectorStorage.h"
+#include "resultTestStorage.h"
+#include "userStorage.h"
 
 int main() {
-    cout << "Hello World!" << endl;
 
-    // ==== Тест класу Result ====
-    Result r1;          // конструктор без параметрів
-    Result r2(3, 'C');  // конструктор з параметрами
+    const int MAX = 10;
 
-    cout << "r1.show():" << endl;
-    r1.show();          // покаже 0 і '\0'
+    CoffeeStorage coffeeStorage(MAX);
+    TestStorage testStorage(MAX);
+    CoffeeCategoryStorage categoryStorage(MAX);
+    CoffeeSelectorStorage selectorStorage(MAX);
+    ResultStorage resultStorage(MAX);
+    UserStorage userStorage(MAX);
 
-    cout << "r2.show():" << endl;
-    r2.show();          // покаже 3 і C
 
-    // ==== Можна перевірити через геттери ====
-    cout << "r2.getQuestionId(): " << r2.getQuestionId() << endl;
-    cout << "r2.getChoice(): " << r2.getChoice() << endl;
+
+    coffeeStorage.loadFromAnyFile("coffee.dat", "coffee_backup.dat");
+    testStorage.loadFromAnyFile("myTest.dat", "myTest_backup.dat");
+    categoryStorage.loadFromAnyFile("coffeeCategory.dat", "coffeeCategory_backup.dat");
+    selectorStorage.loadFromAnyFile("coffeeSelector.dat", "coffeeSelector_backup.dat");
+    resultStorage.loadFromFile("resultTest.dat");
+
+    userStorage.loadFromFile("user.dat");
+
+    
+    {
+        ConsoleApp app(
+            coffeeStorage,
+            testStorage,
+            categoryStorage,
+            selectorStorage,
+            resultStorage,
+            userStorage
+        );
+
+        app.run();  
+    }
+    //зберігати дані тесту щоб  потому відображати в профілі в  меню
+  
+    coffeeStorage.saveToTwoFiles("coffee.dat", "coffee_backup.dat");
+    testStorage.saveToTwoFiles("myTest.dat", "myTest_backup.dat");
+    categoryStorage.saveToTwoFiles("coffeeCategory.dat", "coffeeCategory_backup.dat");
+    selectorStorage.saveToTwoFiles("coffeeSelector.dat", "coffeeSelector_backup.dat");
+    resultStorage.saveToFile("resultTest.dat");
+
+    userStorage.saveToTwoFiles("user.dat");
+
+    std::cout << "Saved successfully!\n";
 
     return 0;
 }

@@ -1,21 +1,26 @@
 #pragma once
 #include <string>
+
 using namespace std;
 
-class Result{
+class Result {
 
 private:
-	int questionId;
-	char choice;
+    int userId;
+    int attemptId;
+    int questionId;
+    char choice;
 
 public:
-	Result();
-	Result(int questionId, char choice);
-	~Result();
+    Result();
+    Result(int questionId, char choice);
+    Result(int userId, int attemptId, int questionId, char choice);
+    ~Result();
 
-
-	int  getQuestionId() const;
-	char getChoice()  const;
-	void show()  const;
-
+    int getUserId() const;
+    int getAttemptId() const;
+    int getQuestionId() const;
+    char getChoice() const;
+    void show() const;
+   
 };

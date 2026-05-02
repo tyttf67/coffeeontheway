@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -103,7 +103,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)include;%</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -133,18 +133,50 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app\main.cpp" />
+    <ClCompile Include="coffeeCategoryStorage.cpp" />
+    <ClCompile Include="coffeeSelectorStorage.cpp" />
+    <ClCompile Include="coffeeStorage.cpp" />
+    <ClCompile Include="consoleApp.cpp" />
+    <ClCompile Include="myTestStorage.cpp" />
+    <ClCompile Include="resultTestStorage.cpp" />
     <ClCompile Include="src\coffee.cpp" />
+    <ClCompile Include="src\coffeeSelector.cpp" />
     <ClCompile Include="src\coffeeCategory.cpp" />
     <ClCompile Include="src\myTest.cpp" />
     <ClCompile Include="src\resultTest.cpp" />
     <ClCompile Include="src\user.cpp" />
+    <ClCompile Include="userStorage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\binaryStorage.h" />
+    <ClInclude Include="coffeeCategoryStorage.h" />
+    <ClInclude Include="coffeeSelectorStorage.h" />
+    <ClInclude Include="coffeeStorage.h" />
+    <ClInclude Include="consoleApp.h" />
     <ClInclude Include="include\coffee.h" />
+    <ClInclude Include="include\coffeeSelector.h" />
     <ClInclude Include="include\coffeeCategory.h" />
     <ClInclude Include="include\myTest.h" />
     <ClInclude Include="include\resultTest.h" />
+    <ClInclude Include="include\storageTemplates.h" />
     <ClInclude Include="include\user.h" />
+    <ClInclude Include="myTestStorage.h" />
+    <ClInclude Include="resultTestStorage.h" />
+    <ClInclude Include="userStorage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="coffee.dat" />
+    <None Include="coffeeCategory.dat" />
+    <None Include="coffeeCategory_backup.dat" />
+    <None Include="coffeeSelector.dat" />
+    <None Include="coffeeSelector_backup.dat" />
+    <None Include="coffee_backup.dat" />
+    <None Include="myTest.dat" />
+    <None Include="myTest_backup.dat" />
+    <None Include="resultTest.dat" />
+    <None Include="resultTest_backup.dat" />
+    <None Include="user.dat" />
+    <None Include="user_backup.dat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

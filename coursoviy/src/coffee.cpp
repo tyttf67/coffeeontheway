@@ -1,96 +1,66 @@
-#include <iostream>
+﻿#include <iostream>
+#include <cstring>
 #include "coffee.h"
 
-Coffee::Coffee(){
+static void copyText(char* dest, size_t size, const char* src) {
+    if (dest == nullptr || size == 0) return;
+#ifdef _MSC_VER
+    strncpy_s(dest, size, src ? src : "", _TRUNCATE);
+#else
+    std::strncpy(dest, src ? src : "", size - 1);
+#endif
+    dest[size - 1] = '\0';
+}
 
-	id = 0;
-	strength = 1;
-	name = "";
-	levelRoast = "";
-    description = "";
-    syrup = "";  // можливо зробити масив для сиропів (вибір)
-    sugar = false;
-	milk = false;
-    
-    cout << "it's constructor without parametrs";
+Coffee::Coffee() : id(0), strength(1), sugar(false), milk(false) {
+    copyText(coffees, sizeof(coffees), "");
+    copyText(name, sizeof(name), "");
+    copyText(levelRoast, sizeof(levelRoast), "");
+    copyText(description, sizeof(description), "");
+    copyText(syrup, sizeof(syrup), "");
+}
+
+Coffee::Coffee(
+    int id,
+    const char* coffees,
+    const char* name,
+    const char* levelRoast,
+    int strength,
+    const char* description,
+    const char* syrup,
+    bool sugar,
+    bool milk
+) : id(id), strength(strength), sugar(sugar), milk(milk) {
+    copyText(this->coffees, sizeof(this->coffees), coffees);
+    copyText(this->name, sizeof(this->name), name);
+    copyText(this->levelRoast, sizeof(this->levelRoast), levelRoast);
+    copyText(this->description, sizeof(this->description), description);
+    copyText(this->syrup, sizeof(this->syrup), syrup);
+}
+
+Coffee::~Coffee() {};
+
+int Coffee::getId() const {
+    return id;
 };
 
-Coffee::Coffee(  
-
-    int id, string name,
-    string levelRoast, int strength,
-    string description, string syrup, 
-    bool sugar, bool milk
-
-){
-
-    this->id = id;
-    this->name = name;
-    this->levelRoast = levelRoast;
-    this->strength = strength;
-    this->description = description;
-    this->syrup = syrup;
-    this->sugar = sugar;
-    this->milk = milk;
-
-    cout << "it's constructor with parametrs";
-
+const char* Coffee::getCoffeeArray() const {
+    return coffees;
 };
 
-Coffee::~Coffee() {
-    cout << "it is destructor";
-};
-
-string Coffee::getName() const {
-
+const char* Coffee::getName() const {
     return name;
 };
 
-string Coffee::getDescription() const {
 
-    return description;
-};
-
-string Coffee::getSyrup()const {
-
-    return syrup;
-}
-
-int Coffee::getStrength() const
-{
-    return strength;
-};
-
-bool Coffee::hasMilk() const {
-
-    return milk;
-
-};
-bool Coffee::hasSugar() const {
-
-    return sugar;
-
-};
-
-void Coffee::show() {
-    cout << "Name: " << name << endl;
-    cout << "Strength: " << strength << endl;
-
-    if (milk == true) {
-        cout << "Milk: Yes" << endl;
-    }
-    else {
-        cout << "Milk: No" << endl;
-    }
-
-    if (sugar == true) {
-        cout << "Sugar: Yes" << endl;
-    }
-    else {
-        cout << "Sugar: No" << endl;
-    }
-
-    cout << "Syrup: " << syrup << endl;
-    cout << "Description: " << description << endl;
-
-};
+void Coffee::show() const {
+    std::cout << "ID: " << id << '\n';
+    std::cout << "Name: " << name << '\n';
+    std::cout << "Group: " << coffees << '\n';
+    std::cout << "Roast level: " << levelRoast << '\n';
+    std::cout << "Strength (1-5): " << strength << '\n';
+    std::cout << "Milk: " << (milk ? "Yes" : "No") << '\n';
+    std::cout << "Sugar: " << (sugar ? "Yes" : "No") << '\n';
+    std::cout << "Syrup: " << syrup << '\n';
+    std::cout << "Description: " << description << '\n';
+}\n

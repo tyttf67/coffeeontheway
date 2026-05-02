@@ -1,42 +1,26 @@
 #pragma once
-#include <string>
-using namespace std;
-
-
 class Coffee {
 
 private:
-
-	int id;
-	int strength;
-	string name;
-	string levelRoast;
-	string description;
-	string syrup;
-	bool sugar;
+    int id;
+    char coffees[512];
+    int strength;
+    char name[100];
+    char levelRoast[100];
+    char description[100];
+    char syrup[100];
+    bool sugar;
     bool milk;
-	
 
 public:
+    Coffee();
+    Coffee(int id,const char* coffees, const char* name, const char* levelRoast, int strength, const char* description, const char* syrup, bool sugar, bool milk);
+    ~Coffee();
 
-	Coffee();
-	Coffee(int id, string name, string levelRoast, int strength, string description, string syrup, bool sugar, bool milk);
-	~Coffee();
+    int getId() const;
+    const char* getCoffeeArray() const; // юзаю сутніть кофі груп
+    const char* getName() const;         // поле цього класу дає назву
+  
 
-
-	string getName() const;
-	string getDescription() const;
-	string getSyrup() const;
-	int getStrength() const;
-	bool hasMilk() const;
-	bool hasSugar() const;
-
-	void show();
-
+    void show() const;
 };
-
-
-
-
-
-// бінарні файли мають зчитуватися і виводитися фціями

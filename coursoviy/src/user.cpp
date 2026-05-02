@@ -1,51 +1,66 @@
 #include "user.h"
+#include <cstring>
 #include <iostream>
 
-User::User() {
+static void copyText(char* dest, size_t size, const char* src) {
+    if (dest == nullptr || size == 0) return;
+#ifdef _MSC_VER
+    strncpy_s(dest, size, src ? src : "", _TRUNCATE);
+#else
+    std::strncpy(dest, src ? src : "", size - 1);
+#endif
+    dest[size - 1] = '\0';
+}
 
-	id = 0;
-	name = "";
-	answears = "";
-	favouriteDrinks = "";
+User::User() : id(0), verified(false) {
+    copyText(name, sizeof(name), "");
+    copyText(login, sizeof(login), "");
+    copyText(gmail, sizeof(gmail), "");
+    copyText(password, sizeof(password), "");
+    copyText(favouriteDrinks, sizeof(favouriteDrinks), "");
+}
 
-	cout << "constructor without parametrs";
-};
+User::User(int id, const char* name, const char* login,const char* gmail, const char* password, const char* favouriteDrinks)
+    : id(id), verified(false) {
+    copyText(this->name, sizeof(this->name), name);
+    copyText(this->login, sizeof(this->login), login);
+    copyText(this->gmail, sizeof(this->gmail), gmail);
+    copyText(this->password, sizeof(this->password), password);
+    copyText(this->favouriteDrinks, sizeof(this->favouriteDrinks), favouriteDrinks);
+}
 
-User::User(int id, string name, string answears, string favouriteDrinks) {
+User::~User() {}
 
-	this->id = id;
-	this->name = name;
-	this->answears = answears;
-	this->favouriteDrinks = favouriteDrinks;
+const char* User::getLogin() const { return login; }
+const char* User::getPassword() const { return password; }
 
-	cout << "constructor with parametrs";
+void User::setProfile(int id, const char* name, const char* login, const char* gmail ,const char* password, const char* favouriteDrinks) {
+    this->id = id;
+    copyText(this->name, sizeof(this->name), name);
+    copyText(this->login, sizeof(this->login), login);
+    copyText(this->gmail, sizeof(this->gmail), gmail);
+    copyText(this->password, sizeof(this->password), password);
+    copyText(this->favouriteDrinks, sizeof(this->favouriteDrinks), favouriteDrinks);
+    verified = false;
+}
 
-};
- 
-User::~User() {
+bool User::hasCredentials() const {
+    return login[0] != '\0' && password[0] != '\0';
+}
 
-	cout << "it's destructor" << endl;
-};
+bool User::verify(const char* inputLogin, const char* inputPassword) {
+    verified =
+        std::strcmp(login, inputLogin ? inputLogin : "") == 0 &&
+        std::strcmp(password, inputPassword ? inputPassword : "") == 0;
+    return verified;
+}
 
-string User::getName() const {
+bool User::isVerified() const { return verified; }
 
-	return name;
-};
+void User::show() const {
+    std::cout << "ID: " << id << "\nName: " << name
+        << "\nLogin: " << login
+        << "\nGmail: " << gmail
+        << "\nFavourite drinks: " << favouriteDrinks << '\n';
+}
 
-string  User::getAnswears() const {
-
-	return answears;
-	  
-};
-
-string User::getFavouriteDrinks() const {
-
-	return favouriteDrinks;
-};
-
-void User::show() {
-
-	cout << "Name: " << name << endl;
-	cout << "Answers: " << answears << endl;
-	cout << "Favourite drinks: " << favouriteDrinks << endl;
-};

@@ -1,22 +1,20 @@
 #pragma once
-#include <string>
-using namespace std;
 
 class CoffeeCategory {
 
 private:
     int id;
-    string name;      
-    string description;
+    char name[100];
+    char description[100];
 
 public:
     CoffeeCategory();
-    CoffeeCategory(int id, string name, string description);
+    CoffeeCategory(int id, const char* name, const char* description);
     ~CoffeeCategory();
 
-    string getName() const;
-    string getDescription() const;
 
-    void show();
+    int getId() const;
 
+    void show() const;
+    
 };
