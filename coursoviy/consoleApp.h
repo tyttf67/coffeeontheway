@@ -15,6 +15,9 @@ private:
     User currentUser;
     bool isLoggedIn;
     CoffeeSelector selector;
+    
+    void runAndSaveTestForCurrentUser();
+    void printCurrentUserHistory() const;
 
 public:
     ConsoleApp(

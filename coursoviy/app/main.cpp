@@ -19,7 +19,7 @@ int main() {
     resultStorage.loadFromAnyFile("resultTest.dat", "resultTest_backup.dat");
     userStorage.loadFromAnyFile("user.dat", "user_backup.dat");
 
-    coffeeStorage.loadDefaultsIfEmpty();
+	coffeeStorage.loadDefaultsIfEmpty();  //звгрузка ковових напоїв, якщо немає даних
 
     ConsoleApp app(
         coffeeStorage,

@@ -139,9 +139,7 @@
     <ClCompile Include="consoleApp.cpp" />
     <ClCompile Include="myTestStorage.cpp" />
     <ClCompile Include="resultTestStorage.cpp" />
-    <ClCompile Include="src\coffee.cpp" />
-    <ClCompile Include="src\coffeeCatalog.cpp" />
-    <ClCompile Include="src\coffeeSelector.cpp" />
+    <ClCompile Include="src\coffee.cpp" />    <ClCompile Include="src\coffeeSelector.cpp" />
     <ClCompile Include="src\coffeeCategory.cpp" />
     <ClCompile Include="src\myTest.cpp" />
     <ClCompile Include="src\resultTest.cpp" />
@@ -177,3 +175,5 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>
+
+

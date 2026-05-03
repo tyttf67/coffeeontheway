@@ -1,5 +1,5 @@
 #pragma once
-// подумати як зберіагати історію тестувань та показувати їх 
+// подумати як зберіагати історію тестувань та показувати їх  
 #include "coffee.h"
 #include "coffeeCategory.h"
 #include "myTest.h"
@@ -9,8 +9,6 @@ class CoffeeSelector {
 public:
     void run() const;
     void printCoffeeCards() const;
-    bool showCoffeeCardById(int id) const;
-    bool searchCoffeeCards(const char* query) const;
 
 private:
     void runTest(

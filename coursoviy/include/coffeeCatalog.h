@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "coffee.h"
 
-const Coffee* getDefaultCoffees(int& count) {
+inline const Coffee* getDefaultCoffees(int& count) {
     static Coffee coffees[12] = {
         Coffee(1, "espresso-based", "Espresso", "dark", 5, "Pure concentrated coffee shot.", "none", false, false),
         Coffee(2, "milk-based", "Cappuccino", "medium", 3, "Balanced espresso with milk foam.", "none", false, true),

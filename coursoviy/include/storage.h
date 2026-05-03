@@ -113,9 +113,14 @@ public:
     bool loadFromAnyFile(const char* mainFile, const char* backupFile);
 
     bool addResult(const Result& result);
+    int getNextAttemptIdForUser(int userId) const;
+    bool addAnswerForUserAttempt(int userId, int attemptId, int questionId, char choice);
+    void printHistoryForUser(int userId) const;
+
     int findByQuestionId(int questionId) const;
     bool removeByQuestionId(int questionId);
     void printAll() const;
+    const Result* data() const;
 
     int getCount() const;
 
