@@ -1,5 +1,4 @@
 ﻿#include "storage.h"
-
 #include <fstream>
 #include <cstring>
 
@@ -121,6 +120,8 @@ bool UserStorage::loginUser(const char* login, const char* password, User& found
     foundUser = arr_[pos];
     return true;
 }
+
+
 
 int UserStorage::getCount() const {
     return count_;

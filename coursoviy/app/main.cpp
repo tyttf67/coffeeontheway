@@ -2,6 +2,8 @@
 #include "consoleApp.h"
 #include "storage.h"
 
+
+// додати видалення користувача та його історії
 int main() {
     const int MAX = 100;
 
@@ -19,6 +21,7 @@ int main() {
     resultStorage.loadFromAnyFile("resultTest.dat", "resultTest_backup.dat");
     userStorage.loadFromAnyFile("user.dat", "user_backup.dat");
 
+    categoryStorage.loadDefaultsIfEmpty();
 	coffeeStorage.loadDefaultsIfEmpty();  //звгрузка ковових напоїв, якщо немає даних
 
     ConsoleApp app(

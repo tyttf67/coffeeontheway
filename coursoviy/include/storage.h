@@ -7,6 +7,8 @@
 #include "resultTest.h"
 #include "user.h"
 
+class CoffeeCategoryStorage;
+
 class CoffeeStorage {
 public:
     explicit CoffeeStorage(int maxCount);
@@ -22,7 +24,9 @@ public:
     int findById(int id) const;
     bool removeCoffeeById(int id);
     bool searchAndPrintByName(const char* query) const;
+    bool searchAndPrintByName(const char* query, const CoffeeCategoryStorage& categoryStorage) const;
     void printAll() const;
+    void printAll(const CoffeeCategoryStorage& categoryStorage) const;
 
     int getCount() const;
 
@@ -66,7 +70,10 @@ public:
     bool loadFromAnyFile(const char* mainFile, const char* backupFile);
 
     bool addCategory(const CoffeeCategory& category);
+    void loadDefaultsIfEmpty();
     int findById(int id) const;
+    const CoffeeCategory* getById(int id) const;
+    const char* getNameById(int id) const;
     bool removeById(int id);
     void printAll() const;
 
@@ -143,6 +150,7 @@ public:
     int findByLogin(const char* login) const;
     bool registerUser(const User& user);
     bool loginUser(const char* login, const char* password, User& foundUser) const;
+    void printCurrentUserHistory() const;
 
     int getCount() const;
 

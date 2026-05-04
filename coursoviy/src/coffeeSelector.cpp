@@ -4,6 +4,7 @@
 
 #include "coffeeSelector.h"
 #include "coffeeCatalog.h"
+#include "storage.h"
 
 void CoffeeSelector::calculateScores(
     int scores[],
@@ -42,16 +43,17 @@ Coffee CoffeeSelector::selectBest(
     return coffees[bestIndex];
 }
 
-void CoffeeSelector::printRecommendedCoffee(const Coffee& coffee) const {
+void CoffeeSelector::printRecommendedCoffee(const Coffee& coffee, const CoffeeCategoryStorage& categoryStorage) const {
     std::cout << "\n=== Your recommended coffee ===\n";
     coffee.show();
+    std::cout << "Group: " << categoryStorage.getNameById(coffee.getCategoryId()) << '\n';
 }
 
-void CoffeeSelector::printCoffeeCatalog(const Coffee coffees[], int coffeeCount) const {
+void CoffeeSelector::printCoffeeCatalog(const Coffee coffees[], int coffeeCount, const CoffeeCategoryStorage& categoryStorage) const {
     std::cout << "\n=== Coffee cards for main page ===\n";
     for (int i = 0; i < coffeeCount; ++i) {
         std::cout << coffees[i].getId() << ". " << coffees[i].getName()
-            << " | Group: " << coffees[i].getCoffeeArray() << '\n';
+            << " | Group: " << categoryStorage.getNameById(coffees[i].getCategoryId()) << '\n';
     }
 }
 
@@ -59,7 +61,8 @@ void CoffeeSelector::runTest(
     const Test tests[],
     int testCount,
     const Coffee coffees[],
-    int coffeeCount
+    int coffeeCount,
+    const CoffeeCategoryStorage& categoryStorage
 ) const {
     Result results[10];
     int resultCount = (testCount < 10) ? testCount : 10;
@@ -88,20 +91,20 @@ void CoffeeSelector::runTest(
 
     calculateScores(scores, results, resultCount, tests, testCount);
     Coffee best = selectBest(coffees, coffeeCount, scores);
-    printRecommendedCoffee(best);
-    printCoffeeCatalog(coffees, coffeeCount);
+    printRecommendedCoffee(best, categoryStorage);
+    printCoffeeCatalog(coffees, coffeeCount, categoryStorage);
 }
 
-void CoffeeSelector::run() const {
+void CoffeeSelector::run(const CoffeeCategoryStorage& categoryStorage) const {
     int coffeeCount = 0;
     const Coffee* coffees = getDefaultCoffees(coffeeCount);
 
     int testCount = 0;
     const Test* tests = getDefaultTests(testCount);
-    runTest(tests, testCount, coffees, coffeeCount);
+    runTest(tests, testCount, coffees, coffeeCount, categoryStorage);
 }
 
-void CoffeeSelector::printCoffeeCards() const {
+void CoffeeSelector::printCoffeeCards(const CoffeeCategoryStorage& categoryStorage) const {
     int coffeeCount = 0;
     const Coffee* coffees = getDefaultCoffees(coffeeCount);
 
@@ -109,6 +112,6 @@ void CoffeeSelector::printCoffeeCards() const {
     for (int i = 0; i < coffeeCount; ++i) {
         std::cout << coffees[i].getId() << ". "
             << coffees[i].getName()
-            << " | Group: " << coffees[i].getCoffeeArray() << '\n';
+            << " | Group: " << categoryStorage.getNameById(coffees[i].getCategoryId()) << '\n';
     }
 }

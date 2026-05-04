@@ -36,7 +36,27 @@ bool CoffeeCategoryStorage::saveToTwoFiles(const char* mainFile, const char* bac
 bool CoffeeCategoryStorage::loadFromAnyFile(const char* mainFile, const char* backupFile) { return loadFromFile(mainFile) || loadFromFile(backupFile); }
 
 bool CoffeeCategoryStorage::addCategory(const CoffeeCategory& category) { if (!arr_ || count_ < 0 || count_ >= maxCount_) return false; arr_[count_++] = category; return true; }
+void CoffeeCategoryStorage::loadDefaultsIfEmpty() {
+    if (count_ > 0) return;
+
+    addCategory(CoffeeCategory(1, "espresso-based", "Strong coffee drinks based on espresso."));
+    addCategory(CoffeeCategory(2, "milk-based", "Coffee drinks with milk or milk foam."));
+    addCategory(CoffeeCategory(3, "black coffee", "Coffee drinks without milk."));
+    addCategory(CoffeeCategory(4, "dessert coffee", "Sweet coffee drinks with dessert profile."));
+    addCategory(CoffeeCategory(5, "cold coffee", "Cold coffee drinks with ice or cold extraction."));
+    addCategory(CoffeeCategory(6, "specialty", "Special coffee dessert drinks."));
+    addCategory(CoffeeCategory(7, "alternative", "Alternative brewing and extraction styles."));
+}
 int CoffeeCategoryStorage::findById(int id) const { if (!arr_ || count_ <= 0) return -1; for (int i = 0; i < count_; ++i) if (arr_[i].getId() == id) return i; return -1; }
+const CoffeeCategory* CoffeeCategoryStorage::getById(int id) const {
+    int pos = findById(id);
+    if (pos == -1) return nullptr;
+    return &arr_[pos];
+}
+const char* CoffeeCategoryStorage::getNameById(int id) const {
+    const CoffeeCategory* category = getById(id);
+    return category ? category->getName() : "unknown";
+}
 bool CoffeeCategoryStorage::removeById(int id) { int pos = findById(id); if (pos == -1) return false; for (int i = pos; i < count_ - 1; ++i) arr_[i] = arr_[i + 1]; --count_; return true; }
 void CoffeeCategoryStorage::printAll() const { if (!arr_ || count_ <= 0) { std::cout << "No category data\n"; return; } for (int i = 0; i < count_; ++i) { arr_[i].show(); std::cout << "----------------\n"; } }
 int CoffeeCategoryStorage::getCount() const { return count_; }

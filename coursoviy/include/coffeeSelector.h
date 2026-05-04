@@ -5,17 +5,20 @@
 #include "myTest.h"
 #include "resultTest.h"
 
+class CoffeeCategoryStorage;
+
 class CoffeeSelector {
 public:
-    void run() const;
-    void printCoffeeCards() const;
+    void run(const CoffeeCategoryStorage& categoryStorage) const;
+    void printCoffeeCards(const CoffeeCategoryStorage& categoryStorage) const;
 
 private:
     void runTest(
         const Test tests[],
         int testCount,
         const Coffee coffees[],
-        int coffeeCount
+        int coffeeCount,
+        const CoffeeCategoryStorage& categoryStorage
     ) const;
 
     void calculateScores(
@@ -32,6 +35,6 @@ private:
         const int scores[]
     ) const;
 
-    void printRecommendedCoffee(const Coffee& coffee) const;
-    void printCoffeeCatalog(const Coffee coffees[], int coffeeCount) const;
+    void printRecommendedCoffee(const Coffee& coffee, const CoffeeCategoryStorage& categoryStorage) const;
+    void printCoffeeCatalog(const Coffee coffees[], int coffeeCount, const CoffeeCategoryStorage& categoryStorage) const;
 };

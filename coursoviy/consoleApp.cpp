@@ -20,7 +20,7 @@ ConsoleApp::ConsoleApp(
     currentUser(),
     isLoggedIn(false) {
 }
-
+//прибрати ці фкції з класу, бо вони не використовуються в консолі 
 void ConsoleApp::runAndSaveTestForCurrentUser() {
     const int userId = currentUser.getId();
 
@@ -88,14 +88,14 @@ void ConsoleApp::run() {
         if (choice == 0) {
             break;
         } else if (choice == 1) {
-            selector.printCoffeeCards();
+            selector.printCoffeeCards(categoryStorage);
         } else if (choice == 2) {
 
             char query[128];
             std::cout << "Enter search text: ";
             std::cin.getline(query, sizeof(query));
 
-            if (!coffeeStorage.searchAndPrintByName(query)) {
+            if (!coffeeStorage.searchAndPrintByName(query, categoryStorage)) {
                 std::cout << "No cards found.\n";
             }
 

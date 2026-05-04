@@ -43,6 +43,10 @@ bool CoffeeStorage::loadFromFile(const char* fileName) {
     for (int i = 0; i < countInFile; ++i) {
         in.read(reinterpret_cast<char*>(&arr_[i]), sizeof(Coffee));
         if (!in.good()) return false;
+        if (arr_[i].getId() <= 0 || arr_[i].getCategoryId() < 1 || arr_[i].getCategoryId() > 7) {
+            count_ = 0;
+            return false;
+        }
     }
 
     count_ = countInFile;
@@ -112,9 +116,49 @@ bool CoffeeStorage::searchAndPrintByName(const char* query) const {
     return found;
 }
 
+bool CoffeeStorage::searchAndPrintByName(const char* query, const CoffeeCategoryStorage& categoryStorage) const {
+    if (!arr_ || count_ <= 0 || !query || query[0] == '\0') return false;
+
+    char loweredQuery[128];
+    int qi = 0;
+    for (; query[qi] != '\0' && qi < 127; ++qi) {
+        loweredQuery[qi] = static_cast<char>(std::tolower(static_cast<unsigned char>(query[qi])));
+    }
+    loweredQuery[qi] = '\0';
+
+    bool found = false;
+    for (int i = 0; i < count_; ++i) {
+        const char* name = arr_[i].getName();
+        char loweredName[128];
+        int ni = 0;
+        for (; name[ni] != '\0' && ni < 127; ++ni) {
+            loweredName[ni] = static_cast<char>(std::tolower(static_cast<unsigned char>(name[ni])));
+        }
+        loweredName[ni] = '\0';
+
+        if (std::strstr(loweredName, loweredQuery) != nullptr) {
+            arr_[i].show();
+            std::cout << "Group: " << categoryStorage.getNameById(arr_[i].getCategoryId()) << '\n';
+            std::cout << "-------------------------\n";
+            found = true;
+        }
+    }
+
+    return found;
+}
+
 void CoffeeStorage::printAll() const {
     if (!arr_ || count_ <= 0) { std::cout << "No data\n"; return; }
     for (int i = 0; i < count_; ++i) { arr_[i].show(); std::cout << "----------------\n"; }
+}
+
+void CoffeeStorage::printAll(const CoffeeCategoryStorage& categoryStorage) const {
+    if (!arr_ || count_ <= 0) { std::cout << "No data\n"; return; }
+    for (int i = 0; i < count_; ++i) {
+        arr_[i].show();
+        std::cout << "Group: " << categoryStorage.getNameById(arr_[i].getCategoryId()) << '\n';
+        std::cout << "----------------\n";
+    }
 }
 
 int CoffeeStorage::getCount() const { return count_; }

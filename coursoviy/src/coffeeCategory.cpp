@@ -17,7 +17,7 @@ CoffeeCategory::CoffeeCategory() {
     copyText(name, sizeof(name), "");
     copyText(description, sizeof(description), "");
 
-    std::cout << "it's constructor without parametrs";
+    //std::cout << "it's constructor without parametrs";
 }
 
 CoffeeCategory::CoffeeCategory(int id, const char* name, const char* description) {
@@ -25,19 +25,28 @@ CoffeeCategory::CoffeeCategory(int id, const char* name, const char* description
     copyText(this->name, sizeof(this->name), name);
     copyText(this->description, sizeof(this->description), description);
 
-    std::cout << "it's constructor with parametrs";
+    //std::cout << "it's constructor with parametrs";
 }
 
 CoffeeCategory::~CoffeeCategory() {
-    std::cout << "it's destructor" << std::endl;
+    //std::cout << "it's destructor" << std::endl;
 }
 
 int CoffeeCategory::getId() const{
     return id;
 }
 
+const char* CoffeeCategory::getName() const {
+    return name;
+}
+
+const char* CoffeeCategory::getDescription() const {
+    return description;
+}
+
 void CoffeeCategory::show() const{
     std::cout << "Id: " << id << std::endl;
     std::cout << "Name: " << name << std::endl;
     std::cout << "Description: " << description << std::endl;
-}
+}
+

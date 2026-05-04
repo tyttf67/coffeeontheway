@@ -14,6 +14,8 @@ public:
 
 
     int getId() const;
+    const char* getName() const;
+    const char* getDescription() const;
 
     void show() const;
     

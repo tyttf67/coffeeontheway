@@ -12,8 +12,7 @@ static void copyText(char* dest, size_t size, const char* src) {
     dest[size - 1] = '\0';
 }
 
-Coffee::Coffee() : id(0), strength(1), sugar(false), milk(false) {
-    copyText(coffees, sizeof(coffees), "");
+Coffee::Coffee() : id(0), categoryId(0), strength(1), sugar(false), milk(false) {
     copyText(name, sizeof(name), "");
     copyText(levelRoast, sizeof(levelRoast), "");
     copyText(description, sizeof(description), "");
@@ -22,7 +21,7 @@ Coffee::Coffee() : id(0), strength(1), sugar(false), milk(false) {
 
 Coffee::Coffee(
     int id,
-    const char* coffees,
+    int categoryId,
     const char* name,
     const char* levelRoast,
     int strength,
@@ -30,8 +29,7 @@ Coffee::Coffee(
     const char* syrup,
     bool sugar,
     bool milk
-) : id(id), strength(strength), sugar(sugar), milk(milk) {
-    copyText(this->coffees, sizeof(this->coffees), coffees);
+) : id(id), categoryId(categoryId), strength(strength), sugar(sugar), milk(milk) {
     copyText(this->name, sizeof(this->name), name);
     copyText(this->levelRoast, sizeof(this->levelRoast), levelRoast);
     copyText(this->description, sizeof(this->description), description);
@@ -44,8 +42,8 @@ int Coffee::getId() const {
     return id;
 };
 
-const char* Coffee::getCoffeeArray() const {
-    return coffees;
+int Coffee::getCategoryId() const {
+    return categoryId;
 };
 
 const char* Coffee::getName() const {
@@ -56,7 +54,7 @@ const char* Coffee::getName() const {
 void Coffee::show() const {
     std::cout << "ID: " << id << '\n';
     std::cout << "Name: " << name << '\n';
-    std::cout << "Group: " << coffees << '\n';
+    std::cout << "Category ID: " << categoryId << '\n';
     std::cout << "Roast level: " << levelRoast << '\n';
     std::cout << "Strength (1-5): " << strength << '\n';
     std::cout << "Milk: " << (milk ? "Yes" : "No") << '\n';
