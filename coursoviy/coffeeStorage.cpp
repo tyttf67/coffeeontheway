@@ -119,6 +119,13 @@ bool CoffeeStorage::removeCoffeeById(int id) {
     return true;
 }
 
+bool CoffeeStorage::updateCoffee(const Coffee& coffee) {
+    int pos = findById(coffee.getId());
+    if (pos == -1) return false;
+    arr_[pos] = coffee;
+    return true;
+}
+
 bool CoffeeStorage::searchAndPrintByName(const char* query) const {
     if (!arr_ || count_ <= 0 || !query || query[0] == '\0') return false;
 

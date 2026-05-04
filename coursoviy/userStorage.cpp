@@ -134,6 +134,28 @@ bool UserStorage::updateUser(const User& user) {
     return false;
 }
 
+bool UserStorage::removeById(int id) {
+    if (!arr_ || count_ <= 0) return false;
+
+    for (int i = 0; i < count_; ++i) {
+        if (arr_[i].getId() == id) {
+            for (int j = i; j < count_ - 1; ++j) {
+                arr_[j] = arr_[j + 1];
+            }
+            --count_;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool UserStorage::removeByLogin(const char* login) {
+    int pos = findByLogin(login);
+    if (pos == -1) return false;
+    return removeById(arr_[pos].getId());
+}
+
 
 
 int UserStorage::getCount() const {

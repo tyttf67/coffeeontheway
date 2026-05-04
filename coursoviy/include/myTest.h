@@ -20,6 +20,8 @@ public:
 
     int getId() const;
     int getCoffeeIndexForChoice(char choice) const;
+    const char* getQuestionText() const;
+    const char* getAnswerTextForChoice(char choice) const;
 
     void show() const;
 };

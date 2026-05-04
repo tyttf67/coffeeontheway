@@ -1,5 +1,7 @@
 ﻿#include "consoleApp.h"
 
+#include "coffeeCatalog.h"
+
 #include <iostream>
 #include <limits>
 #include <cctype>
@@ -62,7 +64,63 @@ void ConsoleApp::runAndSaveTestForCurrentUser() {
 }
 
 void ConsoleApp::printCurrentUserHistory() const {
-    resultStorage.printHistoryForUser(currentUser.getId());
+    const Result* results = resultStorage.data();
+    const int resultCount = resultStorage.getCount();
+
+    int testCount = 0;
+    const Test* tests = getDefaultTests(testCount);
+
+    int coffeeCount = 0;
+    const Coffee* coffees = getDefaultCoffees(coffeeCount);
+
+    bool found = false;
+    int currentAttempt = -1;
+
+    for (int i = 0; i < resultCount; ++i) {
+        if (results[i].getUserId() != currentUser.getId()) {
+            continue;
+        }
+
+        if (!found) {
+            std::cout << "\n=== Test history ===\n";
+        }
+
+        if (results[i].getAttemptId() != currentAttempt) {
+            currentAttempt = results[i].getAttemptId();
+            std::cout << "\nAttempt #" << currentAttempt << '\n';
+        }
+
+        const Test* test = nullptr;
+        for (int j = 0; j < testCount; ++j) {
+            if (tests[j].getId() == results[i].getQuestionId()) {
+                test = &tests[j];
+                break;
+            }
+        }
+
+        std::cout << "Question " << results[i].getQuestionId() << ": ";
+        if (test) {
+            std::cout << test->getQuestionText() << '\n';
+            std::cout << "Answer: " << results[i].getChoice()
+                << ") " << test->getAnswerTextForChoice(results[i].getChoice()) << '\n';
+
+            const int coffeeIndex = test->getCoffeeIndexForChoice(results[i].getChoice());
+            if (coffeeIndex >= 0 && coffeeIndex < coffeeCount) {
+                std::cout << "Matched coffee: " << coffees[coffeeIndex].getName()
+                    << " | Group: " << categoryStorage.getNameById(coffees[coffeeIndex].getCategoryId()) << '\n';
+            }
+        } else {
+            std::cout << "Unknown question\n";
+            std::cout << "Answer: " << results[i].getChoice() << '\n';
+        }
+
+        std::cout << "-------------------------\n";
+        found = true;
+    }
+
+    if (!found) {
+        std::cout << "No test history for current user yet.\n";
+    }
 }
 
 void ConsoleApp::addCoffeeToFavourites() {
@@ -131,6 +189,37 @@ void ConsoleApp::addCoffeeToFavourites() {
     std::cout << selectedCoffee->getName() << " added to favourites.\n";
 }
 
+void ConsoleApp::deleteCurrentAccount() {
+    if (!isLoggedIn) {
+        std::cout << "Login first.\n";
+        return;
+    }
+
+    char answer = 0;
+    std::cout << "Delete your account and test history? (Y/N): ";
+    std::cin >> answer;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    answer = static_cast<char>(std::toupper(static_cast<unsigned char>(answer)));
+
+    if (answer != 'Y') {
+        std::cout << "Account deletion cancelled.\n";
+        return;
+    }
+
+    const int userId = currentUser.getId();
+    const int removedResults = resultStorage.removeByUserId(userId);
+
+    if (!userStorage.removeById(userId)) {
+        std::cout << "Cannot delete account.\n";
+        return;
+    }
+
+    currentUser = User();
+    isLoggedIn = false;
+
+    std::cout << "Account deleted. Removed history records: " << removedResults << '\n';
+}
+
 void ConsoleApp::run() {
     while (true) {
         std::cout << "\n=== MENU ===\n";
@@ -141,6 +230,7 @@ void ConsoleApp::run() {
         std::cout << "5. Start test\n";
         std::cout << "6. Show user\n";
         std::cout << "7. Add coffee to favourites\n";
+        std::cout << "8. Delete account\n";
         std::cout << "0. Exit\n";
         std::cout << "Choice: ";
 
@@ -238,6 +328,9 @@ void ConsoleApp::run() {
         } else if (choice == 7) {
 
             addCoffeeToFavourites();
+        } else if (choice == 8) {
+
+            deleteCurrentAccount();
         } else {
             std::cout << "Unknown menu item.\n";
         }

@@ -80,7 +80,26 @@ void ResultStorage::printHistoryForUser(int userId) const {
 }
 
 int ResultStorage::findByQuestionId(int questionId) const { if (!arr_ || count_ <= 0) return -1; for (int i = 0; i < count_; ++i) if (arr_[i].getQuestionId() == questionId) return i; return -1; }
+bool ResultStorage::updateByIndex(int index, const Result& result) { if (!arr_ || index < 0 || index >= count_) return false; arr_[index] = result; return true; }
 bool ResultStorage::removeByQuestionId(int questionId) { int index = findByQuestionId(questionId); if (index == -1) return false; for (int i = index; i < count_ - 1; ++i) arr_[i] = arr_[i + 1]; --count_; return true; }
+int ResultStorage::removeByUserId(int userId) {
+    if (!arr_ || count_ <= 0) return 0;
+
+    int removed = 0;
+    for (int i = 0; i < count_;) {
+        if (arr_[i].getUserId() == userId) {
+            for (int j = i; j < count_ - 1; ++j) {
+                arr_[j] = arr_[j + 1];
+            }
+            --count_;
+            ++removed;
+        } else {
+            ++i;
+        }
+    }
+
+    return removed;
+}
 void ResultStorage::printAll() const { if (!arr_ || count_ <= 0) { std::cout << "No results data to print.\n"; return; } for (int i = 0; i < count_; ++i) arr_[i].show(); }
 const Result* ResultStorage::data() const { return arr_; }
 int ResultStorage::getCount() const { return count_; }

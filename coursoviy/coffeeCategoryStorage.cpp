@@ -57,6 +57,12 @@ const char* CoffeeCategoryStorage::getNameById(int id) const {
     const CoffeeCategory* category = getById(id);
     return category ? category->getName() : "unknown";
 }
+bool CoffeeCategoryStorage::updateCategory(const CoffeeCategory& category) {
+    int pos = findById(category.getId());
+    if (pos == -1) return false;
+    arr_[pos] = category;
+    return true;
+}
 bool CoffeeCategoryStorage::removeById(int id) { int pos = findById(id); if (pos == -1) return false; for (int i = pos; i < count_ - 1; ++i) arr_[i] = arr_[i + 1]; --count_; return true; }
 void CoffeeCategoryStorage::printAll() const { if (!arr_ || count_ <= 0) { std::cout << "No category data\n"; return; } for (int i = 0; i < count_; ++i) { arr_[i].show(); std::cout << "----------------\n"; } }
 int CoffeeCategoryStorage::getCount() const { return count_; }

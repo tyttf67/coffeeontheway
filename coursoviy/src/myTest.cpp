@@ -49,6 +49,20 @@ int Test::getCoffeeIndexForChoice(char choice) const {
     return -1;
 }
 
+const char* Test::getQuestionText() const {
+    return textQuestion;
+}
+
+const char* Test::getAnswerTextForChoice(char choice) const {
+    const char normalized = static_cast<char>(std::toupper(static_cast<unsigned char>(choice)));
+    for (int i = 0; i < 3; ++i) {
+        if (answers[i].key == normalized) {
+            return answers[i].text;
+        }
+    }
+    return "";
+}
+
 void Test::show() const {
     std::cout << "[" << id << "] " << textQuestion << '\n';
     for (int i = 0; i < 3; ++i) {

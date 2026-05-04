@@ -43,6 +43,7 @@ bool TestStorage::loadFromAnyFile(const char* mainFile, const char* backupFile) 
 
 bool TestStorage::addTest(const Test& test) { if (!arr_ || count_ < 0 || count_ >= maxCount_) return false; arr_[count_++] = test; return true; }
 int TestStorage::findById(int id) const { if (!arr_ || count_ <= 0) return -1; for (int i = 0; i < count_; ++i) if (arr_[i].getId() == id) return i; return -1; }
+bool TestStorage::updateTest(const Test& test) { int index = findById(test.getId()); if (index == -1) return false; arr_[index] = test; return true; }
 bool TestStorage::removeById(int id) { int index = findById(id); if (index == -1) return false; for (int i = index; i < count_ - 1; ++i) arr_[i] = arr_[i + 1]; --count_; return true; }
 void TestStorage::printAll() const { if (!arr_ || count_ <= 0) { std::cout << "No tests data to print.\n"; return; } for (int i = 0; i < count_; ++i) { arr_[i].show(); std::cout << "-------------------------\n"; } }
 int TestStorage::getCount() const { return count_; }

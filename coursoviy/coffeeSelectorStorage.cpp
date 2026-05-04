@@ -43,6 +43,7 @@ int CoffeeSelectorStorage::findByNameContains(const char* query) const {
 
 bool CoffeeSelectorStorage::addSelector(const CoffeeSelector& selector) { if (!arr_ || count_ < 0 || count_ >= maxCount_) return false; arr_[count_++] = selector; return true; }
 int CoffeeSelectorStorage::findByIndex(int index) const { if (count_ <= 0 || index < 0 || index >= count_) return -1; return index; }
+bool CoffeeSelectorStorage::updateSelector(int index, const CoffeeSelector& selector) { int pos = findByIndex(index); if (pos == -1) return false; arr_[pos] = selector; return true; }
 bool CoffeeSelectorStorage::removeByIndex(int index) { if (!arr_ || count_ <= 0 || index < 0 || index >= count_) return false; for (int i = index; i < count_ - 1; ++i) arr_[i] = arr_[i + 1]; --count_; return true; }
 void CoffeeSelectorStorage::printAll() const { if (!arr_ || count_ <= 0) { std::cout << "No selector data to print.\n"; return; } for (int i = 0; i < count_; ++i) { std::cout << "CoffeeSelector #" << i << '\n'; std::cout << "-------------------------\n"; } }
 int CoffeeSelectorStorage::getCount() const { return count_; }

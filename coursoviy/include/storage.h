@@ -24,6 +24,7 @@ public:
     int findById(int id) const;
     const Coffee* getByIndex(int index) const;
     int findByNameContains(const char* query, int indexes[], int maxResults) const;
+    bool updateCoffee(const Coffee& coffee);
     bool removeCoffeeById(int id);
     bool searchAndPrintByName(const char* query) const;
     bool searchAndPrintByName(const char* query, const CoffeeCategoryStorage& categoryStorage) const;
@@ -50,6 +51,7 @@ public:
 
     bool addTest(const Test& test);
     int findById(int id) const;
+    bool updateTest(const Test& test);
     bool removeById(int id);
     void printAll() const;
 
@@ -76,6 +78,7 @@ public:
     int findById(int id) const;
     const CoffeeCategory* getById(int id) const;
     const char* getNameById(int id) const;
+    bool updateCategory(const CoffeeCategory& category);
     bool removeById(int id);
     void printAll() const;
 
@@ -100,6 +103,7 @@ public:
     int findByNameContains(const char* query) const;
     bool addSelector(const CoffeeSelector& selector);
     int findByIndex(int index) const;
+    bool updateSelector(int index, const CoffeeSelector& selector);
     bool removeByIndex(int index);
     void printAll() const;
 
@@ -127,7 +131,9 @@ public:
     void printHistoryForUser(int userId) const;
 
     int findByQuestionId(int questionId) const;
+    bool updateByIndex(int index, const Result& result);
     bool removeByQuestionId(int questionId);
+    int removeByUserId(int userId);
     void printAll() const;
     const Result* data() const;
 
@@ -153,6 +159,8 @@ public:
     bool registerUser(const User& user);
     bool loginUser(const char* login, const char* password, User& foundUser) const;
     bool updateUser(const User& user);
+    bool removeById(int id);
+    bool removeByLogin(const char* login);
     void printCurrentUserHistory() const;
 
     int getCount() const;
