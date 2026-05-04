@@ -48,6 +48,25 @@ void User::setProfile(int id, const char* name, const char* login, const char* g
     verified = false;
 }
 
+bool User::addFavouriteDrink(const char* drinkName) {
+    if (!drinkName || drinkName[0] == '\0') return false;
+    if (std::strstr(favouriteDrinks, drinkName) != nullptr) return true;
+
+    const size_t currentLength = std::strlen(favouriteDrinks);
+    const size_t drinkLength = std::strlen(drinkName);
+    const size_t separatorLength = currentLength > 0 ? 2 : 0;
+
+    if (currentLength + separatorLength + drinkLength >= sizeof(favouriteDrinks)) {
+        return false;
+    }
+
+    if (currentLength > 0) {
+        std::strcat(favouriteDrinks, ", ");
+    }
+    std::strcat(favouriteDrinks, drinkName);
+    return true;
+}
+
 bool User::hasCredentials() const {
     return login[0] != '\0' && password[0] != '\0';
 }

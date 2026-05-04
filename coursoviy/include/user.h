@@ -21,6 +21,7 @@ public:
     const char* getPassword() const;
     const char* getFavouriteDrinks() const;
     void setProfile(int id, const char* name, const char* login, const char* gmail, const char* password, const char* favouriteDrinks);
+    bool addFavouriteDrink(const char* drinkName);
     bool hasCredentials() const;
 
     bool verify(const char* inputLogin, const char* inputPassword);

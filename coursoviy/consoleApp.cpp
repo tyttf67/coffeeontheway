@@ -65,6 +65,72 @@ void ConsoleApp::printCurrentUserHistory() const {
     resultStorage.printHistoryForUser(currentUser.getId());
 }
 
+void ConsoleApp::addCoffeeToFavourites() {
+    if (!isLoggedIn) {
+        std::cout << "Login first.\n";
+        return;
+    }
+
+    char query[128];
+    std::cout << "Enter coffee name: ";
+    std::cin.getline(query, sizeof(query));
+
+    int matches[20];
+    const int matchCount = coffeeStorage.findByNameContains(query, matches, 20);
+    if (matchCount == 0) {
+        std::cout << "No coffee found.\n";
+        return;
+    }
+
+    int selectedIndex = matches[0];
+    if (matchCount > 1) {
+        std::cout << "\nFound coffees:\n";
+        for (int i = 0; i < matchCount; ++i) {
+            const Coffee* coffee = coffeeStorage.getByIndex(matches[i]);
+            if (coffee) {
+                std::cout << i + 1 << ". " << coffee->getName()
+                    << " | Group: " << categoryStorage.getNameById(coffee->getCategoryId()) << '\n';
+            }
+        }
+
+        int choice = 0;
+        while (true) {
+            std::cout << "Choose number: ";
+            if (!(std::cin >> choice)) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+            if (choice >= 1 && choice <= matchCount) {
+                selectedIndex = matches[choice - 1];
+                break;
+            }
+
+            std::cout << "Choose a number from the list.\n";
+        }
+    }
+
+    const Coffee* selectedCoffee = coffeeStorage.getByIndex(selectedIndex);
+    if (!selectedCoffee) {
+        std::cout << "Cannot add coffee to favourites.\n";
+        return;
+    }
+
+    if (!currentUser.addFavouriteDrink(selectedCoffee->getName())) {
+        std::cout << "Cannot add favourite drink. Favourite list is full.\n";
+        return;
+    }
+
+    if (!userStorage.updateUser(currentUser)) {
+        std::cout << "Cannot update user profile.\n";
+        return;
+    }
+
+    std::cout << selectedCoffee->getName() << " added to favourites.\n";
+}
+
 void ConsoleApp::run() {
     while (true) {
         std::cout << "\n=== MENU ===\n";
@@ -74,6 +140,7 @@ void ConsoleApp::run() {
         std::cout << "4. Login\n";
         std::cout << "5. Start test\n";
         std::cout << "6. Show user\n";
+        std::cout << "7. Add coffee to favourites\n";
         std::cout << "0. Exit\n";
         std::cout << "Choice: ";
 
@@ -168,6 +235,9 @@ void ConsoleApp::run() {
             }
             currentUser.show();
             printCurrentUserHistory();            
+        } else if (choice == 7) {
+
+            addCoffeeToFavourites();
         } else {
             std::cout << "Unknown menu item.\n";
         }

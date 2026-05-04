@@ -121,6 +121,19 @@ bool UserStorage::loginUser(const char* login, const char* password, User& found
     return true;
 }
 
+bool UserStorage::updateUser(const User& user) {
+    if (!arr_) return false;
+
+    for (int i = 0; i < count_; ++i) {
+        if (arr_[i].getId() == user.getId()) {
+            arr_[i] = user;
+            return true;
+        }
+    }
+
+    return false;
+}
+
 
 
 int UserStorage::getCount() const {

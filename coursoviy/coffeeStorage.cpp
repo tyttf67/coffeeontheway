@@ -78,6 +78,39 @@ int CoffeeStorage::findById(int id) const {
     return -1;
 }
 
+const Coffee* CoffeeStorage::getByIndex(int index) const {
+    if (!arr_ || index < 0 || index >= count_) return nullptr;
+    return &arr_[index];
+}
+
+int CoffeeStorage::findByNameContains(const char* query, int indexes[], int maxResults) const {
+    if (!arr_ || count_ <= 0 || !query || query[0] == '\0' || !indexes || maxResults <= 0) return 0;
+
+    char loweredQuery[128];
+    int qi = 0;
+    for (; query[qi] != '\0' && qi < 127; ++qi) {
+        loweredQuery[qi] = static_cast<char>(std::tolower(static_cast<unsigned char>(query[qi])));
+    }
+    loweredQuery[qi] = '\0';
+
+    int foundCount = 0;
+    for (int i = 0; i < count_ && foundCount < maxResults; ++i) {
+        const char* name = arr_[i].getName();
+        char loweredName[128];
+        int ni = 0;
+        for (; name[ni] != '\0' && ni < 127; ++ni) {
+            loweredName[ni] = static_cast<char>(std::tolower(static_cast<unsigned char>(name[ni])));
+        }
+        loweredName[ni] = '\0';
+
+        if (std::strstr(loweredName, loweredQuery) != nullptr) {
+            indexes[foundCount++] = i;
+        }
+    }
+
+    return foundCount;
+}
+
 bool CoffeeStorage::removeCoffeeById(int id) {
     int pos = findById(id);
     if (pos == -1) return false;

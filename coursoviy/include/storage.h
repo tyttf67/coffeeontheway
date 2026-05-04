@@ -22,6 +22,8 @@ public:
     bool addCoffee(const Coffee& coffee);
     void loadDefaultsIfEmpty();
     int findById(int id) const;
+    const Coffee* getByIndex(int index) const;
+    int findByNameContains(const char* query, int indexes[], int maxResults) const;
     bool removeCoffeeById(int id);
     bool searchAndPrintByName(const char* query) const;
     bool searchAndPrintByName(const char* query, const CoffeeCategoryStorage& categoryStorage) const;
@@ -150,6 +152,7 @@ public:
     int findByLogin(const char* login) const;
     bool registerUser(const User& user);
     bool loginUser(const char* login, const char* password, User& foundUser) const;
+    bool updateUser(const User& user);
     void printCurrentUserHistory() const;
 
     int getCount() const;

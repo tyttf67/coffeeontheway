@@ -18,6 +18,7 @@ private:
     
     void runAndSaveTestForCurrentUser();
     void printCurrentUserHistory() const;
+    void addCoffeeToFavourites();
     
 
 public:
