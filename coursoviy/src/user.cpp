@@ -61,9 +61,17 @@ bool User::addFavouriteDrink(const char* drinkName) {
     }
 
     if (currentLength > 0) {
+#ifdef _MSC_VER
+        strcat_s(favouriteDrinks, sizeof(favouriteDrinks), ", ");
+#else
         std::strcat(favouriteDrinks, ", ");
+#endif
     }
+#ifdef _MSC_VER
+    strcat_s(favouriteDrinks, sizeof(favouriteDrinks), drinkName);
+#else
     std::strcat(favouriteDrinks, drinkName);
+#endif
     return true;
 }
 

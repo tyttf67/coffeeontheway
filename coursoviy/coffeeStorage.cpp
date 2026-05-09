@@ -83,7 +83,7 @@ const Coffee* CoffeeStorage::getByIndex(int index) const {
     return &arr_[index];
 }
 
-int CoffeeStorage::findByNameContains(const char* query, int indexes[], int maxResults) const {
+int CoffeeStorage::findByNameContains(const char* query, int indexes[], int maxResults) const { // Я шукаю всі об’єкти Coffee, у яких name містить введений текст без урахування регістру.
     if (!arr_ || count_ <= 0 || !query || query[0] == '\0' || !indexes || maxResults <= 0) return 0;
 
     char loweredQuery[128];

@@ -159,6 +159,7 @@ public:
     bool registerUser(const User& user);
     bool loginUser(const char* login, const char* password, User& foundUser) const;
     bool updateUser(const User& user);
+    bool addFavouriteDrinkForUser(int userId, const char* drinkName, User& updatedUser);
     bool removeById(int id);
     bool removeByLogin(const char* login);
     void printCurrentUserHistory() const;

@@ -1,5 +1,5 @@
 ﻿#include "consoleApp.h"
-
+#include "coffeeSelector.h"
 #include "coffeeCatalog.h"
 
 #include <iostream>
@@ -22,7 +22,6 @@ ConsoleApp::ConsoleApp(
     currentUser(),
     isLoggedIn(false) {
 }
-//прибрати ці фкції з класу, бо вони не використовуються в консолі 
 void ConsoleApp::runAndSaveTestForCurrentUser() {
     const int userId = currentUser.getId();
 
@@ -50,17 +49,24 @@ void ConsoleApp::runAndSaveTestForCurrentUser() {
                 break;
             }
             std::cout << "Please enter only A, B, or C.\n";
+            
         }
+        
 
         if (!resultStorage.addAnswerForUserAttempt(userId, newAttemptId, tests[i].getId(), answer)) {
             std::cout << "Cannot save result (result storage is full).\n";
             return;
         }
 
-        std::cout << "-------------------------\n";
-    }
 
+       
+        std::cout << "-------------------------\n";
+        
+    }
+   
+   
     std::cout << "Test completed and saved to history.\n";
+    
 }
 
 void ConsoleApp::printCurrentUserHistory() const {
@@ -122,7 +128,6 @@ void ConsoleApp::printCurrentUserHistory() const {
         std::cout << "No test history for current user yet.\n";
     }
 }
-
 void ConsoleApp::addCoffeeToFavourites() {
     if (!isLoggedIn) {
         std::cout << "Login first.\n";
@@ -176,13 +181,8 @@ void ConsoleApp::addCoffeeToFavourites() {
         return;
     }
 
-    if (!currentUser.addFavouriteDrink(selectedCoffee->getName())) {
-        std::cout << "Cannot add favourite drink. Favourite list is full.\n";
-        return;
-    }
-
-    if (!userStorage.updateUser(currentUser)) {
-        std::cout << "Cannot update user profile.\n";
+    if (!userStorage.addFavouriteDrinkForUser(currentUser.getId(), selectedCoffee->getName(), currentUser)) {
+        std::cout << "Cannot add favourite drink. Favourite list may be full.\n";
         return;
     }
 
@@ -309,15 +309,50 @@ void ConsoleApp::run() {
                 std::cout << "Wrong login/password.\n";
             }
 
-        } else if (choice == 5) {
-            
-            if (!isLoggedIn) {
-                std::cout << "Login first.\n";
-                continue;
-            }
-            runAndSaveTestForCurrentUser();
+        }
+    
+     else if (choice == 5) {
+     if (!isLoggedIn) {
+         std::cout << "Login first.\n";
+         continue;
+     }
+   
+     runAndSaveTestForCurrentUser();
 
-        } else if (choice == 6) {
+     int coffeeCount = 0;
+     const Coffee* coffees = getDefaultCoffees(coffeeCount);
+     int testCount = 0;
+     const Test* tests = getDefaultTests(testCount);
+
+     int scores[20] = { 0 };
+     const Result* allResults = resultStorage.data();
+     int totalRes = resultStorage.getCount();
+     int lastAttempt = resultStorage.getNextAttemptIdForUser(currentUser.getId()) - 1;
+
+    
+     for (int i = 0; i < totalRes; ++i) {
+         if (allResults[i].getUserId() == currentUser.getId() && allResults[i].getAttemptId() == lastAttempt) {
+             for (int j = 0; j < testCount; ++j) {
+                 if (tests[j].getId() == allResults[i].getQuestionId()) {
+                     int idx = tests[j].getCoffeeIndexForChoice(allResults[i].getChoice());
+                     if (idx >= 0 && idx < 20) scores[idx]++;
+                 }
+             }
+         }
+     }
+
+  
+     int bestIdx = 0;
+     for (int i = 1; i < coffeeCount; ++i) {
+         if (scores[i] > scores[bestIdx]) bestIdx = i;
+     }
+
+     std::cout << "\n=== Based on your latest test ===\n";
+     coffees[bestIdx].show();
+     std::cout << "Category: " << categoryStorage.getNameById(coffees[bestIdx].getCategoryId()) << "\n";
+     }
+                
+          else if (choice == 6) {
             
             if (!isLoggedIn) {
                 std::cout << "No active user session. Login first.\n";

@@ -121,12 +121,28 @@ bool UserStorage::loginUser(const char* login, const char* password, User& found
     return true;
 }
 
-bool UserStorage::updateUser(const User& user) {
+bool UserStorage::updateUser(const User& user) {   // оновлення користувача по айді
     if (!arr_) return false;
 
     for (int i = 0; i < count_; ++i) {
         if (arr_[i].getId() == user.getId()) {
             arr_[i] = user;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool UserStorage::addFavouriteDrinkForUser(int userId, const char* drinkName, User& updatedUser) {
+    if (!arr_ || !drinkName || drinkName[0] == '\0') return false;
+
+    for (int i = 0; i < count_; ++i) {
+        if (arr_[i].getId() == userId) {
+            if (!arr_[i].addFavouriteDrink(drinkName)) {
+                return false;
+            }
+            updatedUser = arr_[i];
             return true;
         }
     }
