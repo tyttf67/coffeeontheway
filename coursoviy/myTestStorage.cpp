@@ -1,6 +1,8 @@
 ﻿#include "storage.h"
+#include "myTest.h"
 #include <fstream>
 #include <iostream>
+
 
 TestStorage::TestStorage(int maxCount) : arr_(nullptr), maxCount_(maxCount), count_(0) {
     if (maxCount_ > 0) arr_ = new Test[maxCount_];
@@ -41,6 +43,21 @@ bool TestStorage::loadFromFile(const char* fileName) {
 bool TestStorage::saveToTwoFiles(const char* mainFile, const char* backupFile) const { return saveToFile(mainFile) && saveToFile(backupFile); }
 bool TestStorage::loadFromAnyFile(const char* mainFile, const char* backupFile) { return loadFromFile(mainFile) || loadFromFile(backupFile); }
 
+const Test* TestStorage::getAt(int index) const {
+    if (!arr_ || index < 0 || index >= count_) return nullptr;
+    return &arr_[index];
+}
+
+void TestStorage::loadDefaultsIfEmpty() {
+    if (count_ > 0) return;
+
+    int count = 0;
+    const Test* defaults = getDefaultTests(count);
+
+    for (int i = 0; i < count; ++i) {
+        addTest(defaults[i]);
+    }
+}
 bool TestStorage::addTest(const Test& test) { if (!arr_ || count_ < 0 || count_ >= maxCount_) return false; arr_[count_++] = test; return true; }
 int TestStorage::findById(int id) const { if (!arr_ || count_ <= 0) return -1; for (int i = 0; i < count_; ++i) if (arr_[i].getId() == id) return i; return -1; }
 bool TestStorage::updateTest(const Test& test) { int index = findById(test.getId()); if (index == -1) return false; arr_[index] = test; return true; }

@@ -1,6 +1,5 @@
 #pragma once
 class Coffee {
-
 private:
     int id;
     int categoryId;
@@ -19,8 +18,13 @@ public:
 
     int getId() const;
     int getCategoryId() const;
-    const char* getName() const;         // поле цього класу дає назву
-  
+    int getStrength() const;
+    const char* getName() const;
+    const char* getLevelRoast() const;
+    const char* getDescription() const;
+    const char* getSyrup() const;
+    bool getSugar() const;
+    bool getMilk() const;
 
     void show() const;
 };

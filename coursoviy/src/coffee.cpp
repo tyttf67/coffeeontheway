@@ -49,6 +49,12 @@ int Coffee::getCategoryId() const {
 const char* Coffee::getName() const {
     return name;
 };
+int Coffee::getStrength() const { return strength; }
+const char* Coffee::getLevelRoast() const { return levelRoast; }
+const char* Coffee::getDescription() const { return description; }
+const char* Coffee::getSyrup() const { return syrup; }
+bool Coffee::getSugar() const { return sugar; }
+bool Coffee::getMilk() const { return milk; }
 
 
 void Coffee::show() const {
