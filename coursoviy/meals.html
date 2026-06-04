@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meals Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+    <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+
+        <h1 class="text-2xl font-bold mb-4">Meals Manager</h1>
+
+        <!-- Form to add meal -->
+        <form id="mealForm" class="mb-6 space-y-4">
+            <div>
+                <label class="block font-medium">Name:</label>
+                <input type="text" id="name" class="border p-2 w-full rounded" required>
+            </div>
+            <div>
+                <label class="block font-medium">Type:</label>
+                <input type="number" id="type" class="border p-2 w-full rounded" required>
+            </div>
+            <div>
+                <label class="block font-medium">Price:</label>
+                <input type="number" step="0.01" id="price" class="border p-2 w-full rounded" required>
+            </div>
+            <div>
+                <label class="block font-medium">Discount (%):</label>
+                <input type="number" id="discount" class="border p-2 w-full rounded" value="0">
+            </div>
+            <div>
+                <label class="block font-medium">Available:</label>
+                <select id="available" class="border p-2 w-full rounded">
+                    <option value="1" selected>Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Add Meal
+            </button>
+        </form>
+
+        <!-- Meals table -->
+        <h2 class="text-xl font-semibold mb-2">Meals List</h2>
+        <table class="w-full table-auto border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border px-2 py-1">ID</th>
+                    <th class="border px-2 py-1">Name</th>
+                    <th class="border px-2 py-1">Type</th>
+                    <th class="border px-2 py-1">Price</th>
+                    <th class="border px-2 py-1">Discount</th>
+                    <th class="border px-2 py-1">Available</th>
+                </tr>
+            </thead>
+            <tbody id="mealsTableBody">
+                <!-- Meals will be inserted here -->
+            </tbody>
+        </table>
+
+    </div>
+
+<script>
+// ---------------- Fetch and display meals ----------------
+async function loadMeals() {
+    const res = await fetch('http://localhost:18080/api/meals');
+    if (!res.ok) return;
+
+    const meals = await res.json();
+    const tbody = document.getElementById('mealsTableBody');
+    tbody.innerHTML = '';
+
+    for (const meal of meals) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="border px-2 py-1">${meal.id}</td>
+            <td class="border px-2 py-1">${meal.name}</td>
+            <td class="border px-2 py-1">${meal.type}</td>
+            <td class="border px-2 py-1">${meal.price.toFixed(2)}</td>
+            <td class="border px-2 py-1">${meal.discount}</td>
+            <td class="border px-2 py-1">${meal.available ? 'Yes' : 'No'}</td>
+        `;
+        tbody.appendChild(tr);
+    }
+}
+
+// ---------------- Add new meal ----------------
+document.getElementById('mealForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const newMeal = {
+        name: document.getElementById('name').value,
+        type: parseInt(document.getElementById('type').value),
+        price: parseFloat(document.getElementById('price').value),
+        discount: parseInt(document.getElementById('discount').value),
+        available: parseInt(document.getElementById('available').value)
+    };
+
+    const res = await fetch('http://localhost:18080/api/meals', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(newMeal)
+    });
+
+    if (res.ok) {
+        document.getElementById('mealForm').reset();
+        loadMeals();
+    } else {
+        alert('Failed to add meal');
+    }
+});
+
+// Initial load
+loadMeals();
+</script>
+
+</body>
+</html>

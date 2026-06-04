@@ -1,5 +1,5 @@
 #pragma once
-// подумати як зберіагати історію тестувань та показувати їх  
+
 #include "coffee.h"
 #include "coffeeCategory.h"
 #include "myTest.h"
@@ -12,7 +12,6 @@ public:
     void run(const CoffeeCategoryStorage& categoryStorage) const;
     void printCoffeeCards(const CoffeeCategoryStorage& categoryStorage) const;
 
-private:
     void runTest(
         const Test tests[],
         int testCount,

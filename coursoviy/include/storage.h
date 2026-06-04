@@ -43,12 +43,14 @@ class TestStorage {
 public:
     explicit TestStorage(int maxCount);
     ~TestStorage();
+     void loadDefaultsIfEmpty();
 
     bool saveToFile(const char* fileName) const;
     bool loadFromFile(const char* fileName);
     bool saveToTwoFiles(const char* mainFile, const char* backupFile) const;
     bool loadFromAnyFile(const char* mainFile, const char* backupFile);
 
+    const Test* getAt(int index) const;
     bool addTest(const Test& test);
     int findById(int id) const;
     bool updateTest(const Test& test);
@@ -150,6 +152,8 @@ public:
     explicit UserStorage(int maxCount);
     ~UserStorage();
 
+    void hashPassword();
+    void loadDefaultsIfEmpty();
     bool saveToFile(const char* fileName) const;
     bool loadFromFile(const char* fileName);
     bool loadFromAnyFile(const char* mainFile, const char* backupFile);

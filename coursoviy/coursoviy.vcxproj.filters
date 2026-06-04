@@ -12,9 +12,6 @@
     <Filter Include="App">
       <UniqueIdentifier>{718578b5-c12a-4847-baf3-d719835f1745}</UniqueIdentifier>
     </Filter>
-    <Filter Include="data">
-      <UniqueIdentifier>{92c179a3-1994-4c30-8223-d4719fd6a10b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\storage">
       <UniqueIdentifier>{f29c6d81-cca9-4ce0-ad84-d522f9724f54}</UniqueIdentifier>
     </Filter>
@@ -27,6 +24,9 @@
     <Filter Include="ui">
       <UniqueIdentifier>{8361ca45-2c92-4d2e-a90f-95f3e7f39922}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\storage\data">
+      <UniqueIdentifier>{92c179a3-1994-4c30-8223-d4719fd6a10b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="app\main.cpp">
@@ -34,7 +34,8 @@
     </ClCompile>
     <ClCompile Include="src\coffee.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>    <ClCompile Include="src\coffeeCategory.cpp">
+    </ClCompile>
+    <ClCompile Include="src\coffeeCategory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\myTest.cpp">
@@ -102,42 +103,40 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="coffee.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="coffee_backup.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="coffeeCategory.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="coffeeCategory_backup.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="user.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="user_backup.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="myTest.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="myTest_backup.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="coffeeSelector.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="coffeeSelector_backup.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="resultTest.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="resultTest_backup.dat">
-      <Filter>data</Filter>
+      <Filter>Header Files\storage\data</Filter>
     </None>
   </ItemGroup>
 </Project>
-
-

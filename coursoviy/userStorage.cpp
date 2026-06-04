@@ -1,6 +1,11 @@
 ﻿#include "storage.h"
 #include <fstream>
 #include <cstring>
+#include <functional>
+
+std::string hashPassword(const std::string& pass) {
+    return std::to_string(std::hash<std::string>{}(pass));
+}
 
 UserStorage::UserStorage(int maxCount)
     : arr_(nullptr), maxCount_(maxCount), count_(0) {
