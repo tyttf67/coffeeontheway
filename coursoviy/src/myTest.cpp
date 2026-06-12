@@ -72,56 +72,56 @@ void Test::show() const {
 
 static Test buildQuestion1() {
     Test::AnswerOption options[3] = {
-        {'A', "Strong and intense", 0},
-        {'B', "Balanced", 1},
-        {'C', "Soft and light", 2}
+        {'A', "Міцна та інтенсивна", 0},
+        {'B', "Збалансована", 1},
+        {'C', "М'яка та легка", 2}
     };
-    return Test(1, "Which coffee strength do you prefer?", options);
+    return Test(1, "Яку міцність кави ти надаєш перевагу?", options);
 }
 
 static Test buildQuestion2() {
     Test::AnswerOption options[3] = {
-        {'A', "No milk", 3},
-        {'B', "A little milk", 4},
-        {'C', "More milk", 2}
+        {'A', "Без молока", 3},
+        {'B', "Трохи молока", 4},
+        {'C', "Багато молока", 2}
     };
-    return Test(2, "How much milk do you like?", options);
+    return Test(2, "Скільки молока ти додаєш до кави?", options);
 }
 
 static Test buildQuestion3() {
     Test::AnswerOption options[3] = {
-        {'A', "No sweet notes", 5},
-        {'B', "A little sweetness", 6},
-        {'C', "Sweet coffee dessert", 7}
+        {'A', "Без солодкого", 5},
+        {'B', "Трохи солодкості", 6},
+        {'C', "Солодкий кавовий десерт", 7}
     };
-    return Test(3, "Do you enjoy sweet coffee taste?", options);
+    return Test(3, "Чи любиш ти солодкий смак кави?", options);
 }
 
 static Test buildQuestion4() {
     Test::AnswerOption options[3] = {
-        {'A', "Quick shot before work", 0},
-        {'B', "Classic daytime cup", 1},
-        {'C', "Relaxing evening drink", 6}
+        {'A', "Швидкий шот перед роботою", 0},
+        {'B', "Класична чашка вдень", 1},
+        {'C', "Розслаблюючий вечірній напій", 6}
     };
-    return Test(4, "When do you usually drink coffee?", options);
+    return Test(4, "Коли ти зазвичай п'єш каву?", options);
 }
 
 static Test buildQuestion5() {
     Test::AnswerOption options[3] = {
-        {'A', "Classic hot", 3},
-        {'B', "Warm and creamy", 4},
-        {'C', "Dessert style", 7}
+        {'A', "Класична гаряча", 3},
+        {'B', "Тепла та кремова", 4},
+        {'C', "У стилі десерту", 7}
     };
-    return Test(5, "What temperature/style feels right now?", options);
+    return Test(5, "Яка температура напою тобі до душі?", options);
 }
 
 static Test buildQuestion6() {
     Test::AnswerOption options[3] = {
-        {'A', "Need maximum energy", 5},
-        {'B', "Need stable focus", 4},
-        {'C', "Want cozy mood", 2}
+        {'A', "Потрібен максимальний заряд енергії", 5},
+        {'B', "Хочу стабільну зосередженість", 4},
+        {'C', "Шукаю затишний настрій", 2}
     };
-    return Test(6, "What is your current mood?", options);
+    return Test(6, "Який у тебе зараз настрій?", options);
 }
 
 const Test* getDefaultTests(int& count) {

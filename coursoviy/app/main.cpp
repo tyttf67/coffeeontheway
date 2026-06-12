@@ -1,5 +1,5 @@
 ﻿#define _WIN32_WINNT 0x0601
-
+#include <clocale>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -7,6 +7,7 @@
 #include <algorithm> // Для std::min
 
 #include "coffee.h"
+#include "user.h"
 #include "consoleApp.h"
 #include "myTest.h"
 #include "storage.h"
@@ -147,409 +148,118 @@ namespace {
 </html>)";
     }
     std::string defaultCss() {
-        return R"(* {
-  box-sizing: border-box;
+        return R"(
+:root, [data-theme="light"] {
+  --bg-from: #B76E40;
+  --bg-mid:  #9A5530;
+  --bg-to:   #7A3E20;
+  --surface: rgba(225,219,202,0.20);
+  --surface-hover: rgba(225,219,202,0.30);
+  --border: rgba(255,255,255,0.18);
+  --text: #ffffff;
+  --text-muted: rgba(255,255,255,0.65);
+  --accent: #8b5e3c;
+  --accent-hover: #a06e4c;
+  --logo-color: #e1dbca;
+  --glass-bg: rgba(180,100,45,0.25);
+  --glass-border: rgba(255,255,255,0.18);
+  --modal-overlay: rgba(20,8,3,0.55);
+  --radial-color: rgba(220,140,70,0.45);
 }
 
-html,
-body {
-  margin: 0;
-  min-height: 100%;
-  zoom: 1.15;
-  background: linear-gradient(180deg, #110701 100%, #2a1406 100%);
-  color: #ffffff;
-  font-family: "Roboto Serif", Georgia, serif;
+[data-theme="dark"] {
+  --bg-from: #0a0401;
+  --bg-mid:  #150a03;
+  --bg-to:   #1e1005;
+  --surface: rgba(200,160,120,0.12);
+  --surface-hover: rgba(200,160,120,0.20);
+  --border: rgba(255,255,255,0.10);
+  --text: #f0e0cc;
+  --text-muted: rgba(240,224,204,0.55);
+  --accent: #7a4e30;
+  --accent-hover: #8f5e3c;
+  --logo-color: #c8b89a;
+  --glass-bg: rgba(10,5,2,0.55);
+  --glass-border: rgba(255,255,255,0.08);
+  --modal-overlay: rgba(5,2,1,0.75);
+  --radial-color: rgba(80,35,10,0.50);
 }
 
-.page {
-  width: 100%;
-  max-width: 1120px;
-  margin: 0 auto;
-  min-height: 100vh;
-  padding: 16px 16px 0;
-  background:
-    radial-gradient(circle at 50% 34%, rgba(72, 43, 8, 0.58), transparent 32%),
-    linear-gradient(180deg, #110701 0%, #2a1406 100%);
-}
+*, *::before, *::after { box-sizing: border-box; }
 
-.topbar {
-  min-height: 76px;
-  display: grid;
-  grid-template-columns: minmax(190px, 1fr) auto minmax(190px, 1fr);
-  align-items: start;
-}
+html, body { margin: 0; min-height: 100%; zoom: 1.14; color: var(--text); font-family: "Roboto", Arial, sans-serif; }
 
-.nav-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+body { background: linear-gradient(160deg, var(--bg-from) 0%, var(--bg-mid) 50%, var(--bg-to) 100%); transition: background 0.4s ease; }
 
-.nav-right {
-  justify-content: flex-end;
-}
+.page { width: 100%; max-width: 1120px; margin: 0 auto; min-height: 100vh; padding: 16px 16px 0; background: radial-gradient(ellipse at 50% 30%, var(--radial-color), transparent 55%), linear-gradient(160deg, var(--bg-from) 0%, var(--bg-mid) 50%, var(--bg-to) 100%); transition: background 0.4s ease; }
 
-.catalog-btn,
-.round-btn,
-.theme-toggle,
-.test-btn {
-  background: rgba(225, 219, 202, 0.2);
-  backdrop-filter: blur(18px) saturate(130%);
-  -webkit-backdrop-filter: blur(18px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow:
-    inset 0 1px 2px rgba(255,255,255,0.18),
-    inset 0 -2px 5px rgba(0,0,0,0.25),
-    0 6px 16px rgba(0,0,0,0.45);
-  position: relative;
-  overflow: hidden;
-}
+.topbar { min-height: 76px; display: grid; grid-template-columns: minmax(190px,1fr) auto minmax(190px,1fr); align-items: start; }
+.nav-group { display: flex; align-items: center; gap: 8px; }
+.nav-right { justify-content: flex-end; }
 
-.catalog-btn::before,
-.round-btn::before,
-.theme-toggle::before,
-.test-btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    -45deg,
-    rgba(255,255,255,0.25) 0%,
-    rgba(255,255,255,0.05) 40%,
-    rgba(0,0,0,0.15) 100%
-  );
-  opacity: 0.6;
-  pointer-events: none;
-}
+.catalog-btn, .round-btn, .theme-toggle { background: var(--surface); backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); border: 1px solid var(--border); box-shadow: inset 0 1px 2px rgba(255,255,255,0.18), 0 3px 8px rgba(0,0,0,0.30); position: relative; overflow: hidden; cursor: pointer; transition: background 0.2s, transform 0.15s; }
 
-.catalog-btn {
-  width: 78px;
-  height: 27px;
-  border-radius: 18px;
-  color: #ffffff;
-  font-family: "Roboto", Arial, sans-serif;
-  font-size: 12px;
-  cursor: pointer;
-}
+.catalog-btn::before, .round-btn::before, .theme-toggle::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(-45deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.04) 40%, rgba(0,0,0,0.10) 100%); opacity: 0.7; pointer-events: none; }
 
-.round-btn {
-  width: 30px;
-  height: 28px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  padding: 0;
-}
+.catalog-btn:hover, .round-btn:hover, .theme-toggle:hover { background: var(--surface-hover); transform: translateY(-1px); }
+.catalog-btn:active, .round-btn:active, .theme-toggle:active { transform: translateY(0); }
 
-.round-btn img {
-  width: 12px;
-  height: 12px;
-  object-fit: contain;
-  display: block;
-}
+.catalog-btn { width: 78px; height: 27px; border-radius: 18px; color: var(--text); font-family: "Roboto", Arial, sans-serif; font-size: 12px; }
+.round-btn { width: 30px; height: 28px; border-radius: 50%; display: grid; place-items: center; padding: 0; }
+.round-btn img { width: 13px; height: 13px; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.85; }
 
-.profile-btn img {
-  width: 12px;
-  height: 12px;
-}
+.theme-toggle { width: 62px; height: 28px; border-radius: 28px; display: flex; align-items: center; justify-content: space-between; padding: 3px 6px; }
 
-.theme-toggle {
-  width: 70px;
-  height: 27px;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 6px;
-  cursor: pointer;
-}
+.toggle-icon { display: flex; align-items: center; justify-content: center; border-radius: 50%; flex-shrink: 0; transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease, filter 0.3s ease; }
+.toggle-icon img { display: block; object-fit: contain; filter: brightness(0) invert(1); transition: width 0.3s, height 0.3s, filter 0.3s; }
 
-.toggle-icon {
-  width: 21px;
-  height: 21px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-}
+.toggle-icon-light { width: 22px; height: 22px; opacity: 1; }
+.toggle-icon-light img { width: 17px; height: 17px; filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(255,255,255,0.8)); }
+.toggle-icon-dark { width: 13px; height: 13px; opacity: 0.28; filter: blur(0.4px); }
+.toggle-icon-dark img { width: 10px; height: 10px; }
 
-.toggle-icon.active {
-  height: 26px;
-  width: 26px;
-  margin-left: -2px;
-}
+[data-theme="dark"] .toggle-icon-dark { width: 22px; height: 22px; opacity: 1; filter: none; }
+[data-theme="dark"] .toggle-icon-dark img { width: 17px; height: 17px; filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(255,255,255,0.8)); }
+[data-theme="dark"] .toggle-icon-light { width: 13px; height: 13px; opacity: 0.28; filter: blur(0.4px); }
+[data-theme="dark"] .toggle-icon-light img { width: 10px; height: 10px; filter: brightness(0) invert(1); }
 
-.toggle-icon.active img {
-  padding-top: 2px;
-  width: 32px;
-  height: 30px;
-  object-fit: contain;
-}
+.logo { margin: 18px 0 0; font-family: "Rubik Bubbles", system-ui; font-size: 23px; font-weight: 400; color: var(--logo-color); transform: rotate(-10deg) skewX(-9deg); text-shadow: 4px 4px 4px rgba(0,0,0,0.25); white-space: nowrap; }
 
-.toggle-icon img {
-  padding-top: 4px;
-  padding-right: 6px;
-  width: 18px;
-  height: 18px;
-}
+.hero { margin-top: 70px; margin-left: 52px; width: 270px; }
+.hero p { margin: 0; font-size: 17px; line-height: 1.15; }
 
-.logo {
-  margin: 18px 0 0;
-  font-family: "Rubik Bubbles", system-ui;
-  font-size: 23px;
-  font-weight: 400;
-  color: #e1dbca;
-  transform: rotate(-10deg) skewX(-9deg);
-  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
-  white-space: nowrap;
-}
+.test-btn { margin-top: 32px; width: 130px; height: 32px; border-radius: 32px; background: rgba(255,255,255,0.92); color: #2a1006; border: none; font-family: "Roboto", Arial, sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 12px rgba(255,255,255,0.3); transition: all 0.2s ease; }
+.test-btn:hover { background: #fff; transform: translateY(-2px); }
+.test-btn:active { transform: translateY(0); }
 
-.hero {
-  margin-top: 70px;
-  margin-left: 52px;
-  width: 270px;
-}
+.section { width: min(850px,100%); margin: 148px auto 0; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 46px; align-items: start; }
+.types-section { margin-top: 82px; }
+.text-block h2 { margin: 0 0 28px; font-size: 25px; font-weight: 400; }
+.text-block p { margin: 0 0 24px; font-size: 12px; line-height: 1.4; opacity: 0.82; max-width: 520px; }
 
-.hero p {
-  margin: 0;
-  font-size: 17px;
-  line-height: 1.15;
-  letter-spacing: 0.34px;
-}
+.photo-stack { display: flex; flex-direction: column; gap: 20px; width: 160px; }
+.photo-stack img { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; display: block; transition: transform 0.2s; }
+.photo-stack img:hover { transform: scale(1.04); }
+.types-section .photo-stack img { height: 220px; box-shadow: 0 0 20px rgba(255,255,255,0.18); }
 
-.test-btn {
-  margin-top: 32px;
-  width: 112px;
-  height: 32px;
-  border-radius: 32px;
-  background: #ffffff;
-  color: #000000;
-  font-family: Roboto, Arial, sans-serif;
-  font-size: 12px;
-  box-shadow: 2px 2px 10px #ffffff, inset 0 4px 4px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
+footer { margin-top: 68px; padding: 28px 0 24px; }
+.footer-btn { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid rgba(255,255,255,0.10); padding: 8px 16px; border-radius: 12px; cursor: pointer; font-family: "Roboto", Arial, sans-serif; font-size: 12px; transition: background 0.2s; }
+.footer-btn:hover { background: rgba(255,255,255,0.11); }
 
-.test-btn:hover {
-  background: #6d5959;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4);
-}
+.modal-overlay { position: fixed; inset: 0; z-index: 9999; background: var(--modal-overlay); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
 
-.test-btn:active {
-  transform: translateY(0);
-}
+.modal-card { width: 92%; max-width: 370px; padding: 32px 24px 24px; border-radius: 26px; text-align: center; background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); box-shadow: inset 0 1px 1px rgba(255,255,255,0.10), 0 20px 50px rgba(0,0,0,0.4); transform: translateY(18px) scale(0.97); opacity: 0; transition: all 0.32s cubic-bezier(0.22,1,0.36,1); }
+.modal-overlay.active .modal-card { transform: translateY(0) scale(1); opacity: 1; }
 
-.section {
-  width: min(850px, 100%);
-  margin: 148px auto 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 118px;
-  gap: 46px;
-  align-items: start;
-}
+.modal-card h3 { color: var(--text); margin: 0 0 10px; font-family: "Roboto", Arial, sans-serif; font-size: 17px; font-weight: 600; }
+.modal-body { color: var(--text-muted); font-size: 13px; line-height: 1.55; margin: 0 0 22px; font-family: "Roboto", Arial, sans-serif; }
+.modal-btn-group { display: flex; flex-direction: column; gap: 9px; }
+.modal-btn { padding: 12px; border-radius: 50px; font-family: "Roboto", Arial, sans-serif; font-size: 13px; cursor: pointer; width: 100%; border: 1px solid var(--glass-border); background: var(--surface); color: var(--text); backdrop-filter: blur(10px); transition: filter 0.2s, transform 0.15s; }
+.modal-btn:hover { filter: brightness(1.2); transform: translateY(-1px); }
+.modal-btn.secondary { background: transparent; border: none; color: var(--text-muted); font-size: 12px; padding: 8px; }
+.modal-btn.secondary:hover { color: var(--text); background: rgba(255,255,255,0.05); filter: none; transform: none; }
 
-.types-section {
-  margin-top: 82px;
-}
-
-.text-block h2 {
-  margin: 0 0 28px;
-  font-size: 25px;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-}
-
-.text-block p {
-  margin: 0 0 24px;
-  font-size: 12px;
-  line-height: 1.3;
-  letter-spacing: 0.2px;
-  opacity: 0.8;
-}
-
-.photo-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.photo-stack img {
-  width: 118px;
-  height: 118px;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 4px 4px 16px rgba(255, 255, 255, 0.48);
-}
-
-.types-section .photo-stack img {
-  height: 190px;
-}
-
-footer {
-  margin-top: 68px;
-  padding: 28px 0 24px;
-  text-align: center;
-  color: #ffffff;
-  font-size: 10px;
-}
-
-/* ── СТИЛІ ДЛЯ ФОРМ АВТОРИЗАЦІЇ/РЕЄСТРАЦІЇ (Нові) ── */
-.auth-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-  margin-top: 25px;
-}
-
-.auth-form {
-  background: rgba(19, 7, 4, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-}
-
-.auth-form h3 {
-  margin: 0 0 5px 0;
-  font-size: 1.1rem;
-  color: #e1dbca;
-}
-
-.auth-form input {
-  height: 38px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: #080201;
-  color: #fff;
-  padding: 0 12px;
-  font-size: 0.9rem;
-}
-
-.auth-form input:focus {
-  outline: none;
-  border-color: #8b5e3c;
-}
-
-.form-submit-btn {
-  height: 38px;
-  border-radius: 10px;
-  border: none;
-  background: #8b5e3c;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.form-submit-btn:hover {
-  background: #a06e4c;
-}
-
-.profile-card {
-  background: rgba(139, 94, 60, 0.15);
-  border: 1px solid rgba(139, 94, 60, 0.3);
-  padding: 20px;
-  border-radius: 20px;
-  text-align: center;
-}
-
-.logout-btn {
-  padding: 8px 16px;
-  background: #cc3333;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-/* ── ФІКСАЦІЯ МОДАЛЬНОГО ВІКНА СУВОРO ПО ЦЕНТРУ ── */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(10, 3, 1, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 99999;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  transition: opacity 0.3s ease;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.modal-overlay.active {
-  display: flex;
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.modal-card {
-  background: #130704 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  padding: 40px 30px !important;
-  border-radius: 32px !important;
-  max-width: 400px !important;
-  width: 90% !important;
-  text-align: center !important;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.8) !important;
-}
-
-.modal-card h3 {
-  color: #e3d5ca !important;
-  margin-top: 0;
-  margin-bottom: 15px !important;
-  font-size: 1.4rem !important;
-}
-
-.modal-card p {
-  color: rgba(230, 220, 213, 0.7) !important;
-  font-size: 0.95rem !important;
-  margin-bottom: 25px !important;
-  line-height: 1.5 !important;
-}
-
-/* Твої кастомні стилі для кнопок модалки */
-.modal-btn {
-  padding: 14px;
-  border-radius: 20px;
-  font-family: 'Comfortaa', sans-serif;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
-}
-
-.modal-btn.primary {
-  background: #8b5e3c;
-  border: 1px solid #704a2e;
-  color: #ffffff;
-}
-
-.modal-btn.primary:hover {
-  background: #a06e4c;
-  box-shadow: 0 4px 12px rgba(139, 94, 60, 0.3);
-}
-
-.modal-btn.secondary {
-  background: transparent;
-  border: none;
-  color: rgba(230, 220, 213, 0.5);
-  font-size: 0.85rem;
-}
-
-.modal-btn.secondary:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-/* Адаптивність */
 @media (max-width: 760px) {
   .page { padding: 24px 16px 0; }
   .topbar { grid-template-columns: 1fr; gap: 16px; }
@@ -557,18 +267,7 @@ footer {
   .logo { justify-self: center; }
   .hero { margin-left: 0; }
   .section { grid-template-columns: 1fr; margin-top: 90px; }
-  .photo-stack { display: grid; grid-template-columns: repeat(2, 118px); justify-content: center; }
 }
-
-/* 🌙 ТЕМНА ТЕМА */
-[data-theme="dark"] { color: #f5f5f5; }
-[data-theme="dark"] .quiz-card { background: rgba(20,20,20,0.9); }
-[data-theme="dark"] .option-row { background: rgba(255,255,255,0.05); }
-[data-theme="dark"] .option-text { color: #eee; }
-[data-theme="dark"] .theme-toggle { background: rgba(255, 255, 255, 0.1); }
-[data-theme="dark"] .toggle-icon { opacity: 0.5; }
-[data-theme="dark"] .toggle-icon.active { opacity: 1; transform: scale(1.1); }
-[data-theme="dark"] .toggle-icon.active img { filter: drop-shadow(0 0 4px rgba(255,255,255,0.6)); }
 )";
     }
 
@@ -835,8 +534,13 @@ function sendAnswersToBackend() {
     //  Хелпери відповідей
     // ─────────────────────────────────────────────
     crow::response textResponse(const std::string& content, const char* contentType, int code = 200) {
-        crow::response res(code, content);
-        res.set_header("Content-Type", contentType);
+        crow::response res;
+        res.code = code;
+        res.body = content;
+
+        std::string type = std::string(contentType) + "; charset=utf-8";
+        res.set_header("Content-Type", type);
+
         return res;
     }
 
@@ -861,8 +565,12 @@ function sendAnswersToBackend() {
 
     crow::response jsonResponse(crow::json::wvalue data, int code = 200) {
         crow::response res(code, data.dump());
+
         res.set_header("Content-Type", "application/json; charset=utf-8");
-        addCorsHeaders(res);
+        res.set_header("Access-Control-Allow-Origin", "*");
+        res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        res.set_header("Access-Control-Allow-Headers", "Content-Type");
+
         return res;
     }
 
@@ -909,6 +617,7 @@ function sendAnswersToBackend() {
 // ═════════════════════════════════════════════
 int main() {
     const int MAX = 1000;
+    setlocale(LC_ALL, ".UTF-8");
 
     CoffeeStorage         coffeeStorage(MAX);
     TestStorage           testStorage(MAX);
@@ -919,23 +628,17 @@ int main() {
 
     userStorage.loadFromAnyFile("user.dat", "user_backup.dat");
     coffeeStorage.loadFromAnyFile("coffee.dat", "coffee_backup.dat");
-    testStorage.loadFromAnyFile("myTest.dat", "myTest_backup.dat");
     categoryStorage.loadFromAnyFile("coffeeCategory.dat", "coffeeCategory_backup.dat");
     selectorStorage.loadFromAnyFile("coffeeSelector.dat", "coffeeSelector_backup.dat");
     resultStorage.loadFromAnyFile("resultTest.dat", "resultTest_backup.dat");
 
-    testStorage.loadDefaultsIfEmpty();
     categoryStorage.loadDefaultsIfEmpty();
     coffeeStorage.loadDefaultsIfEmpty();
+    testStorage.loadDefaultsIfEmpty();
 
     crow::SimpleApp server;
 
-    int defaultCount = 0;
-    const Coffee* defaults = getDefaultCoffees(defaultCount);
-
-    for (int i = 0; i < defaultCount; i++) {
-        coffeeStorage.addCoffee(defaults[i]);
-    }
+    
 
     // ── Маршрути квізу ──────────────────────────────
 
@@ -1014,9 +717,9 @@ int main() {
         if (coffees != nullptr && coffeeCount > 0) {
             best = selector.selectBest(coffees, coffeeCount, scores);
         }
-
         int attemptId = resultStorage.getNextAttemptIdForUser(userId);
 
+        // Зберігаємо відповіді
         for (int i = 0; i < resultCount; i++) {
             resultStorage.addAnswerForUserAttempt(
                 userId,
@@ -1025,6 +728,11 @@ int main() {
                 'A' + answers[i].i()
             );
         }
+
+        // Зберігаємо яка кава була рекомендована
+        resultStorage.addCoffeeResultForUserAttempt(userId, attemptId, best.getId());
+
+    
 
         crow::json::wvalue res;
         res["coffee"]["id"] = best.getId();
@@ -1038,49 +746,7 @@ int main() {
         res["coffee"]["categoryId"] = best.getCategoryId();
         return jsonResponse(res);
             });
-    CROW_ROUTE(server, "/api/quiz/history/<int>")
-        ([&resultStorage, &coffeeStorage](int userId) {
-        crow::json::wvalue res;
-        crow::json::wvalue::list historyList;
-
-        // Збираємо всі спроби цього юзера
-        int totalResults = resultStorage.getCount();
-        const Result* allResults = resultStorage.data();
-
-        // Групуємо по attemptId — знаходимо унікальні спроби
-        int seenAttempts[100];
-        int seenCount = 0;
-
-        for (int i = 0; i < totalResults; i++) {
-            if (allResults[i].getUserId() != userId) continue;
-            int aid = allResults[i].getAttemptId();
-            bool found = false;
-            for (int j = 0; j < seenCount; j++) {
-                if (seenAttempts[j] == aid) { found = true; break; }
-            }
-            if (!found && seenCount < 100) seenAttempts[seenCount++] = aid;
-        }
-
-        for (int a = 0; a < seenCount; a++) {
-            int attemptId = seenAttempts[a];
-            // Рахуємо скільки відповідей в цій спробі
-            int answerCount = 0;
-            for (int i = 0; i < totalResults; i++) {
-                if (allResults[i].getUserId() == userId && allResults[i].getAttemptId() == attemptId)
-                    answerCount++;
-            }
-
-            crow::json::wvalue item;
-            item["attemptId"] = attemptId;
-            item["answerCount"] = answerCount;
-            // Кава поки що — заглушка, поки не зберігається coffeeId в Result
-            item["coffee"]["name"] = "—";
-            historyList.push_back(std::move(item));
-        }
-
-        res["history"] = std::move(historyList);
-        return jsonResponse(res);
-            });
+   
     CROW_ROUTE(server, "/profile")([]() {
         return fileResponse("C:\\web-coursoviy\\html\\profile.html", "text/html; charset=utf-8");
         });
@@ -1147,6 +813,10 @@ int main() {
         return fileResponse("C:\\web-coursoviy\\css\\style.css", "text/css; charset=utf-8", defaultCss());
         });
 
+    CROW_ROUTE(server, "/theme.js")([]() {
+        return fileResponse("C:\\web-coursoviy\\js\\theme.js", "application/javascript; charset=utf-8");
+        });
+
     CROW_ROUTE(server, "/script.js")([]() {
         return fileResponse("C:\\web-coursoviy\\js\\script.js", "application/javascript; charset=utf-8");
         });
@@ -1167,32 +837,33 @@ int main() {
         return fileResponse("C:\\web-coursoviy\\html\\meals.html", "text/html; charset=utf-8", defaultIndexHtml());
         });
 
-    CROW_ROUTE(server, "/img/<string>")([](const std::string& fileName) {
-        std::string path = "C:\\web-coursoviy\\img\\" + fileName;
+    // ── Роут для роздачі картинок ──────────────────────────────
+ // ── Роут для роздачі картинок (ВСТАВЛЯТИ ВСЕРЕДИНІ main, ПОРУЧ З ІНШИМИ РОУТАМИ) ──
+    // ── Повністю виправлений роут для картинок та SVG-іконок ──
+    CROW_ROUTE(server, "/img/<string>")
+        ([](std::string filename) {
 
-        // Визначаємо Content-Type по розширенню
-        std::string contentType = "application/octet-stream";
-        if (fileName.size() > 4) {
-            std::string ext = fileName.substr(fileName.size() - 4);
-            if (ext == ".svg") contentType = "image/svg+xml; charset=utf-8";
-            else if (ext == ".jpg" || fileName.substr(fileName.size() - 5) == ".jpeg")
-                contentType = "image/jpeg";
-            else if (ext == ".png") contentType = "image/png";
-            else if (ext == ".gif") contentType = "image/gif";
-            else if (ext == ".ico") contentType = "image/x-icon";
+        std::string path = "C:\\web-coursoviy\\img\\" + filename;
+        std::ifstream file(path, std::ios::binary);
+
+        if (!file.is_open()) {
+            return crow::response(404);
         }
 
-        // Для бінарних файлів читаємо інакше
-        std::ifstream file(path, std::ios::binary);
-        if (!file.is_open()) return crow::response(404, "Image not found: " + fileName);
+        std::string data((std::istreambuf_iterator<char>(file)),
+            std::istreambuf_iterator<char>());
 
-        std::ostringstream buffer;
-        buffer << file.rdbuf();
+        crow::response res;
+        res.body = std::move(data);
 
-        crow::response res(200, buffer.str());
-        res.set_header("Content-Type", contentType);
+        if (filename.ends_with(".png")) res.set_header("Content-Type", "image/png");
+        else if (filename.ends_with(".jpg") || filename.ends_with(".jpeg"))
+            res.set_header("Content-Type", "image/jpeg");
+        else if (filename.ends_with(".svg"))
+            res.set_header("Content-Type", "image/svg+xml; charset=utf-8");
+
         return res;
-        });
+            });
 
     // ── Службові API ───────────────────────────────────
 
@@ -1221,9 +892,32 @@ int main() {
         return jsonResponse(res);
         });
 
+
+
+
+    CROW_ROUTE(server, "/api/categories")
+        ([&categoryStorage]() {
+        crow::json::wvalue res;
+        crow::json::wvalue::list list;
+        int count = categoryStorage.getCount();
+        for (int i = 0; i < count; i++) {
+            const CoffeeCategory* c = categoryStorage.getById(i + 1);
+            if (!c) continue;
+            crow::json::wvalue item;
+            item["id"] = c->getId();
+            item["name"] = c->getName();
+            list.push_back(std::move(item));
+        }
+        res["categories"] = std::move(list);
+        return jsonResponse(res);
+            });
     // ── Авторизація та Реєстрація ──────────────────────────────
 
     CROW_ROUTE(server, "/register.html")([]() {
+        return fileResponse("C:\\web-coursoviy\\html\\register.html", "text/html; charset=utf-8");
+        });
+
+    CROW_ROUTE(server, "/register")([]() {
         return fileResponse("C:\\web-coursoviy\\html\\register.html", "text/html; charset=utf-8");
         });
 
@@ -1265,10 +959,14 @@ int main() {
         return jsonResponse(res);
             });
 
+    CROW_ROUTE(server, "/login")([]() {
+        return fileResponse("C:\\web-coursoviy\\html\\login.html", "text/html; charset=utf-8");
+        });
+
     CROW_ROUTE(server, "/login.html")([]() {
         return fileResponse("C:\\web-coursoviy\\html\\login.html", "text/html; charset=utf-8");
         });
-    CROW_ROUTE(server, "/catalog,html")([]() {
+    CROW_ROUTE(server, "/catalog.html")([]() {
         return fileResponse("C:\\web-coursoviy\\html\\catalog.html", "text/html; charset=utf-8");
         });
 
@@ -1303,42 +1001,101 @@ int main() {
     // ─────────────────────────────────────────────
     // 1. Отримання історії тестів користувача
     // ─────────────────────────────────────────────
-    CROW_ROUTE(server, "/api/user/history/<int>")
-        ([&coffeeStorage, &resultStorage](int userId) {
+
+    CROW_ROUTE(server, "/api/user/me")
+        .methods("GET"_method)
+        ([&userStorage](const crow::request& req) {
+
+        if (!req.url_params.get("id")) {
+            return crow::response(400, "missing id");
+        }
+
+        int userId = std::stoi(req.url_params.get("id"));
+
+        User user;
+        if (!userStorage.findByLogin( "login")) {
+            return crow::response(404, "User not found");
+        }
+
+        crow::json::wvalue res;
+        res["id"] = user.getId();
+        res["name"] = user.getName();
+        res["login"] = user.getLogin();
+        res["gmail"] = user.getGmail();
+        res["favourites"] = user.getFavouriteDrinks();
+
+        return jsonResponse(res);
+            });
+
+
+
+   CROW_ROUTE(server, "/api/quiz/history/<int>")
+        ([&resultStorage, &coffeeStorage](int userId) {
         crow::json::wvalue res;
         crow::json::wvalue::list historyList;
 
-        // Припустимо, ми знаємо, яка кава була підібрана (або беремо з логів)
-        // Для демонстрації викладачу: дістаємо каву з ID, який зберігся у сесії/результатах.
-        // Наприклад, користувачу з id=1 підійшла кава з id=3 (Latte)
+        int totalResults = resultStorage.getCount();
+        const Result* allResults = resultStorage.data();
 
-        // Шукаємо каву в нашому каталозі за ID
-        int cId = 3; // Приклад захардкодженного ID, заміни на логіку з resultStorage
-        const Coffee* foundCoffee = nullptr;
+        int seenAttempts[100];
+        int seenCount = 0;
 
-        int coffeeCount = coffeeStorage.getCount();
-        const Coffee* coffees = coffeeStorage.getByIndex(0);
-        for (int i = 0; i < coffeeCount; i++) {
-            if (coffees[i].getId() == cId) {
-                foundCoffee = &coffees[i];
-                break;
+        for (int i = 0; i < totalResults; i++) {
+            if (allResults[i].getUserId() != userId) continue;
+            int aid = allResults[i].getAttemptId();
+            bool found = false;
+            for (int j = 0; j < seenCount; j++) {
+                if (seenAttempts[j] == aid) { found = true; break; }
             }
+            if (!found && seenCount < 100) seenAttempts[seenCount++] = aid;
         }
 
-        crow::json::wvalue item;
-        item["date"] = "02.06.2026";
-        item["coffeeName"] = foundCoffee ? foundCoffee->getName() : "Невідома кава";
-        historyList.push_back(item);
+        for (int a = 0; a < seenCount; a++) {
+            int attemptId = seenAttempts[a];
+            int answerCount = 0;
+            int foundCoffeeId = 0;
+
+            for (int i = 0; i < totalResults; i++) {
+                if (allResults[i].getUserId() != userId ||
+                    allResults[i].getAttemptId() != attemptId) continue;
+
+                if (allResults[i].getQuestionId() == -1) {
+                    // Це маркер результату — беремо coffeeId
+                    foundCoffeeId = allResults[i].getCoffeeId();
+                }
+                else {
+                    answerCount++;
+                }
+            }
+
+            // Знаходимо назву кави
+            std::string coffeeName = "—";
+            int coffeeIdx = coffeeStorage.findById(foundCoffeeId);
+            if (coffeeIdx != -1) {
+                const Coffee* c = coffeeStorage.getByIndex(coffeeIdx);
+                if (c) coffeeName = c->getName();
+            }
+
+            crow::json::wvalue item;
+            item["attemptId"] = attemptId;
+            item["answerCount"] = answerCount;
+            item["coffee"]["name"] = coffeeName;
+            item["coffee"]["id"] = foundCoffeeId;
+            historyList.push_back(std::move(item));
+        }
 
         res["history"] = std::move(historyList);
         return jsonResponse(res);
             });
 
+
+
     // ─────────────────────────────────────────────
     // 2. Додавання кави до улюбленого (Favorites)
     // ─────────────────────────────────────────────
     CROW_ROUTE(server, "/api/user/favorites/add").methods(crow::HTTPMethod::Post)
-        ([&userStorage](const crow::request& req) {
+        ([&userStorage, &coffeeStorage](const crow::request& req) {
+
         auto body = crow::json::load(req.body);
         if (!body || !body.has("userId") || !body.has("coffeeId")) {
             return crow::response(400, "userId and coffeeId required");
@@ -1347,15 +1104,33 @@ int main() {
         int userId = body["userId"].i();
         int coffeeId = body["coffeeId"].i();
 
-        // Логіка додавання. Якщо у твоєму класі User або всередині UserStorage 
-        // є масив/метод для збереження зв'язку користувач-кава:
-        // наприклад: userStorage.addFavoriteCoffee(userId, coffeeId);
+        const Coffee* coffee = coffeeStorage.getByIndex(
+            coffeeStorage.findById(coffeeId)
+        );
+
+        if (!coffee) {
+            return crow::response(404, "Coffee not found");
+        }
+
+        User updatedUser;
+
+        bool ok = userStorage.addFavouriteDrinkForUser(
+            userId,
+            coffee->getName(),
+            updatedUser
+        );
+
+        if (!ok) {
+            return crow::response(404, "User not found or failed to add");
+        }
 
         userStorage.saveToTwoFiles("user.dat", "user_backup.dat");
 
         crow::json::wvalue res;
         res["status"] = "ok";
-        res["message"] = "Каву додано до улюбленого";
+        res["user"]["id"] = updatedUser.getId();
+        res["user"]["favourites"] = updatedUser.getFavouriteDrinks();
+
         return jsonResponse(res);
             });
 
@@ -1386,7 +1161,13 @@ int main() {
     std::cout << "Meals page:  http://localhost:18080/meals\n";
 
     server.loglevel(crow::LogLevel::Debug);
-    server.port(18080).bindaddr("127.0.0.1").run();
+    try {
+        server.bindaddr("0.0.0.0").port(18080).run();
+    }
+    catch (const std::exception& e) {
+        std::cout << "ПОМИЛКА СЕРВЕРА: " << e.what() << std::endl;
+        system("pause");
+    }
 
     std::cout << "Server stopped!\n";
     system("pause");
@@ -1395,3 +1176,5 @@ int main() {
     std::cout << "Saved successfully!\n";
     return 0;
 }
+
+// пофіксити відображення  тексту англійською мовою (замість кракозябр) - додати charset=utf-8 до Content-Type у відповідях, що віддають HTML та JSON. Це можна зробити в хелперах textResponse та jsonResponse, додавши "; charset=utf-8" до типу контенту. Наприклад:

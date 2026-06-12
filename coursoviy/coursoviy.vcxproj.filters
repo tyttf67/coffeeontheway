@@ -102,28 +102,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="coffee.dat">
-      <Filter>Header Files\storage\data</Filter>
-    </None>
-    <None Include="coffee_backup.dat">
-      <Filter>Header Files\storage\data</Filter>
-    </None>
     <None Include="coffeeCategory.dat">
       <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="coffeeCategory_backup.dat">
-      <Filter>Header Files\storage\data</Filter>
-    </None>
-    <None Include="user.dat">
-      <Filter>Header Files\storage\data</Filter>
-    </None>
-    <None Include="user_backup.dat">
-      <Filter>Header Files\storage\data</Filter>
-    </None>
-    <None Include="myTest.dat">
-      <Filter>Header Files\storage\data</Filter>
-    </None>
-    <None Include="myTest_backup.dat">
       <Filter>Header Files\storage\data</Filter>
     </None>
     <None Include="coffeeSelector.dat">
@@ -138,5 +120,6 @@
     <None Include="resultTest_backup.dat">
       <Filter>Header Files\storage\data</Filter>
     </None>
+    <None Include="coffee.dat" />
   </ItemGroup>
 </Project>

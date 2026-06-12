@@ -58,9 +58,14 @@ int ResultStorage::getNextAttemptIdForUser(int userId) const {
 }
 
 bool ResultStorage::addAnswerForUserAttempt(int userId, int attemptId, int questionId, char choice) {
-    return addResult(Result(userId, attemptId, questionId, choice));
+    Result r(userId, attemptId, questionId, choice);
+    return addResult(r);
 }
-
+bool ResultStorage::addCoffeeResultForUserAttempt(int userId, int attemptId, int coffeeId) {
+    Result r(userId, attemptId, -1, 'R');
+    r.setCoffeeId(coffeeId);
+    return addResult(r);
+}
 void ResultStorage::printHistoryForUser(int userId) const {
     bool found = false;
     for (int i = 0; i < count_; ++i) {

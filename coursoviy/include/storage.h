@@ -131,6 +131,7 @@ public:
     int getNextAttemptIdForUser(int userId) const;
     bool addAnswerForUserAttempt(int userId, int attemptId, int questionId, char choice);
     void printHistoryForUser(int userId) const;
+    bool addCoffeeResultForUserAttempt(int userId, int attemptId, int coffeeId);
 
     int findByQuestionId(int questionId) const;
     bool updateByIndex(int index, const Result& result);

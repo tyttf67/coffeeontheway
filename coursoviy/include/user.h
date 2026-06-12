@@ -6,7 +6,7 @@ private:
     char login[64];
     char gmail[100];
     char password[64];
-    char favouriteDrinks[100];
+    char favouriteDrinks[1024];
     bool verified;
 
 public:

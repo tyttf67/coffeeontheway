@@ -1,15 +1,12 @@
 #pragma once
-#include <string>
-
-using namespace std;
 
 class Result {
-
 private:
     int userId;
     int attemptId;
     int questionId;
     char choice;
+    int coffeeId;
 
 public:
     Result();
@@ -21,6 +18,7 @@ public:
     int getAttemptId() const;
     int getQuestionId() const;
     char getChoice() const;
+    int getCoffeeId() const;
+    void setCoffeeId(int id);
     void show() const;
-   
 };

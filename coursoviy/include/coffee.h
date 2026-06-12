@@ -6,7 +6,7 @@ private:
     int strength;
     char name[100];
     char levelRoast[100];
-    char description[100];
+    char description[1024];
     char syrup[100];
     bool sugar;
     bool milk;

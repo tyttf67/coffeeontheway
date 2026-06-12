@@ -2,6 +2,8 @@
 #include <fstream>
 #include <cstring>
 #include <functional>
+#include <string>    // ← додай це
+
 
 std::string hashPassword(const std::string& pass) {
     return std::to_string(std::hash<std::string>{}(pass));
@@ -38,7 +40,7 @@ bool UserStorage::saveToFile(const char* fileName) const {
         out.write(u.getLogin(), sizeof(char) * 64);
         out.write(u.getPassword(), sizeof(char) * 64);
         out.write(u.getGmail(), sizeof(char) * 100);
-        out.write(u.getFavouriteDrinks(), sizeof(char) * 100);
+        out.write(u.getFavouriteDrinks(), sizeof(char) * 1024);
 
         if (!out.good()) return false;
     }
@@ -65,7 +67,7 @@ bool UserStorage::loadFromFile(const char* fileName) {
         char login[64];
         char password[64];
         char gmail[100];
-        char drinks[100];
+        char drinks[1024];
 
         in.read(reinterpret_cast<char*>(&id), sizeof(id));
         in.read(name, sizeof(name));
