@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вхід — Coffee On The Way</title>
+  <link rel="stylesheet" href="/test.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <svg style="position:absolute;width:0;height:0;pointer-events:none;">
+    <filter id="smooth-wave">
+      <feTurbulence type="fractalNoise" baseFrequency="0.01 0.015" numOctaves="1" result="noise">
+        <animate attributeName="baseFrequency" dur="15s"
+          values="0.01 0.015; 0.012 0.025; 0.01 0.015" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise"
+        scale="15" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding-top: 80px;
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      width: 90%;
+      max-width: 420px;
+      background: rgba(186, 112, 66, 0.6);
+      backdrop-filter: blur(18px) saturate(130%);
+      -webkit-backdrop-filter: blur(18px) saturate(130%);
+      border: 1px solid rgba(210, 197, 197, 0.18);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.07),
+        0 0 50px rgba(200,130,60,0.15),
+        0 24px 60px rgba(40,15,3,0.4);
+      border-radius: 26px;
+      padding: 40px 30px 30px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        -45deg,
+        rgba(255,255,255,0.12) 0%,
+        rgba(255,255,255,0.03) 40%,
+        rgba(0,0,0,0.10) 100%
+      );
+      pointer-events: none;
+    }
+
+    input, button {
+      position: relative;
+      z-index: 1;
+    }
+
+    input {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 14px 20px;
+      background: rgba(186, 112, 66, 0.35);
+      border: 1px solid rgba(210, 197, 197, 0.18);
+      border-radius: 50px;
+      color: #f0e0cc;
+      font-family: "Roboto Serif", Arial, serif;
+      font-size: 0.88rem;
+      outline: none;
+      transition: filter 0.2s;
+    }
+
+    input:focus {
+      filter: brightness(1.15);
+    }
+
+    input::placeholder {
+      color: rgba(240, 224, 204, 0.45);
+    }
+
+    #loginBtn {
+      width: 100%;
+      padding: 14px 18px;
+      margin-top: 8px;
+      border-radius: 50px;
+      background: rgba(186, 112, 66, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #f0e0cc;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: filter 0.2s, transform 0.15s;
+      backdrop-filter: blur(18px);
+    }
+
+    #loginBtn:hover {
+      filter: brightness(1.15);
+      transform: translateY(-1px);
+    }
+
+    .brand-logo {
+      zoom: 1.2;
+      position: fixed;
+      top: 26px;
+      left: 40.5%;
+      font-family: "Rubik Bubbles", system-ui;
+      font-size: 23px;
+      font-weight: 400;
+      color: #e1dbca;
+      transform: rotate(-10deg) skewX(-9deg);
+      text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+      white-space: nowrap;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #f0e0cc;
+      margin-bottom: 22px;
+      text-align: center;
+      position: relative;
+    }
+
+    .error-msg {
+      text-align: center;
+      font-size: 12px;
+      color: #a04407;
+      min-height: 16px;
+      margin-top: 8px;
+      position: relative;
+      z-index: 1;
+      font-family: Roboto, Arial, sans-serif;
+    }
+
+    .link-row {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 12px;
+      color: rgba(240,224,204,0.50);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .link-row:hover {
+      color: rgba(240,224,204,0.90);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="brand-logo">сoffee on the way</h1>
+
+  <div class="card">
+    <p class="card-title">Вхід</p>
+
+    <input id="login" type="text" placeholder="Логін" autocomplete="username" />
+    <input id="password" type="password" placeholder="Пароль" autocomplete="current-password" />
+
+    <button type="button" id="loginBtn">Увійти</button>
+    <p class="error-msg" id="errorMsg"></p>
+
+    <div class="link-row" onclick="window.location.href='/register'">
+      Немає акаунта? Зареєструватись
+    </div>
+  </div>
+
+  <script>
+    if (localStorage.getItem('currentUser')) {
+      window.location.href = '/';
+    }
+
+    async function doLogin() {
+      const login    = document.getElementById('login').value.trim();
+      const password = document.getElementById('password').value;
+      const errorEl  = document.getElementById('errorMsg');
+      errorEl.textContent = '';
+
+      if (!login || !password) {
+        errorEl.textContent = 'Заповніть всі поля!';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ login, password })
+        });
+
+        if (res.status === 401) {
+          errorEl.textContent = 'Невірний логін або пароль';
+          return;
+        }
+
+        const data = await res.json();
+
+        if (data.userId) {
+          localStorage.setItem('currentUser', JSON.stringify({ id: data.userId, login }));
+          const back = sessionStorage.getItem('loginRedirect') || '/';
+          sessionStorage.removeItem('loginRedirect');
+          window.location.href = back;
+        } else {
+          errorEl.textContent = data.error || 'Помилка авторизації';
+        }
+      } catch {
+        errorEl.textContent = 'Сервер не відповідає.';
+      }
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', doLogin);
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+  </script>
+</body>
+</html>

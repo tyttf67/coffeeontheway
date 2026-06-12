@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coffee on the way — Quiz</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+   document.querySelector('.profile-btn')?.addEventListener('click', () => {
+    const user = localStorage.getItem('currentUser');
+    window.location.href = user ? '/profile' : '/login';
+});
+</script>
+  <link rel="stylesheet" href="/test.css" />
+
+</head>
+<body>
+  <svg style="position:absolute;width:0;height:0;pointer-events:none;">
+    <filter id="smooth-wave">
+      <feTurbulence type="fractalNoise" baseFrequency="0.01 0.015" numOctaves="1" result="noise">
+        <animate attributeName="baseFrequency" dur="15s"
+          values="0.01 0.015; 0.012 0.025; 0.01 0.015" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise"
+        scale="15" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <!-- Анімований фон (JS хвилі) -->
+  <script src="/wave-bg.js"></script>
+
+  <!-- header -->
+  <header class="top-header">
+  
+    <div class="header-left">
+      <button class="round-btn" aria-label="Назад" onclick="window.location.href='/'">
+        <img style="width: 14px; height: 14px;" src="/img/home.svg" alt="Назад">
+      </button>
+    </div>
+
+    <h1 class="brand-logo">coffee on the way</h1>
+
+    <div class="header-right">
+      <button class="round-btn" aria-label="Профіль" onclick="window.location.href='/profile'">
+        <img style="width: 13px; height: 13px;" src="/img/profile.svg" alt="Профіль">
+      </button>
+    </div>
+   
+  </header>
+
+  <!-- тест -->
+  <main class="quiz-container">
+    <div class="quiz-card">
+      <p class="quiz-progress" id="progress">Завантаження...</p>
+      <h2 class="quiz-question">Завантаження...</h2>
+      <div class="options-wrapper" role="radiogroup" aria-label="Варіанти відповідей"></div>
+      <p class="quiz-message" id="quizMessage"></p>
+      <div class="quiz-navigation">
+        <button class="nav-btn nav-back" aria-label="Назад">
+          <img style="width: 18px; height: 16px;" src="/img/back.svg" alt="Назад">
+        </button>
+        <button class="nav-btn nav-confirm" aria-label="Підтвердити">
+          <img style="width: 18px; height: 18px;" src="/img/approve.svg" alt="Підтвердити">
+        </button>
+        <button class="nav-btn nav-next" aria-label="Далі">
+          <img style="width: 18px; height: 16px;" src="/img/next.svg" alt="Далі">
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Контейнер для анімації після тесту (картинки що падають) -->
+  <div class="coffee-rain" id="coffeeRain" aria-hidden="true"></div>
+
+  <script src="/theme.js"></script>
+  <script src="/test.js" defer></script>
+</body>
+</html>

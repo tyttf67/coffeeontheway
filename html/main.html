@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coffee on the way</title>
+
+   <script src="/theme.js"></script>
+   <script>
+   document.querySelector('.profile-btn')?.addEventListener('click', () => {
+    const user = localStorage.getItem('currentUser');
+    window.location.href = user ? '/profile' : '/login';
+});
+</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@400&family=Rubik+Bubbles&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+
+  <main class="page">
+    <header class="topbar">
+
+  <div class="nav-group">
+    <button class="catalog-btn" onclick="window.location.href='/catalog'">Каталог</button>
+    <button class="round-btn search-btn" aria-label="Пошук" onclick="openSearch()">
+      <img src="/img/search.svg" alt="Пошук">
+    </button>
+
+    <div id="searchPanel" style="display:none; position:fixed; inset:0; z-index:999; background:rgba(10,4,1,0.7); backdrop-filter:blur(6px); padding:80px 20px 20px;">
+  
+  <div style="max-width:480px; margin:0 auto; position:relative;">
+    
+    <button onclick="closeSearch()" style="position:absolute; top:-44px; right:0; background:transparent; border:none; color:rgba(240,224,204,0.6); font-size:22px; cursor:pointer; line-height:1; padding:4px 8px; transition:color 0.2s;">✕</button>
+
+    <div class="wrapper-input" style="position:relative; width:100%;">
+      
+      <input class="search-input" id="liveSearchInput" type="search" placeholder="Назва кави..." autocomplete="off" oninput="performSearch(this.value)" />
+      
+      <button class="clear-btn" id="clearSearchBtn">
+        <img src="/img/close.svg" alt="Очистити" />
+      </button>
+      
+    </div>
+
+    <div id="searchResults" style="margin-top:12px; display:flex; flex-direction:column; gap:8px;"></div>
+    
+  </div>
+</div>
+  </div>
+
+  <h1 class="logo">сoffee on the way</h1>
+
+  <div class="nav-group nav-right">
+    <button class="theme-toggle" type="button" id="themeToggle" aria-label="Змінити тему">
+      <div class="toggle-icon toggle-icon-light" id="iconLight">
+        <img src="/img/coffeebean.svg" alt="light">
+      </div>
+      <div class="toggle-icon toggle-icon-dark" id="iconDark">
+        <img src="/img/coffeebean.svg" alt="dark">
+      </div>
+    </button>
+
+    <button class="round-btn profile-btn" aria-label="Профіль" onclick="window.location.href='/profile'">
+      <img src="/img/profile.svg" alt="Профіль">
+    </button>
+  </div>
+
+</header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <p>Реєструйся та дізнавайся яка кава підходить саме тобі!</p>
+      <button class="test-btn" id="startTestBtn" type="button">Почати тест</button>
+    </section>
+
+    <!-- Секція: Як виникла кава -->
+   <section class="section history-section">
+      <div class="text-block">
+        <h2>Як виникла кава?</h2>
+        <p>
+          <b>1. Легенда про пастуха Калді (Ефіопія)</b><br>
+          Найпопулярніша історія свідчить, що каву відкрили не вчені, а... кози. Приблизно у IX столітті ефіопський пастух на ім'я Калді помітив, що його кози стають надзвичайно жвавими і навіть «танцюють» після того, як поїдять червоні ягоди з невідомого куща. Здивований пастух відніс ці ягоди до місцевого монастиря. Спочатку настоятель назвав їх «диявольською спокусою» і кинув у вогонь, але кімната швидко наповнилася неймовірним ароматом смажених зерен. Ченці зібрали ці зерна, розтерли їх і залили окропом. Так з'явився перший у світі кавовий напій, який допомагав ченцям не засинати під час довгих нічних молитов.
+        </p>
+        <p>
+          <b>2. Від ягід до напою: Арабський світ</b><br>
+          Хоча батьківщина кави — Ефіопія, справжня культура її споживання виникла на Аравійському півострові, зокрема в Ємені у XV столітті. Саме тут каву почали вирощувати на плантаціях, обсмажувати зерна та варити напій, який називали «кава» (qahwa — те, що позбавляє сну). Через єменський порт Моха (звідси й пішла назва сорту мокко) кава почала свій шлях світом. Араби настільки цінували цей напій, що під страхом смертної кари забороняли вивозити зелені (необсмажені) зерна, щоб ніхто інший не міг посадити кавове дерево.
+        </p>
+        <p>
+          <b>3. Кава в Україні та Європі: Віденський слід</b><br>
+          Історія кави в Європі тісно пов'язана з українцем Юрієм Кульчицьким. Під час облоги Відня османськими військами у 1683 році він здійснив героїчний вчинок, пробравшись через ворожий табір за підмогою. У нагороду за порятунок міста він попросив віддати йому 300 мішків незрозумілих зелених зерен, які залишили турки. Віденцям гіркий турецький напій не сподобався, тому Кульчицький почав експериментувати: він процідив каву від гущі, додав до неї цукор, мед та щедру порцію молока. Цей рецепт став справжнім хітом, а його кав'ярня «Під синьою пляшкою» започаткувала європейську моду на каву.
+        </p>
+      </div>
+
+      <aside class="photo-stack">
+        <img src="/img/picture1.png" alt="Історія кави 1">
+        <img src="/img/picture2.png" alt="Історія кави 2">
+        <img src="/img/picture3.png" alt="Історія кави 3">
+      </aside>
+    </section>
+
+    <section class="section types-section">
+      <div class="text-block">
+        <h2>Які види кав існують?</h2>
+        <p>
+          <b>1. Арабіка vs Робуста: Вічна боротьба смаків</b><br>
+          Світ кави тримається на двох основних китах. <b>Арабіка</b> займає близько 70% світового ринку. Вона росте високо в горах, дуже примхлива до клімату і дає м'який, складний смак з природною солодкістю та характерною фруктовою або ягідною кислинкою. <b>Робуста</b> — це справжній енергетик. Вона росте на рівнинах і містить удвічі більше кофеїну. Її смак більш щільний, грубуватий, з яскраво вираженою гірчинкою та нотами чорного шоколаду чи горіхів. Саме робуста відповідає за ту саму ідеальну, густу крему (пінку) в чашці.
+        </p>
+        <p style="margin-top: 16px;">
+          <b>2. Популярні напої: Карта кавомана</b><br>
+          <b>Espresso (Еспресо)</b> — король кавового світу. Це 30 мл міцного, густого екстракту, який готується під високим тиском води за 25-30 секунд. Це основа для 90% інших кавових напоїв.<br><br>
+          <b>Americano (Американо)</b> — з'явився під час Другої світової війни, коли американські солдати в Італії просили розбавити занадто міцний для них еспресо гарячою водою. Ідеально для тих, хто любить пити каву довго.<br><br>
+          <b>Cappuccino (Капучино)</b> — італійська класика. Рівні пропорції: третина еспресо, третина теплого молока та третина глянцевої молочної пінки. Напій, в якому кава і молоко звучать на рівних.<br><br>
+          <b>Latte (Лате)</b> — з італійської перекладається просто як «молоко». Це дуже ніжний напій, де на одну порцію еспресо припадає багато збитого гарячого молока і лише тонесенький шар пінки зверху.<br><br>
+          <b>Raf (Раф кава)</b> — десертний кавовий напій. На відміну від лате, тут порція еспресо збивається разом із вершками (10-11%) та ванільним цукром. Результат — густа, солодка, тануча текстура, схожа на розтоплене морозиво.
+        </p>
+      </div>
+
+      <aside class="photo-stack">
+        <img style="width: 135px; margin-left: 10px; margin-top: 62px;" src="/img/picture4.png" alt="Кава 1">
+        <img style="width: 135px; margin-left: 10px; margin-top: 28px;" src="/img/picture5.png" alt="Кава 2">
+      </aside>
+    </section>
+
+    <footer>
+      <p style="margin-top:16px;font-size:11px;text-align:center;opacity:0.4;">© 2026 сoffee on the way</p>
+    </footer>
+  </main>
+
+  <!-- Модальне вікно -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-card">
+      <h3>Потрібна авторизація</h3>
+      <p class="modal-body">Увійди або зареєструйся, щоб зберегти результати та підібрати ідеальну каву.</p>
+      <div class="modal-btn-group">
+        <button class="modal-btn primary" onclick="window.location.href='/register.html'">Зареєструватися</button>
+        <button class="modal-btn primary" onclick="window.location.href='/login.html'">Вже є акаунт? Увійти</button>
+        <button class="modal-btn secondary" id="closeModalBtn">Скасувати</button>
+      </div>
+    </div>
+  </div>
+  <script src="/script.js" defer></script>
+</body>
+</html>

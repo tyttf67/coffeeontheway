@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Профіль — Coffee on the way</title>
+  <link rel="stylesheet" href="/test.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="/theme.js"></script>
+
+  <svg style="position:absolute;width:0;height:0;pointer-events:none;">
+    <filter id="smooth-wave">
+      <feTurbulence type="fractalNoise" baseFrequency="0.01 0.015" numOctaves="1" result="noise">
+        <animate attributeName="baseFrequency" dur="15s"
+          values="0.01 0.015; 0.012 0.025; 0.01 0.015" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise"
+        scale="15" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <style>
+    html, body { overflow: auto; color: #f0e0cc; }
+
+    .brand-logo {
+      position: fixed; top: 14px; left: 40.5%;
+      font-family: "Rubik Bubbles", system-ui;
+      font-size: 23px; font-weight: 400; color: #e1dbca;
+      transform: rotate(-10deg) skewX(-9deg);
+      text-shadow: 4px 4px 4px rgba(0,0,0,0.25);
+      white-space: nowrap; z-index: 10; pointer-events: none;
+    }
+
+    body { padding: 90px 16px 48px; justify-content: flex-start; gap: 16px; }
+
+    .profile-wrap {
+      width: 100%; max-width: 580px;
+      display: flex; flex-direction: column; gap: 16px; z-index: 1;
+    }
+
+    .quiz-card { position: relative; overflow: hidden; }
+    .quiz-card::before {
+      content: ""; position: absolute; inset: 0; border-radius: inherit;
+      background: linear-gradient(-45deg,
+        rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 40%, rgba(0,0,0,0.07) 100%);
+      pointer-events: none;
+    }
+
+    /* ── рядок ── */
+    .profile-row {
+      border-radius: 50px; padding: 11px 16px 11px 14px;
+      display: flex; align-items: center; gap: 12px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(186, 112, 66, 0.6);
+      transition: filter 0.2s, transform 0.15s;
+      position: relative; z-index: 1;
+    }
+    [data-theme="dark"] .profile-row { background: rgba(88, 39, 39, 0.36); }
+    .profile-row + .profile-row { margin-top: 9px; }
+
+    /* ── профіль хедер ── */
+    .profile-header { display: flex; align-items: center; gap: 16px; position: relative; z-index: 1; }
+
+    .avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(186, 112, 66, 0.3);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(18px);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    [data-theme="dark"] .avatar { background: rgba(88, 39, 39, 0.36); }
+
+    .profile-name { font-family: "Roboto", Arial, sans-serif; font-size: 1.25rem; color: #f0e0cc; }
+    .profile-meta { font-size: 0.76rem; color: rgba(240,224,204,0.5); margin-top: 3px; }
+
+    .section-title {
+      font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(240,224,204,0.45); margin-bottom: 12px;
+      position: relative; z-index: 1; text-align: center;
+    }
+
+    .row-content { flex: 1; text-align: left; 
+     padding-left: 8px;
+    }
+    .row-title { font-size: 0.85rem; color: #f0e0cc; font-family: "Roboto", Arial, sans-serif; }
+    .row-sub   { font-size: 0.73rem; color: rgba(240,224,204,0.45); margin-top: 2px; }
+    .row-badge { font-size: 0.73rem; color: rgba(240,224,204,0.45); flex-shrink: 0; }
+
+    .row-icon {
+      width: 26px; height: 26px; border-radius: 50%;
+   
+      background: none; backdrop-filter: blur(18px);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; flex-shrink: 0;
+    }
+    [data-theme="dark"] .row-icon { background: none; }
+
+    .empty-state {
+      text-align: center; padding: 10px 0 4px;
+      font-size: 0.82rem; color: rgba(240,224,204,0.4);
+      position: relative; z-index: 1;
+    }
+
+    /* ── кнопки ── */
+    .action-btn {
+      width: 100%; border-radius: 50px; padding: 12px 18px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(186, 112, 66, 0.6); color: #f0e0cc;
+      font-family: "Roboto", Arial, sans-serif; font-size: 0.85rem;
+      cursor: pointer; transition: filter 0.2s, transform 0.15s;
+      position: relative; z-index: 1; margin-top: 12px;
+    }
+    [data-theme="dark"] .action-btn { background: rgba(88, 39, 39, 0.36); }
+    .action-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+    .action-btn:active { transform: translateY(0); }
+
+    .action-btn.danger {
+      background: rgba(160, 45, 45, 0.55);
+      border-color: rgba(255,110,110,0.22);
+    }
+    [data-theme="dark"] .action-btn.danger { background: rgba(100, 28, 28, 0.65); }
+
+    /* ── "Показати більше" ── */
+    .show-more-btn {
+      width: 100%; border-radius: 50px; padding: 9px 18px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: transparent; color: rgba(240,224,204,0.55);
+      font-family: "Roboto", Arial, sans-serif; font-size: 0.78rem;
+      cursor: pointer; transition: filter 0.2s, color 0.2s;
+      position: relative; z-index: 1; margin-top: 10px;
+    }
+    .show-more-btn:hover { color: #f0e0cc; filter: brightness(1.2); }
+
+    .nav-row { display: flex; gap: 11px; width: 100%; }
+    .nav-row .action-btn { margin-top: 0; }
+
+    /* ── модалка ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(10, 4, 1, 0.60); backdrop-filter: blur(3px);
+      display: flex; justify-content: center; align-items: center; padding: 20px;
+      opacity: 0; pointer-events: none; transition: opacity 0.28s ease;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .modal-card {
+      width: 100%; max-width: 340px;
+      background: rgba(180, 105, 50, 0.32); backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,0.20); border-radius: 26px;
+      padding: 28px 24px 22px; text-align: center;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.07),
+        0 24px 60px rgba(40,15,3,0.4);
+      transform: translateY(20px) scale(0.97); opacity: 0;
+      transition: all 0.30s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative; overflow: hidden;
+    }
+    [data-theme="dark"] .modal-card { background: rgba(88, 39, 39, 0.36); }
+    .modal-overlay.active .modal-card { transform: translateY(0) scale(1); opacity: 1; }
+
+    .modal-card h3 { font-size: 17px; font-weight: 600; color: #f0e0cc; margin: 0 0 8px; position: relative; z-index: 1; }
+    .modal-body { font-size: 13px; color: rgba(240,224,204,0.65); margin: 0 0 20px; line-height: 1.5; position: relative; z-index: 1; }
+
+    .modal-btn-group { display: flex; flex-direction: column; gap: 11px; position: relative; z-index: 1; }
+
+    .modal-btn {
+      width: 100%; border-radius: 50px; padding: 12px 18px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(186, 112, 66, 0.6); color: #f0e0cc;
+      font-family: "Roboto", Arial, sans-serif; font-size: 0.85rem;
+      cursor: pointer; transition: filter 0.2s, transform 0.15s;
+    }
+    [data-theme="dark"] .modal-btn { background: rgba(88, 39, 39, 0.36); }
+    .modal-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+    .modal-btn.danger { background: rgba(160, 45, 45, 0.55); border-color: rgba(255,110,110,0.22); }
+    .modal-btn.secondary {
+      background: transparent; border: none;
+      color: rgba(240,224,204,0.50); font-size: 12px; padding: 7px;
+    }
+    .modal-btn.secondary:hover { color: #f0e0cc; filter: none; transform: none; }
+    .account-btn {
+    background: rgba(255,255,255,0.08) !important;
+    border-color: rgba(255,255,255,0.12) !important;
+    color: rgba(240,224,204,0.55) !important;
+    font-size: 0.78rem !important;
+}
+[data-theme="dark"] .account-btn {
+    background: rgba(255,255,255,0.05) !important;
+}
+.account-btn:hover {
+    background: rgba(255,255,255,0.13) !important;
+    color: rgba(240,224,204,0.85) !important;
+}
+@media (max-width: 600px) {
+  .profile-wrap { max-width: 100%; }
+  .profile-topbar .brand-logo,
+  .catalog-topbar .brand-logo { font-size: 18px; }
+  .nav-row { flex-direction: column; gap: 8px; }
+}
+  </style>
+</head>
+<body>
+
+  <h1 class="brand-logo">сoffee on the way</h1>
+
+  <div class="profile-wrap">
+
+    <!-- Профіль картка -->
+    <div class="quiz-card" id="profileCard">
+  <div class="profile-header">
+    <div class="avatar"></div>
+    <div>
+      <div class="profile-name" id="profileName">—</div>
+    </div>
+  </div>
+  <button class="action-btn account-btn" id="logoutBtn" style="margin-top:18px;">
+    Вийти
+  </button>
+</div>
+
+    <!-- Навігація -->
+    <div class="nav-row">
+  <button class="action-btn" onclick="window.location.href='/test'">Новий тест </button>
+  <button class="action-btn" onclick="window.location.href='/catalog'">Каталог</button>
+</div>
+
+    <!-- Улюблена кава — ВГОРІ -->
+    <div class="quiz-card">
+      <p class="section-title">Улюблена кава</p>
+      <div id="favoritesList"><div class="empty-state">Завантаження...</div></div>
+    </div>
+
+    <!-- Історія тестувань — НИЖЧЕ -->
+    <div class="quiz-card">
+      <p class="section-title">Історія тестувань</p>
+      <div id="historyList"><div class="empty-state">Завантаження...</div></div>
+    </div>
+
+  </div>
+
+  <!-- Модалка підтвердження виходу -->
+  <div class="modal-overlay" id="logoutModal">
+  <div class="modal-card">
+    <h3>Вийти</h3>
+    <p class="modal-body">Що ти хочеш зробити?</p>
+    <div class="modal-btn-group">
+      <button class="modal-btn" id="logoutConfirmBtn">Вийти з акаунта</button>
+      <button class="modal-btn danger" id="deleteAccountBtn">Видалити акаунт</button>
+      <button class="modal-btn secondary" id="logoutCancelBtn">Скасувати</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модалка підтвердження видалення -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal-card">
+    <h3>Видалити акаунт?</h3>
+    <p class="modal-body">Це незворотна дія. Всі твої дані, історія та улюблене будуть видалені назавжди.</p>
+    <div class="modal-btn-group">
+      <button class="modal-btn danger" id="deleteConfirmBtn">Так, видалити все</button>
+      <button class="modal-btn secondary" id="deleteCancelBtn">Скасувати</button>
+    </div>
+  </div>
+</div>
+<header class="top-header" style="position:fixed;top:18px;left:8px;right:8px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:10;">
+  <button class="round-btn" onclick="window.location.href='/'">
+    <img style="width:14px;height:14px;" src="/img/home.svg" alt="Головна">
+  </button>
+
+  <div style="width:34px;"></div>
+</header>
+  <script>
+    // ── 1. Перевірка авторизації ──
+    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (!user) { window.location.href = '/login'; }
+    else { document.getElementById('profileName').textContent = user.login || '—'; }
+
+    // ── 2. Модалка виходу ──
+  // Відкрити першу модалку
+document.getElementById('logoutBtn').addEventListener('click', () =>
+    document.getElementById('logoutModal').classList.add('active'));
+
+// Вийти
+document.getElementById('logoutConfirmBtn').addEventListener('click', () => {
+    localStorage.removeItem('currentUser');
+    window.location.href = '/';
+});
+
+// Закрити першу модалку
+document.getElementById('logoutCancelBtn').addEventListener('click', () =>
+    document.getElementById('logoutModal').classList.remove('active'));
+
+document.getElementById('logoutModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('logoutModal'))
+        document.getElementById('logoutModal').classList.remove('active');
+});
+
+// Перейти до підтвердження видалення
+document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+    document.getElementById('logoutModal').classList.remove('active');
+    document.getElementById('deleteModal').classList.add('active');
+});
+
+// Підтвердити видалення
+document.getElementById('deleteConfirmBtn').addEventListener('click', async () => {
+    try {
+        await fetch('/api/user/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: user.id })
+        });
+    } catch (e) {}
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('favorites_' + user.id);
+    window.location.href = '/';
+});
+
+// Закрити модалку видалення — повернутись до першої
+document.getElementById('deleteCancelBtn').addEventListener('click', () => {
+    document.getElementById('deleteModal').classList.remove('active');
+    document.getElementById('logoutModal').classList.add('active');
+});
+
+document.getElementById('deleteModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('deleteModal'))
+        document.getElementById('deleteModal').classList.remove('active');
+});
+
+    // ── 3. Улюблені — з localStorage ──
+    function getFavorites() {
+      try {
+        return JSON.parse(localStorage.getItem('favorites_' + user.id) || '[]');
+      } catch { return []; }
+    }
+
+    const LIMIT = 4; // скільки показувати одразу
+
+  function renderFavorites() {
+      const el = document.getElementById('favoritesList');
+      const favs = getFavorites();
+
+      // Допоміжна функція для рендеру одного рядка з картинкою
+      const renderFavRow = (f) => `
+        <div class="profile-row">
+          <div class="row-icon" style="overflow:hidden; padding:0; display:flex; align-items:center; justify-content:center; background: rgba(186, 112, 66, 0.2);">
+            <img src="/img/${f.id}.png" 
+                 style="width:100%; height:100%; object-fit:cover; border-radius:50%;"
+                 onerror="this.onerror=null; this.src='/img/coffee-placeholder.svg'; this.style.width='16px'; this.style.height='16px'; this.style.opacity='0.5';">
+          </div>
+          <div class="row-content">
+            <div class="row-title">${f.name}</div>
+          </div>
+        </div>
+      `;
+
+      // Решта коду функції renderFavorites() залишається БЕЗ ЗМІН
+      if (!favs.length) {
+        el.innerHTML = '<div class="empty-state">Улюблена кава ще не додана.<br>Пройди тест і збережи результат!</div>';
+        return;
+      }
+
+      const visible = favs.slice(0, LIMIT);
+      const hidden  = favs.length > LIMIT;
+
+      // Використовуємо функцію renderFavRow для початкового списку
+      el.innerHTML = visible.map(f => renderFavRow(f)).join('') + (hidden
+        ? `<button class="show-more-btn" id="showMoreFavBtn">Показати ще ${favs.length - LIMIT} ▾</button>`
+        : '');
+
+      if (hidden) {
+        document.getElementById('showMoreFavBtn').addEventListener('click', () => {
+          // Використовуємо функцію renderFavRow для розгорнутого списку
+          el.innerHTML = favs.map(f => renderFavRow(f)).join('') + `<button class="show-more-btn" id="showLessFavBtn">Згорнути ▴</button>`;
+
+          document.getElementById('showLessFavBtn').addEventListener('click', renderFavorites);
+        });
+      }
+    }
+    // ── 4. Історія ──
+  // Замість document.getElementById('profileMeta')...
+// В loadHistory після отримання даних:
+async function loadHistory() {
+    const el = document.getElementById('historyList');
+    try {
+        const res  = await fetch(`/api/quiz/history/${user.id}`);
+        const data = await res.json();
+        const history = data.history || [];
+
+        const LIMIT = 3; // показуємо 3 спроби одразу
+
+        if (!history.length) {
+            el.innerHTML = '<div class="empty-state">Ще немає пройдених тестів.</div>';
+            return;
+        }
+
+        const renderRows = (items) => items.map(item => `
+            <div class="profile-row">
+                <div class="row-content">
+                    <div class="row-title">${item.coffee?.name || '—'}</div>
+                    <div class="row-sub">Відповідей: ${item.answerCount}</div>
+                </div>
+                <div class="row-badge">#${item.attemptId}</div>
+            </div>
+        `).join('');
+
+        const visible = history.slice(0, LIMIT);
+        const hasMore = history.length > LIMIT;
+
+        el.innerHTML = `
+            <div class="section-title">Спроб: ${history.length}</div>
+            ${renderRows(visible)}
+            ${hasMore ? `<button class="show-more-btn" id="showMoreHistBtn">Показати ще ${history.length - LIMIT} ▾</button>` : ''}
+        `;
+
+        if (hasMore) {
+            document.getElementById('showMoreHistBtn').addEventListener('click', () => {
+                el.innerHTML = `
+                    <div class="section-title">Спроб: ${history.length}</div>
+                    ${renderRows(history)}
+                    <button class="show-more-btn" id="showLessHistBtn">Згорнути ▴</button>
+                `;
+                document.getElementById('showLessHistBtn').addEventListener('click', loadHistory);
+            });
+        }
+    } catch {
+        el.innerHTML = '<div class="empty-state">Не вдалося завантажити історію.</div>';
+    }
+}
+
+// Запускаємо після того як DOM готовий
+if (user) {
+    renderFavorites();
+    loadHistory();
+}
+  </script>
+</body>
+</html>
