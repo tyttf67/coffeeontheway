@@ -331,8 +331,36 @@
 
   <script src="/theme.js"></script>
   <script>
+    function translate(value, map) {
+  if (!value) return '—';
+  return map[value] || value;
+}
+const CATEGORY_LABELS = {
+  // Переклад для текстових тегів
+  'espresso-based': 'Еспресо',
+  'milk-based': 'З молоком',
+  'black coffee': 'Чорна кава',
+  'dessert coffee': 'Десертна кава',
+  'cold coffee': 'Холодна кава',
+  'specialty': 'Спешелті',
+  'alternative': 'Альтернатива',
+
+  // Переклад для числових ID (підставте ваші ID з бази даних)
+  '1': 'Еспресо',
+  '2': 'З молоком',
+  '3': 'Чорна кава',
+  '4': 'Десертна кава',
+  '5': 'Холодна кава',
+  '6': 'Спешелті',
+  '7': 'Альтернатива'
+};
+const SYRUP_LABELS = {
+  none: 'Немає',
+  caramel: 'Карамель',
+  vanilla: 'Ваніль',
+};
     const ROAST_LABELS   = { dark:'Темна', medium:'Середня', light:'Світла' };
-    const CATEGORY_LABELS = { 1:'Еспресо', 2:'Молочна', 3:'Американо', 4:'Десертна', 5:'Холодна', 6:'Десерт', 7:'Колд брю' };
+
 
     function launchCoffeeRain() {
       const rain = document.getElementById("coffeeRain");
@@ -363,20 +391,28 @@
     }
 
     function renderSpecs(coffee) {
-      return [
-        { label:'Обсмажка', value: ROAST_LABELS[coffee.levelRoast] || coffee.levelRoast || '—' },
-        { label:'Міцність', value: `<span class="strength-bar">${renderStrengthBar(coffee.strength)}</span>` },
-        { label:'Молоко',   value: coffee.milk  ? 'Так' : 'Ні' },
-        { label:'Цукор',    value: coffee.sugar ? 'Так' : 'Ні' },
-        { label:'Сироп',    value: coffee.syrup === 'none' ? 'Немає' : (coffee.syrup || '—') },
-        { label:'Категорія',value: CATEGORY_LABELS[coffee.categoryId] || `#${coffee.categoryId}` },
-      ].map(s => `
-        <div class="spec-chip">
-          <span class="spec-label">${s.label}</span>
-          <span class="spec-value">${s.value}</span>
-        </div>
-      `).join('');
-    }
+  // Шукаємо категорію в усіх можливих полях: category, categoryId або category_id
+  const rawCategory = coffee.category || coffee.categoryId || coffee.category_id || '';
+  const backendCategory = rawCategory.toString().toLowerCase().trim();
+  
+  // Так само безпечно зчитуємо сироп
+  const backendSyrup = (coffee.syrup || '').toLowerCase().trim();
+
+  return [
+    { label:'Обсмажка', value: ROAST_LABELS[coffee.levelRoast] || coffee.levelRoast || '—' },
+    { label:'Міцність', value: `<span class="strength-bar">${renderStrengthBar(coffee.strength)}</span>` },
+    { label:'Молоко',   value: coffee.milk  ? 'Так' : 'Ні' },
+    { label:'Цукор',    value: coffee.sugar ? 'Так' : 'Ні' },
+    // Якщо знайшли переклад у CATEGORY_LABELS — виводимо, інакше показуємо оригінал або прочерк
+    { label:'Категорія', value: CATEGORY_LABELS[backendCategory] || rawCategory || '—' },
+    { label:'Сироп',     value: SYRUP_LABELS[backendSyrup] || coffee.syrup || '—' },
+  ].map(s => `
+    <div class="spec-chip">
+      <span class="spec-label">${s.label}</span>
+      <span class="spec-value">${s.value}</span>
+    </div>
+  `).join('');
+}
 
     function showResult(coffee) {
       document.getElementById('loadingState').style.display = 'none';

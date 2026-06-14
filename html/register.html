@@ -29,7 +29,21 @@ body {
   min-height: 100vh;
   padding-top: 80px;
 }
+body > .brand-logo {
 
+  position: fixed !important;
+  top: 34px !important;
+  left: 50% !important;
+  transform: translateX(-50%) rotate(-10deg) skewX(-9deg) !important;
+  flex: none !important;
+  zoom: 1 !important;
+  font-size: 30px !important;
+  margin: 0 !important;
+}
+
+.card {
+  margin-top: 60px;
+}
 .card {
   position: relative;
   z-index: 2;
@@ -106,6 +120,7 @@ button[type="submit"] {
   backdrop-filter: blur(18px);
 }
 .brand-logo {
+ 
   position: fixed;
   top: 26px;
   left: 40.5%;
@@ -191,13 +206,57 @@ button[type="submit"]:hover {
       display: none;
     }
      .field-error.visible { display: block; }
-     
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.round-btn {
+  margin-top: 1.3%;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(186,112,66,0.4);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.round-btn img {
+  width: 20px;
+  height: 18px;
+  stroke: #f0e0cc;
+  stroke-width: 2;
+  fill: none;
+}
+
+.round-btn:hover {
+  background: rgba(186,112,66,0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
   </style>
 </head>
 <body>
- 
+   <div class="navbar">
+ <button class="round-btn back-btn" onclick="goBack()">
+  <img src="/img/back.svg" alt="">
+  </svg>
+</button>
+
+  <div class="nav-title"></div>
+</div>
   <h1 class="brand-logo">сoffee on the way</h1>
- 
+
   <div class="card">
     <p class="card-title">Реєстрація</p>
  
@@ -232,6 +291,9 @@ button[type="submit"]:hover {
 
 
 <script>
+  function goBack() {
+  window.location.href = '/'; // або '/index.html' якщо так у тебе
+}
  function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
     function show(id, visible) {
       const el = document.getElementById(id);

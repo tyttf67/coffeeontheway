@@ -4,7 +4,17 @@
   margin: 0; 
   padding: 0; 
 }
+.round-btn img,
+.catalog-topbar .round-btn img,
+.profile-topbar .round-btn img {
+  flex-shrink: 0;
+  min-width: 13px;
+  min-height: 13px;
+}
 
+.round-btn {
+  flex-shrink: 0;
+}
 html, body {
   min-height: 100vh;
  font-family: "Roboto", Arial, sans-serif;
@@ -185,14 +195,107 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   position: fixed;
   top: 18px;
   left: 8px;
-  right: 8px;   /* 🔥 ВАЖЛИВО */
-  
-  padding: 0 20px; /* щоб не прилипало до країв */
+  right: 8px;
+  padding: 0 12px;
   z-index: 10;
+  height: 36px;
+}
+.header-left, .header-right {
+  flex-shrink: 0;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.top-header .brand-logo,
+.brand-logo {
+  position: static;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  font-family: "Rubik Bubbles", system-ui;
+  font-size: 30px;
+  font-weight: 400;
+  color: #e1dbca;
+  transform: rotate(-10deg) skewX(-9deg);
+  text-shadow: 4px 4px 4px rgba(0,0,0,0.25);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+[data-theme="dark"] .brand-logo { color: #c8b89a; }
+
+/* Кнопки навбару — однаковий розмір завжди */
+.top-header .round-btn,
+.profile-topbar .round-btn,
+.catalog-topbar .round-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(225, 219, 202, 0.2);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(255,255,255,0.18);
+  transition: background 0.2s, transform 0.15s;
+}
+[data-theme="dark"] .top-header .round-btn,
+[data-theme="dark"] .profile-topbar .round-btn,
+[data-theme="dark"] .catalog-topbar .round-btn {
+  background: rgba(200, 160, 120, 0.12);
+  border-color: rgba(255,255,255,0.10);
+}
+
+.top-header .round-btn::before,
+.profile-topbar .round-btn::before,
+.catalog-topbar .round-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(-45deg,
+    rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.03) 40%, rgba(0,0,0,0.10) 100%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.top-header .round-btn:hover,
+.profile-topbar .round-btn:hover,
+.catalog-topbar .round-btn:hover {
+  background: rgba(225, 219, 202, 0.32);
+  transform: translateY(-1px);
+}
+[data-theme="dark"] .top-header .round-btn:hover,
+[data-theme="dark"] .profile-topbar .round-btn:hover,
+[data-theme="dark"] .catalog-topbar .round-btn:hover {
+  background: rgba(200, 160, 120, 0.22);
+}
+
+.top-header .round-btn img,
+.profile-topbar .round-btn img,
+.catalog-topbar .round-btn img {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* Контент сторінок — однаковий відступ зверху під навбар */
+.quiz-container {
+  margin-top: 70px;
 }
 
 
@@ -200,7 +303,7 @@ body::before {
 /* Спільні скляні стилі для кнопок хедера */
 
 .round-btn {
-  zoom: 1.2;
+ 
   position: relative;
   overflow: hidden;
   background: rgba(225, 219, 202, 0.2);
@@ -236,15 +339,7 @@ body::before {
 
 
 }
-.round-btn {
-  width: 34px;
-  height: 32px;
-  border-radius: 50%;
 
-  place-items: center;
-  right: 6px;
-  padding: 0;
-}
 
 [data-theme="dark"] .round-btn {
  
@@ -357,19 +452,7 @@ body::before {
 }
 
 /* ── ЛОГОТИП ── */
-.brand-logo {
-  margin: 18px 0 0;
-  font-family: "Rubik Bubbles", system-ui;
-  font-size: 31px;
-  font-weight: 400;
-  color: #e1dbca;
-  transform: rotate(-10deg) skewX(-9deg);
-  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
-  white-space: nowrap;
-  position: fixed;
-  top: 26px;
-  left: 40.5%;
-}
+
 
 /* ── QUIZ CONTAINER & CARD ── */
 .quiz-container {
@@ -708,20 +791,13 @@ body::before {
    ════════════════════════════════════════ */
 
 /* Логотип — прибираємо фіксовану позицію зі % зліва, центруємо нормально */
-.brand-logo {
-  position: static;
-  top: auto;
-  left: auto;
-  margin: 0;
-  text-align: center;
-}
+
 
 .top-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: fixed;
-  top: 14px;
+  top: 2%;
   left: 8px;
   right: 8px;
   padding: 0 12px;
@@ -745,7 +821,16 @@ body::before {
     width: 100%;
     padding: 28px 18px 22px;
   }
-
+ .round-btn {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+  .round-btn img {
+    width: 16px !important;
+    height: 16px !important;
+    flex-shrink: 0;
+  }
   .quiz-container {
     max-width: 100%;
     padding: 10px;
@@ -829,4 +914,237 @@ body::before {
 @media (max-width: 380px) {
   .quiz-card { padding: 22px 14px 18px; }
   .result-specs { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .top-header {
+    top: 12px;
+    padding: 0 8px;
+    height: 34px;
+  }
+  .top-header .brand-logo,
+  .brand-logo {
+    font-size: 17px;
+  }
+  .top-header .round-btn,
+  .profile-topbar .round-btn,
+  .catalog-topbar .round-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .top-header .round-btn img,
+  .profile-topbar .round-btn img,
+  .catalog-topbar .round-btn img {
+    width: 14px;
+    height: 14px;
+  }
+  .quiz-container {
+    margin-top: 64px;
+  }
+}
+/* ════════════════════════════════════════
+   УНІФІКАЦІЯ НАВБАРУ — однаково на всіх сторінках
+   ════════════════════════════════════════ */
+.top-header,
+.profile-topbar,
+.catalog-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 5%;
+  left: 8px;
+  right: 8px;
+  padding: 0 16px;
+  height: 36px;
+  z-index: 10;
+}
+
+.header-left, .header-right,
+.profile-topbar .nav-group,
+.catalog-topbar .nav-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Кнопки — однаковий розмір 36x36 завжди */
+.top-header .round-btn,
+.profile-topbar .round-btn,
+.catalog-topbar .round-btn {
+  width: 40px;
+  height: 38px;
+  min-width: 40px;
+  min-height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(225, 219, 202, 0.2);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(255,255,255,0.18);
+  transition: background 0.2s, transform 0.15s;
+}
+[data-theme="dark"] .top-header .round-btn,
+[data-theme="dark"] .profile-topbar .round-btn,
+[data-theme="dark"] .catalog-topbar .round-btn {
+  background: rgba(200, 160, 120, 0.12);
+  border-color: rgba(255,255,255,0.10);
+}
+.top-header .round-btn::before,
+.profile-topbar .round-btn::before,
+.catalog-topbar .round-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(-45deg,
+    rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.03) 40%, rgba(0,0,0,0.10) 100%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.top-header .round-btn:hover,
+.profile-topbar .round-btn:hover,
+.catalog-topbar .round-btn:hover {
+  background: rgba(225, 219, 202, 0.32);
+  transform: translateY(-1px);
+}
+[data-theme="dark"] .top-header .round-btn:hover,
+[data-theme="dark"] .profile-topbar .round-btn:hover,
+[data-theme="dark"] .catalog-topbar .round-btn:hover {
+  background: rgba(200, 160, 120, 0.22);
+}
+
+.top-header .round-btn img,
+.profile-topbar .round-btn img,
+.catalog-topbar .round-btn img {
+  width: 15px !important;
+  height: 15px !important;
+  min-width: 15px;
+  min-height: 15px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* Логотип — однаковий стиль на всіх сторінках, як на головній */
+.top-header .brand-logo,
+.profile-topbar .brand-logo,
+.catalog-topbar .brand-logo,
+.brand-logo {
+  position: static !important;
+  top: 2% !important;
+  left: auto !important;
+  margin: 0 !important;
+  flex: 1;
+  text-align: center;
+  font-family: "Rubik Bubbles", system-ui;
+  font-size: 30px;
+
+  font-weight: 400;
+  color: #e1dbca;
+  transform: rotate(-10deg) skewX(-9deg);
+  text-shadow: 4px 4px 4px rgba(0,0,0,0.25);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  zoom: 1;
+}
+[data-theme="dark"] .brand-logo,
+[data-theme="dark"] .top-header .brand-logo,
+[data-theme="dark"] .profile-topbar .brand-logo,
+[data-theme="dark"] .catalog-topbar .brand-logo {
+  color: #c8b89a;
+}
+
+/* Контент під навбаром — однаковий відступ */
+.quiz-container { margin-top: 70px; }
+.profile-wrap { margin-top: 70px !important; }
+.coffee-grid { margin-top: 70px !important; }
+
+@media (max-width: 600px) {
+  .top-header, .profile-topbar, .catalog-topbar {
+    top: 10px;
+    padding: 0 10px;
+    height: 34px;
+  }
+  .top-header .brand-logo,
+  .profile-topbar .brand-logo,
+  .catalog-topbar .brand-logo,
+  .brand-logo {
+    font-size: 16px;
+  }
+  .top-header .round-btn,
+  .profile-topbar .round-btn,
+  .catalog-topbar .round-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+  .top-header .round-btn img,
+  .profile-topbar .round-btn img,
+  .catalog-topbar .round-btn img {
+    width: 13px !important;
+    height: 13px !important;
+  }
+  .quiz-container { margin-top: 60px; }
+  .profile-wrap { margin-top: 60px !important; }
+  .coffee-grid { margin-top: 60px !important; }
+}
+@media (max-width: 600px) {
+
+  html, body {
+    overflow: auto; /* ❗ ОБОВ’ЯЗКОВО */
+    height: auto;
+  }
+
+  body {
+    justify-content: flex-start;
+    padding-top: 60px;
+  }
+
+  .quiz-container {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .quiz-card {
+    min-width: unset;
+    width: 100%;
+    padding: 22px 16px;
+    border-radius: 20px;
+  }
+
+  .quiz-question {
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .option-row {
+    padding: 12px;
+  }
+
+  .nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* результат */
+  .result-card {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .result-name {
+    font-size: 20px;
+  }
 }

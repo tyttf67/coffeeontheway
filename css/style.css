@@ -358,8 +358,8 @@ input[type="search"]::-webkit-search-cancel-button {
 
 /* Темна тема: ліва (light) — маленька і розмита */
 [data-theme="dark"] .toggle-icon-light {
-  width: 18px;
-  height: 16px;
+ 
+  height: 18px;
   opacity: 0.28;
   filter: blur(0.4px);
 }
@@ -374,7 +374,7 @@ input[type="search"]::-webkit-search-cancel-button {
    Logo
    ════════════════════════════════════════ */
 .logo {
-  margin-top: 6%; 
+  margin-top: 2%; 
 
   font-family: "Rubik Bubbles", system-ui;
   font-size: 23px;
@@ -832,82 +832,52 @@ footer {
 
 /* ════════════════════════════════════════
    Responsive
-   ════════════════════════════════════════ */
-@media (max-width: 760px) {
-  .page { padding: 24px 16px 0; }
-  .topbar { grid-template-columns: 1fr; gap: 16px; }
-  .nav-right { justify-content: flex-start; }
-  .logo { justify-self: center; }
-  .hero { margin-left: 0; }
-  .section { grid-template-columns: 1fr; margin-top: 90px; }
-  .photo-stack { display: grid; grid-template-columns: repeat(2, 140px); justify-content: center; }
-}
-/* ════════════════════════════════════════
-   МОБІЛЬНА АДАПТАЦІЯ ГОЛОВНОЇ
-   ════════════════════════════════════════ */
-@media (max-width: 760px) {
-  .page { padding: 16px 12px 0; }
-
-  .topbar {
-    grid-template-columns: auto 1fr auto;
-    gap: 8px;
-  }
-
-  .nav-group { gap: 6px; }
-  .nav-right { justify-content: flex-end; }
-
-  .logo {
-    font-size: 18px;
-    white-space: nowrap;
-  }
-
-  .catalog-btn {
-    width: auto;
-    padding: 0 12px;
-    font-size: 11px;
-  }
-
-  .hero {
-    margin-left: 0;
-    margin-top: 24px;
-    width: 100%;
-    text-align: left;
-  }
-
-  .hero p { font-size: 15px; }
-
-  .section {
-    grid-template-columns: 1fr;
-    margin-top: 50px;
-    gap: 20px;
-  }
-
-  .types-section { margin-top: 50px; }
-
-  .text-block h2 { font-size: 20px; }
-  .text-block p { font-size: 12px; max-width: 100%; }
-
-  .photo-stack {
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    height: auto;
-    gap: 10px;
-    justify-content: center;
-  }
-
-  .photo-stack img {
-    width: calc(50% - 5px) !important;
-    height: 140px !important;
-    margin: 0 !important;
-  }
-
-  .types-section .photo-stack img {
-    height: 140px;
-  }
-}
 
 @media (max-width: 400px) {
   .logo { font-size: 15px; }
   .theme-toggle { width: 50px; height: 24px; }
 }
+/* ════════════════════════════════════════
+   Узгодження navbar головної з іншими сторінками
+   ════════════════════════════════════════ */
+.topbar {
+  margin-top: -0.5%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 2px;
+  margin-left: -2.5%;
+}
+
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: -2.5%;
+  width: auto;
+}
+
+
+
+.round-btn {
+  width: 30x;
+  height: 28;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.round-btn img {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.theme-toggle {
+  height: 28px;
+}
+

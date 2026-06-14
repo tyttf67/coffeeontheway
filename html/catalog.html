@@ -48,19 +48,20 @@
       transform: rotate(-10deg) skewX(-9deg);
       text-shadow: 4px 4px 4px rgba(0,0,0,0.25);
       white-space: nowrap; pointer-events: none;
+      padding-top: -1%;
     }
     [data-theme="dark"] .catalog-topbar .brand-logo { color: #c8b89a; }
 
-    /* ── round-btn стиль для навбару каталогу ── */
-    .catalog-topbar .round-btn {
-      width: 30px; height: 28px; border-radius: 50%;
-      display: grid; place-items: center; padding: 0;
-      background: rgba(225, 219, 202, 0.2);
-      backdrop-filter: blur(18px) saturate(130%);
-      border: 1px solid rgba(255,255,255,0.18);
-      cursor: pointer; position: relative; overflow: hidden;
-      transition: background 0.2s, transform 0.15s;
-    }
+.catalog-topbar .round-btn {
+  width: 30px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center; padding: 0;
+  background: rgba(225, 219, 202, 0.2);
+  backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(255,255,255,0.18);
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: background 0.2s, transform 0.15s;
+  /* margin-right: 8%; ← REMOVE THIS */
+}
     [data-theme="dark"] .catalog-topbar .round-btn {
       background: rgba(200, 160, 120, 0.12);
       border-color: rgba(255,255,255,0.10);
@@ -355,12 +356,29 @@
   .catalog-topbar .brand-logo { font-size: 18px; }
   .nav-row { flex-direction: column; gap: 8px; }
 }
+@media (max-width: 600px) {
+  .profile-topbar,
+  .catalog-topbar {
+    align-items: flex-start;
+  }
+  .profile-topbar .brand-logo,
+  .catalog-topbar .brand-logo {
+    margin-top: 6px;
+    font-size: 17px;
+  }
+  .profile-wrap {
+    margin-top: 16px;
+  }
+  .coffee-grid {
+    margin-top: 20% !important;
+  }
+}
   </style>
 </head>
 <body>
 
   <!-- Навбар -->
-  <header class="catalog-topbar">
+ <header class="catalog-topbar top-header">
     <div class="nav-group">
       <button class="round-btn" onclick="history.back()">
         <img src="/img/back.svg" alt="Назад">
@@ -372,11 +390,11 @@
 
     <span class="brand-logo">coffee on the way</span>
 
-    <div class="nav-group">
-      <button class="round-btn" onclick="window.location.href='/profile'">
-        <img src="/img/profile.svg" alt="Профіль">
-      </button>
-    </div>
+    <div  class="nav-group" style="margin-right: 0%;">
+  <button class="round-btn" onclick="window.location.href='/profile'">
+    <img src="/img/profile.svg" alt="Профіль">
+  </button>
+</div>
   </header>
 
   <!-- Пошукова панель -->
@@ -432,6 +450,30 @@
   </div>
 
   <script>
+    function translate(value, map) {
+  if (!value) return '—';
+  return map[value] || value;
+}
+const CATEGORY_LABELS = {
+  'espresso-based': 'Еспресо',
+  'milk-based': 'З молоком',
+  'black coffee': 'Чорна кава',
+  'dessert coffee': 'Десертна кава',
+  'cold coffee': 'Холодна кава',
+  'specialty': 'Спешелті',
+  'alternative': 'Альтернатива'
+};
+const ROAST_LABELS = {
+  light: 'Світла',
+  medium: 'Середня',
+  dark: 'Темна',
+};
+
+const SYRUP_LABELS = {
+  none: 'Немає',
+  caramel: 'Карамель',
+  vanilla: 'Ваніль',
+};
     let CATEGORY_NAMES = {};
     const COFFEE_EMOJI = { 1:'', 2:'', 3:'', 4:'', 5:'', 6:'', 7:'' };
     const ROAST_UA = { dark:'Темна', medium:'Середня', light:'Світла' };
@@ -511,11 +553,19 @@
 
     // ── Завантаження даних ──
     async function loadCategories() {
-      try {
-        const data = await fetch('/api/categories').then(r => r.json());
-        (data.categories || []).forEach(c => { CATEGORY_NAMES[c.id] = c.name; });
-      } catch(e) {}
-    }
+  try {
+    const data = await fetch('/api/categories').then(r => r.json());
+    const categories = data.categories || [];
+    
+    categories.forEach(c => {
+      // Перекладаємо назву категорії за допомогою мапи CATEGORY_LABELS, 
+      // якщо перекладу немає — залишаємо оригінальну назву з бази даних
+      CATEGORY_NAMES[c.id] = CATEGORY_LABELS[c.name.toLowerCase()] || c.name;
+    });
+  } catch(e) {
+    console.error("Помилка завантаження категорій:", e);
+  }
+}
 
     async function loadCoffees() {
       try {

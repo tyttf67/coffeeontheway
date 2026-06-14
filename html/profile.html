@@ -25,9 +25,9 @@
     html, body { overflow: auto; color: #f0e0cc; }
 
     .brand-logo {
-      position: fixed; top: 14px; left: 40.5%;
+      position: static; top: 28px; left: 40.5%;
       font-family: "Rubik Bubbles", system-ui;
-      font-size: 23px; font-weight: 400; color: #e1dbca;
+      font-size: 30px; font-weight: 400; color: #e1dbca;
       transform: rotate(-10deg) skewX(-9deg);
       text-shadow: 4px 4px 4px rgba(0,0,0,0.25);
       white-space: nowrap; z-index: 10; pointer-events: none;
@@ -200,18 +200,73 @@
   .catalog-topbar .brand-logo { font-size: 18px; }
   .nav-row { flex-direction: column; gap: 8px; }
 }
+@media (max-width: 600px) {
+  .profile-topbar,
+  .catalog-topbar {
+    align-items: flex-start;
+  }
+  .profile-topbar .brand-logo,
+  .catalog-topbar .brand-logo {
+    margin-top: 6px;
+    font-size: 17px;
+  }
+  .profile-wrap {
+    margin-top: 16px;
+  }
+  .coffee-grid {
+    margin-top: 20% !important;
+  }
+}
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  width: 30px;
+  height: 30px;
+
+  background: transparent;
+  border: none;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.modal-close img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+  transition: all 0.2s ease;
+}
+
+/* 🔥 акуратний hover як у тебе */
+.modal-close:hover img {
+  opacity: 0.9;
+  transform: scale(1.1);
+}
+
+/* при натисканні */
+.modal-close:active img {
+  transform: scale(0.95);
+}
   </style>
 </head>
 <body>
 
-  <h1 class="brand-logo">сoffee on the way</h1>
+  <h1 class="brand-logo"   style="margin-top: 2%;">сoffee on the way</h1>
 
   <div class="profile-wrap">
 
     <!-- Профіль картка -->
     <div class="quiz-card" id="profileCard">
   <div class="profile-header">
-    <div class="avatar"></div>
+    <div class="avatar">
+      <img src="/img/profile.svg" alt="Картинка профілю">
+    </div>
     <div>
       <div class="profile-name" id="profileName">—</div>
     </div>
@@ -222,6 +277,7 @@
 </div>
 
     <!-- Навігація -->
+     <header class="profile-topbar top-header"></header>
     <div class="nav-row">
   <button class="action-btn" onclick="window.location.href='/test'">Новий тест </button>
   <button class="action-btn" onclick="window.location.href='/catalog'">Каталог</button>
@@ -244,6 +300,9 @@
   <!-- Модалка підтвердження виходу -->
   <div class="modal-overlay" id="logoutModal">
   <div class="modal-card">
+    <button class="modal-close" data-close="logoutModal">
+    <img src="/img/close.svg" alt="Закрити">
+  </button>
     <h3>Вийти</h3>
     <p class="modal-body">Що ти хочеш зробити?</p>
     <div class="modal-btn-group">
@@ -257,6 +316,9 @@
 <!-- Модалка підтвердження видалення -->
 <div class="modal-overlay" id="deleteModal">
   <div class="modal-card">
+     <button class="modal-close" data-close="deleteModal">
+    <img src="/img/close.svg" alt="Закрити">
+  </button>
     <h3>Видалити акаунт?</h3>
     <p class="modal-body">Це незворотна дія. Всі твої дані, історія та улюблене будуть видалені назавжди.</p>
     <div class="modal-btn-group">
@@ -266,18 +328,24 @@
   </div>
 </div>
 <header class="top-header" style="position:fixed;top:18px;left:8px;right:8px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:10;">
-  <button class="round-btn" onclick="window.location.href='/'">
+  <button  style=" margin-top: 3%; margin-left: -0.5%;"  class="round-btn" onclick="window.location.href='/'">
     <img style="width:14px;height:14px;" src="/img/home.svg" alt="Головна">
   </button>
 
   <div style="width:34px;"></div>
 </header>
   <script>
+
     // ── 1. Перевірка авторизації ──
     const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
     if (!user) { window.location.href = '/login'; }
     else { document.getElementById('profileName').textContent = user.login || '—'; }
-
+    document.querySelectorAll('.modal-close').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const modalId = btn.getAttribute('data-close');
+    document.getElementById(modalId).classList.remove('active');
+  });
+});
     // ── 2. Модалка виходу ──
   // Відкрити першу модалку
 document.getElementById('logoutBtn').addEventListener('click', () =>
