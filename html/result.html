@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Твій результат — Coffee on the way</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Rubik+Bubbles&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/test.css" />
+
+  <svg style="position:absolute;width:0;height:0;pointer-events:none;">
+    <filter id="smooth-wave">
+      <feTurbulence type="fractalNoise" baseFrequency="0.01 0.015" numOctaves="1" result="noise">
+        <animate attributeName="baseFrequency" dur="15s"
+          values="0.01 0.015; 0.012 0.025; 0.01 0.015" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise"
+        scale="15" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <style>
+    /* Дозволяємо скролл на сторінці результату */
+    html, body {
+      overflow: auto !important;
+      min-height: 100vh;
+    }
+
+    body {
+      justify-content: flex-start !important;
+      padding-top: 80px;
+      padding-bottom: 40px;
+      align-items: center;
+    }
+
+    /* ── Картка результату ── */
+    .result-card {
+      margin-top: 20%;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    width: 600px;
+      background: rgba(180, 105, 50, 0.32);
+      backdrop-filter: blur(18px) saturate(130%);
+      -webkit-backdrop-filter: blur(18px) saturate(130%);
+      border: 1px solid rgba(255,255,255,0.20);
+      border-radius: 26px;
+      padding: 28px 24px 24px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.07),
+        0 0 50px rgba(200,130,60,0.15),
+        0 24px 60px rgba(40,15,3,0.4);
+      opacity: 0;
+      transform: translateY(40px);
+      animation: cardIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+    }
+
+    [data-theme="dark"] .result-card {
+      background: rgba(88, 39, 39, 0.36);
+    }
+
+    .result-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(-45deg,
+        rgba(255,255,255,0.10) 0%,
+        rgba(255,255,255,0.02) 40%,
+        rgba(0,0,0,0.07) 100%);
+      pointer-events: none;
+    }
+
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Заголовок ── */
+    .result-eyebrow {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(240,224,204,0.55);
+      margin-bottom: 8px;
+    }
+
+    .result-name {
+      display: block;
+      font-family: 'Rubik Bubbles', system-ui;
+      font-size: 2rem;
+      font-weight: 400;
+      color: #f0e0cc;
+      line-height: 1.1;
+      left: 0;
+      margin-bottom: 6px;
+      text-align: left;
+      padding-top: 0;
+    
+    }
+
+    .result-description {
+      width: 250px;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: rgba(240,224,204,0.78);
+      margin-bottom: 18px;
+      font-family: "Roboto", Arial, sans-serif;
+     
+    }
+    .result-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+    /* ── Фото кави ── */
+    .coffee-img {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 20px;
+  margin-bottom: 26px;
+  margin-right: 20px;
+}
+
+    /* ── Характеристики ── */
+    .result-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .result-text {
+      flex: 1;
+    }
+    .spec-chip {
+      background: rgba(186, 112, 66, 0.35);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 30px;
+      padding: 8px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 0.78rem;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: chipIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    [data-theme="dark"] .spec-chip {
+      background: rgba(88, 39, 39, 0.4);
+    }
+
+    .spec-chip:nth-child(1) { animation-delay: 0.35s; }
+    .spec-chip:nth-child(2) { animation-delay: 0.42s; }
+    .spec-chip:nth-child(3) { animation-delay: 0.49s; }
+    .spec-chip:nth-child(4) { animation-delay: 0.56s; }
+    .spec-chip:nth-child(5) { animation-delay: 0.63s; }
+    .spec-chip:nth-child(6) { animation-delay: 0.70s; }
+
+    @keyframes chipIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .spec-label {
+      color: rgba(240,224,204,0.5);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: "Roboto", Arial, sans-serif;
+    }
+
+    .spec-value {
+      color: #f0e0cc;
+      font-size: 0.82rem;
+      font-family: "Roboto", Arial, sans-serif;
+    }
+
+    /* ── Шкала міцності ── */
+    .strength-bar { display: flex; gap: 3px; align-items: center; }
+
+    .strength-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+    }
+    .strength-dot.active { background: #f0e0cc; }
+
+    /* ── Кнопки дій ── */
+    .result-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .action-btn {
+   
+      padding: 11px 14px;
+      border-radius: 50px;
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: filter 0.2s, transform 0.15s;
+      width: 100%;
+      background: rgba(186, 112, 66, 0.6);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #f0e0cc;
+      backdrop-filter: blur(18px);
+      text-align: center;
+      line-height: 1;
+    }
+
+    [data-theme="dark"] .action-btn {
+      background: rgba(88, 39, 39, 0.5);
+    }
+
+    .action-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+    .action-btn:active { transform: translateY(0); }
+
+    .action-btn.full { grid-column: 1 / -1; }
+
+    .action-btn.secondary {
+      grid-column: 1 / -1;
+      background: transparent;
+      border: none;
+      color: rgba(240,224,204,0.45);
+      font-size: 0.78rem;
+    }
+    .action-btn.secondary:hover {
+      color: #f0e0cc;
+      background: rgba(255,255,255,0.05);
+      filter: none;
+      transform: none;
+    }
+
+    /* ── Стан завантаження ── */
+    .loading-state {
+      text-align: center;
+      padding: 20px 0;
+      color: rgba(240,224,204,0.55);
+      font-size: 0.9rem;
+      font-family: "Roboto", Arial, sans-serif;
+    }
+
+    .fav-feedback {
+      text-align: center;
+      font-size: 0.78rem;
+      color: rgba(240,224,204,0.6);
+      margin-top: 12px;
+      min-height: 16px;
+      font-family: "Roboto", Arial, sans-serif;
+    }
+    .wrapper-result-top {
+    display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 250xpx; 
+  margin-left: 3%;
+}
+.result-content-img{
+  display: flex;
+  left: 0px;
+  align-items: center;
+}
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  flex-shrink: 0;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+  </style>
+</head>
+<body>
+
+  <!-- Такий самий навбар як на test.html -->
+  <header class="top-header">
+    <div class="header-left">
+      <button class="round-btn" aria-label="Головна" onclick="window.location.href='/'">
+        <img style="width:14px;height:14px;" src="/img/home.svg" alt="Головна">
+      </button>
+    </div>
+    <h1 class="brand-logo">coffee on the way</h1>
+    <div class="header-right">
+      <button class="round-btn" aria-label="Профіль" onclick="window.location.href='/profile'">
+        <img style="width:13px;height:13px;" src="/img/profile.svg" alt="Профіль">
+      </button>
+    </div>
+  </header>
+
+  <!-- Картка результату -->
+  <div style="width:100%;max-width:600px;padding:0 16px;z-index:2;">
+    <div class="result-card" id="resultCard">
+      <div class="loading-state" id="loadingState">Завантаження результату...</div>
+
+      <div id="resultContent" style="display:none;">
+      <div class="result-content-img">
+        <div class="wrapper-result-top">
+         <p class="result-eyebrow">Твій ідеальний вибір </p>
+         <h2 class="result-name" id="coffeeName">—</h2>
+          <p class="result-description" id="coffeeDescription">—</p>
+        </div>
+         <img class="coffee-img" id="coffeeImage" alt="Coffee"
+             onerror="this.style.display='none'">
+      </div>
+       
+
+        <div class="result-specs" id="coffeeSpecs"></div>
+<div class="result-actions">
+  <button class="action-btn" id="favBtn" 
+          style="display:flex;align-items:center;justify-content:center;gap:8px;">
+    <img src="/img/fav.svg" class="btn-icon" alt="">
+    Додати до улюблених
+  </button>
+  <button class="action-btn" onclick="window.location.href='/test'"
+          style="display:flex;align-items:center;justify-content:center;gap:8px;">
+    <img src="/img/repeat.svg" class="btn-icon" alt="">
+    Пройти ще раз
+  </button>
+</div>
+        <p class="fav-feedback" id="favFeedback"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Дощ іконок -->
+  <div class="coffee-rain" id="coffeeRain" aria-hidden="true"></div>
+
+  <script src="/theme.js"></script>
+  <script>
+    function translate(value, map) {
+  if (!value) return '—';
+  return map[value] || value;
+}
+const CATEGORY_LABELS = {
+  // Переклад для текстових тегів
+  'espresso-based': 'Еспресо',
+  'milk-based': 'З молоком',
+  'black coffee': 'Чорна кава',
+  'dessert coffee': 'Десертна кава',
+  'cold coffee': 'Холодна кава',
+  'specialty': 'Спешелті',
+  'alternative': 'Альтернатива',
+
+  // Переклад для числових ID (підставте ваші ID з бази даних)
+  '1': 'Еспресо',
+  '2': 'З молоком',
+  '3': 'Чорна кава',
+  '4': 'Десертна кава',
+  '5': 'Холодна кава',
+  '6': 'Спешелті',
+  '7': 'Альтернатива'
+};
+const SYRUP_LABELS = {
+  none: 'Немає',
+  caramel: 'Карамель',
+  vanilla: 'Ваніль',
+};
+    const ROAST_LABELS   = { dark:'Темна', medium:'Середня', light:'Світла' };
+
+
+    function launchCoffeeRain() {
+      const rain = document.getElementById("coffeeRain");
+      if (!rain) return;
+      rain.classList.add("active");
+      const images = ["img/cb.svg","img/cookies.svg","img/drink1.svg","img/drink2.svg","img/cookies2.svg","img/coffee1.svg"];
+      for (let i = 0; i < 28; i++) {
+        setTimeout(() => {
+          const drop = document.createElement("img");
+          drop.className = "coffee-drop";
+          drop.src = images[Math.floor(Math.random() * images.length)];
+          drop.style.left = Math.random() * 100 + "vw";
+          drop.style.width = (18 + Math.random() * 24) + "px";
+          drop.style.opacity = (0.6 + Math.random() * 0.4).toString();
+          const dur = 1.4 + Math.random() * 1.8;
+          drop.style.animationDuration = dur + "s";
+          rain.appendChild(drop);
+          setTimeout(() => drop.remove(), dur * 1000 + 200);
+        }, i * 80);
+      }
+      setTimeout(() => rain.classList.remove("active"), 3500);
+    }
+
+    function renderStrengthBar(strength) {
+      return Array.from({length:5}, (_,i) =>
+        `<span class="strength-dot ${i < strength ? 'active' : ''}"></span>`
+      ).join('');
+    }
+
+    function renderSpecs(coffee) {
+  // Шукаємо категорію в усіх можливих полях: category, categoryId або category_id
+  const rawCategory = coffee.category || coffee.categoryId || coffee.category_id || '';
+  const backendCategory = rawCategory.toString().toLowerCase().trim();
+  
+  // Так само безпечно зчитуємо сироп
+  const backendSyrup = (coffee.syrup || '').toLowerCase().trim();
+
+  return [
+    { label:'Обсмажка', value: ROAST_LABELS[coffee.levelRoast] || coffee.levelRoast || '—' },
+    { label:'Міцність', value: `<span class="strength-bar">${renderStrengthBar(coffee.strength)}</span>` },
+    { label:'Молоко',   value: coffee.milk  ? 'Так' : 'Ні' },
+    { label:'Цукор',    value: coffee.sugar ? 'Так' : 'Ні' },
+    // Якщо знайшли переклад у CATEGORY_LABELS — виводимо, інакше показуємо оригінал або прочерк
+    { label:'Категорія', value: CATEGORY_LABELS[backendCategory] || rawCategory || '—' },
+    { label:'Сироп',     value: SYRUP_LABELS[backendSyrup] || coffee.syrup || '—' },
+  ].map(s => `
+    <div class="spec-chip">
+      <span class="spec-label">${s.label}</span>
+      <span class="spec-value">${s.value}</span>
+    </div>
+  `).join('');
+}
+
+    function showResult(coffee) {
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('resultContent').style.display = 'block';
+      document.getElementById('coffeeName').textContent = coffee.name;
+      document.getElementById('coffeeDescription').textContent = coffee.description || '—';
+      document.getElementById('coffeeSpecs').innerHTML = renderSpecs(coffee);
+
+      const img = document.getElementById('coffeeImage');
+      img.src = `/img/${coffee.id}.jpg`;
+
+      document.getElementById('favBtn').addEventListener('click', () => addToFavorites(coffee.id, coffee.name));
+    }
+
+    function addToFavorites(coffeeId, coffeeName) {
+      const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      if (!user) {
+        document.getElementById('favFeedback').textContent = 'Увійдіть в акаунт, щоб зберігати улюблене.';
+        return;
+      }
+      fetch('/api/user/favorites/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id, coffeeId: Number(coffeeId) })
+      })
+      .then(r => r.json())
+      .then(data => {
+        const fb = document.getElementById('favFeedback');
+        if (data.status === 'ok') {
+          // Зберігаємо в localStorage для профілю
+          const key = 'favorites_' + user.id;
+          const favs = JSON.parse(localStorage.getItem(key) || '[]');
+          if (!favs.find(f => f.id === Number(coffeeId))) {
+            favs.push({ id: Number(coffeeId), name: coffeeName });
+            localStorage.setItem(key, JSON.stringify(favs));
+          }
+          document.getElementById('favBtn').textContent = 'Додано до улюблених';
+          document.getElementById('favBtn').disabled = true;
+          fb.textContent = 'Каву збережено у твоєму профілі!';
+        } else {
+          fb.textContent = 'Не вдалося зберегти.';
+        }
+      })
+      .catch(() => {
+        document.getElementById('favFeedback').textContent = "Помилка з'єднання з сервером.";
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      launchCoffeeRain();
+
+      const raw = sessionStorage.getItem('latestCoffeeResult');
+      if (raw) {
+        try {
+          const data = JSON.parse(raw);
+          if (data.coffee) { showResult(data.coffee); return; }
+        } catch (e) {}
+      }
+      document.getElementById('loadingState').textContent = 'Результат не знайдено. Пройдіть тест!';
+      setTimeout(() => window.location.href = '/test', 2500);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Каталог — Coffee on the way</title>
+  <script src="/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css" />
+
+  <svg style="position:absolute;width:0;height:0;pointer-events:none;">
+    <filter id="smooth-wave">
+      <feTurbulence type="fractalNoise" baseFrequency="0.01 0.015" numOctaves="1" result="noise">
+        <animate attributeName="baseFrequency" dur="15s"
+          values="0.01 0.015; 0.012 0.025; 0.01 0.015" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="15" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <style>
+    html, body { overflow: auto; min-height: 100vh; }
+
+    body {
+      padding: 80px 20px 60px;
+      color: var(--text);
+      display: block;
+    }
+
+    /* ── фон як на тест.css ── */
+   
+
+    /* ── Навбар ── */
+    .catalog-topbar {
+      position: fixed; top: 20px; left: 8px; right: 8px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 8px; z-index: 10;
+    }
+
+    .catalog-topbar .nav-group { display: flex; align-items: center; gap: 8px; }
+
+    .catalog-topbar .brand-logo {
+      margin-top: 2%;
+      margin-left: -4%;
+      font-family: "Rubik Bubbles", system-ui;
+      font-size: 23px; font-weight: 400; color: #e1dbca;
+      transform: rotate(-10deg) skewX(-9deg);
+      text-shadow: 4px 4px 4px rgba(0,0,0,0.25);
+      white-space: nowrap; pointer-events: none;
+      padding-top: -1%;
+    }
+    [data-theme="dark"] .catalog-topbar .brand-logo { color: #c8b89a; }
+
+.catalog-topbar .round-btn {
+  width: 30px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center; padding: 0;
+  background: rgba(225, 219, 202, 0.2);
+  backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(255,255,255,0.18);
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: background 0.2s, transform 0.15s;
+  /* margin-right: 8%; ← REMOVE THIS */
+}
+    [data-theme="dark"] .catalog-topbar .round-btn {
+      background: rgba(200, 160, 120, 0.12);
+      border-color: rgba(255,255,255,0.10);
+    }
+    .catalog-topbar .round-btn:hover {
+       box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.08),
+    inset 0 -1px 3px rgba(144, 124, 124, 0.25),
+    0 3px 8px rgba(84, 78, 78, 0.35);
+    }
+    [data-theme="dark"] .catalog-topbar .round-btn:hover {
+      background: rgba(200, 160, 120, 0.22);
+    }
+    .catalog-topbar .round-btn img {
+      width: 14px; height: 14px; object-fit: contain;
+      filter: brightness(0) invert(1); opacity: 0.85;
+    }
+
+    /* ── Пошукова панель ── */
+    #searchPanel {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(10,4,1,0.75); backdrop-filter: blur(8px);
+      padding: 70px 20px 20px;
+    }
+
+    .search-panel-inner {
+      max-width: 480px; margin: 0 auto; position: relative;
+    }
+
+    .search-panel-close {
+      position: absolute; top: -44px; right: 0;
+      background: transparent; border: none;
+      color: rgba(240,224,204,0.6); font-size: 22px;
+      cursor: pointer; line-height: 1; padding: 4px 8px;
+      transition: color 0.2s;
+    }
+    .search-panel-close:hover { color: #f0e0cc; }
+
+    .search-input-wrap { position: relative; }
+
+  [data-theme="light"].catalog-live-search {
+     padding-right: 40px;
+    width: 100%;
+  width:100%;height:40px;border-radius:22px;border:1px solid rgba(255,255,255,0.2);
+                   background: var(--surface);
+  backdrop-filter: blur(10px) saturate(110%);
+  -webkit-backdrop-filter: blur(10px) saturate(110%);
+  border: 1px solid var(--border);
+                  font-family:'Roboto',Arial,sans-serif;outline:none;
+                  color:var(--text);padding:0 16px;font-size:13px;    
+    }
+    [data-theme="dark"] .catalog-live-search {
+       width:100%;height:40px;border-radius:22px;border:1px solid rgba(255,255,255,0.2);
+                   background: var(--surface);
+  backdrop-filter: blur(10px) saturate(110%);
+  -webkit-backdrop-filter: blur(10px) saturate(110%);
+  border: 1px solid var(--border);
+                  font-family:'Roboto',Arial,sans-serif;outline:none;
+                  color:var(--text);padding:0 16px;font-size:13px;
+    }
+    [data-theme="light"].catalog-live-search:focus { box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.08),
+    inset 0 -1px 3px rgba(144, 124, 124, 0.25),
+    0 3px 8px rgba(84, 78, 78, 0.35); }
+
+    [data-theme="dark"].catalog-live-search:focus { box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.08),
+    inset 0 -1px 3px rgba(144, 124, 124, 0.25),
+    0 3px 8px rgba(84, 78, 78, 0.35);}
+    .catalog-live-search::placeholder { color: rgba(240,224,204,0.45); }
+
+    /* Хрестик всередині інпуту */
+    .search-clear-btn {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      width: 22px; height: 22px; border: none; background: transparent;
+      cursor: pointer; display: none; align-items: center; justify-content: center;
+      padding: 0; opacity: 0.5; transition: opacity 0.2s; 
+    }
+    .search-clear-btn:hover { opacity: 1; }
+    .search-clear-btn img { width: 14px; height: 14px; filter: brightness(0) invert(1); }
+
+    #catalogSearchResults {
+      margin-top: 10px; display: flex; flex-direction: column; gap: 8px;
+    }
+
+    .search-result-item {
+      padding: 12px 16px; border-radius: 16px; cursor: pointer;
+      background: rgba(180,105,50,0.28);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 30px;
+      color: #f0e0cc; font-family: "Roboto", Arial, sans-serif; font-size: 14px;
+      transition: filter 0.2s;
+    }
+    [data-theme="dark"] .search-result-item {
+       background: var(--surface);
+      border-color: rgba(255,255,255,0.10);
+    }
+    .search-result-item:hover { filter: brightness(1.2); }
+
+    /* ── Контент сторінки ── */
+    .catalog-page { max-width: 900px; margin: 0 auto; }
+
+    /* ── Сітка карток ── */
+    .coffee-grid {
+      margin-top: 15%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .coffee-card {
+      background: rgba(186, 112, 66, 0.28);
+      backdrop-filter: blur(14px) saturate(120%);
+      border: 1px solid rgba(255,210,160,0.18);
+      border-radius: 20px; padding: 18px 14px 14px;
+      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+      opacity: 0; transform: translateY(20px);
+      animation: cardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    [data-theme="dark"] .coffee-card {
+      background: rgba(88, 39, 39, 0.36);
+      border-color: rgba(255,255,255,0.10);
+    }
+
+    .coffee-card:nth-child(1)  { animation-delay: 0.30s; }
+    .coffee-card:nth-child(2)  { animation-delay: 0.36s; }
+    .coffee-card:nth-child(3)  { animation-delay: 0.42s; }
+    .coffee-card:nth-child(4)  { animation-delay: 0.48s; }
+    .coffee-card:nth-child(5)  { animation-delay: 0.54s; }
+    .coffee-card:nth-child(6)  { animation-delay: 0.60s; }
+    .coffee-card:nth-child(7)  { animation-delay: 0.66s; }
+    .coffee-card:nth-child(8)  { animation-delay: 0.72s; }
+    .coffee-card:nth-child(9)  { animation-delay: 0.78s; }
+    .coffee-card:nth-child(10) { animation-delay: 0.84s; }
+
+    @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+
+    .coffee-card::before {
+      content: ""; position: absolute; inset: 0; border-radius: inherit;
+      background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .coffee-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.38); }
+
+    .coffee-card-emoji { font-size: 26px; margin-bottom: 8px; display: block; }
+
+    .coffee-card-name {
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--text); margin: 0 0 5px;
+    }
+
+    .coffee-card-desc {
+      font-size: 11px; color: var(--text-muted); line-height: 1.5;
+      margin: 0 0 10px; font-family: "Roboto", Arial, sans-serif;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    .coffee-card-footer {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    }
+
+    .coffee-card-tag {
+      display: inline-block; font-size: 9px; padding: 2px 8px;
+      border-radius: 20px; background: rgba(139,94,60,0.28);
+      border: 1px solid rgba(139,94,60,0.35); color: #d4a674;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      font-family: "Roboto", Arial, sans-serif;
+    }
+
+    .more-btn {
+      font-size: 15px; letter-spacing: 3px; color: var(--text-muted);
+      background: transparent; border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px; padding: 2px 10px; cursor: pointer;
+      transition: color 0.2s, border-color 0.2s; white-space: nowrap; line-height: 1.6;
+    }
+    .more-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.4); }
+
+    .no-results {
+      text-align: center; padding: 60px 0;
+      color: var(--text-muted); font-size: 14px;
+      grid-column: 1 / -1; font-family: "Roboto", Arial, sans-serif;
+    }
+
+    /* ── Модальна картка деталей ── */
+    .detail-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(5, 2, 1, 0.70); backdrop-filter: blur(4px);
+      display: flex; justify-content: center; align-items: center;
+      padding: 20px; opacity: 0; pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .detail-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .detail-card {
+      width: 100%; max-width: 400px; max-height: 88vh; overflow-y: auto;
+      background: rgba(180, 105, 50, 0.32);
+      backdrop-filter: blur(22px) saturate(150%);
+      border: 1px solid rgba(255,255,255,0.20);
+      border-radius: 26px; padding: 28px 20px 20px;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.10), 0 24px 60px rgba(0,0,0,0.5);
+      transform: translateY(20px) scale(0.97); opacity: 0;
+      transition: all 0.32s cubic-bezier(0.22, 1, 0.36, 1); position: relative;
+    }
+    [data-theme="dark"] .detail-card {
+      background: rgba(88, 39, 39, 0.42);
+      border-color: rgba(255,255,255,0.12);
+    }
+    .detail-card::-webkit-scrollbar { width: 4px; }
+    .detail-card::-webkit-scrollbar-track { background: transparent; }
+    .detail-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .detail-overlay.active .detail-card { transform: translateY(0) scale(1); opacity: 1; }
+
+    .detail-close {
+      position: absolute; top: 14px; right: 16px;
+      background: transparent; border: none; color: var(--text-muted);
+      font-size: 20px; cursor: pointer; line-height: 1; transition: color 0.2s;
+    }
+    .detail-close:hover { color: var(--text); }
+
+    .detail-name {
+      font-family: "Rubik Bubbles", system-ui; font-size: 22px;
+      color: #f0e0cc; margin: 0 0 4px;
+    }
+
+    .detail-tag {
+      display: inline-block; font-size: 10px; padding: 3px 10px;
+      border-radius: 20px; background: rgba(139,94,60,0.28);
+      border: 1px solid rgba(139,94,60,0.35); color: #d4a674;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      font-family: "Roboto", Arial, sans-serif; margin-bottom: 12px;
+    }
+
+    .detail-desc {
+      font-size: 12px; color: rgba(240,224,204,0.72);
+      line-height: 1.6; font-family: "Roboto", Arial, sans-serif;
+    }
+
+    /* ── Характеристики: 2 колонки, капсули ── */
+    .detail-specs {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 7px; margin: 14px 0 16px;
+    }
+
+    .spec-chip {
+      background: rgba(186, 112, 66, 0.22);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 50px; padding: 7px 12px;
+      font-family: "Roboto", Arial, sans-serif;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    [data-theme="dark"] .spec-chip {
+      background: rgba(88, 39, 39, 0.4);
+      border-color: rgba(255,255,255,0.10);
+    }
+
+    .spec-chip-label {
+      font-size: 9px; color: rgba(240,224,204,0.50);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .spec-chip-value { font-size: 12px; color: #f0e0cc; font-weight: 500; }
+
+    .strength-dots { display: flex; gap: 3px; align-items: center; }
+    .strength-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+    .strength-dot.on { background: #f0e0cc; }
+
+    .fav-btn {
+      width: 100%; padding: 11px 16px; border-radius: 50px;
+      background: rgba(186, 112, 66, 0.55);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #f0e0cc; font-family: "Roboto", Arial, sans-serif;
+      font-size: 13px; font-weight: 500; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: filter 0.2s, transform 0.15s;
+    }
+    [data-theme="dark"] .fav-btn {
+      background: rgba(88, 39, 39, 0.5);
+      border-color: rgba(255,255,255,0.12);
+    }
+    .fav-btn:hover { filter: brightness(1.2); transform: translateY(-1px); }
+    .fav-btn.added { color: #d4a674; border-color: rgba(212,166,116,0.3); }
+    .fav-btn img { width: 16px; height: 16px; filter: brightness(0) invert(1); opacity: 0.85; }
+
+    .detail-msg {
+      text-align: center; font-size: 11px; color: var(--text-muted);
+      margin-top: 8px; min-height: 14px; font-family: "Roboto", Arial, sans-serif;
+    }
+    @media (max-width: 600px) {
+  .profile-wrap { max-width: 100%; }
+  .profile-topbar .brand-logo,
+  .catalog-topbar .brand-logo { font-size: 18px; }
+  .nav-row { flex-direction: column; gap: 8px; }
+}
+@media (max-width: 600px) {
+  .profile-topbar,
+  .catalog-topbar {
+    align-items: flex-start;
+  }
+  .profile-topbar .brand-logo,
+  .catalog-topbar .brand-logo {
+    margin-top: 6px;
+    font-size: 17px;
+  }
+  .profile-wrap {
+    margin-top: 16px;
+  }
+  .coffee-grid {
+    margin-top: 20% !important;
+  }
+}
+  </style>
+</head>
+<body>
+
+  <!-- Навбар -->
+ <header class="catalog-topbar top-header">
+    <div class="nav-group">
+      <button class="round-btn" onclick="history.back()">
+        <img src="/img/back.svg" alt="Назад">
+      </button>
+      <button class="round-btn" id="catalogSearchBtn" aria-label="Пошук">
+        <img src="/img/search.svg" alt="Пошук">
+      </button>
+    </div>
+
+    <span class="brand-logo">coffee on the way</span>
+
+    <div  class="nav-group" style="margin-right: 0%;">
+  <button class="round-btn" onclick="window.location.href='/profile'">
+    <img src="/img/profile.svg" alt="Профіль">
+  </button>
+</div>
+  </header>
+
+  <!-- Пошукова панель -->
+  <div id="searchPanel">
+    <div class="search-panel-inner">
+      <button class="search-panel-close" id="searchPanelClose">✕</button>
+      <div class="search-input-wrap">
+        <input class="catalog-live-search" id="catalogSearchInput"
+               type="search" placeholder="Назва кави..." autocomplete="off">
+        <button class="search-clear-btn" id="catalogClearBtn">
+          <img src="/img/close.svg" alt="Очистити"
+               onerror="this.outerHTML='✕'">
+        </button>
+      </div>
+      <div id="catalogSearchResults"></div>
+    </div>
+  </div>
+
+  <div class="catalog-page">
+    <div class="coffee-grid" id="coffeeGrid">
+      <div class="no-results">Завантаження...</div>
+    </div>
+  </div>
+
+  <!-- Модальна картка деталей -->
+  <div class="detail-overlay" id="detailOverlay">
+    <div class="detail-card">
+      <button class="detail-close" id="detailClose">✕</button>
+
+      <!-- Верхній блок: текст зліва, фото справа -->
+      <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:4px;">
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:26px;margin-bottom:5px;" id="dEmoji"></div>
+          <div class="detail-name" id="dName"></div>
+          <div class="detail-tag" id="dTag"></div>
+          <div class="detail-desc" id="dDesc"></div>
+        </div>
+        <img id="dImg" alt=""
+             onerror="this.style.display='none'"
+             style="width:110px;height:130px;border-radius:14px;
+                    object-fit:cover;flex-shrink:0;margin-top:16px;
+                    box-shadow:0 4px 16px rgba(0,0,0,0.35);display:none;">
+      </div>
+
+      <div class="detail-specs" id="dSpecs"></div>
+
+      <button class="fav-btn" id="favBtn">
+        <img src="/img/fav.svg" alt="" onerror="this.style.display='none'">
+        Додати до улюблених
+      </button>
+      <p class="detail-msg" id="detailMsg"></p>
+    </div>
+  </div>
+
+  <script>
+    function translate(value, map) {
+  if (!value) return '—';
+  return map[value] || value;
+}
+const CATEGORY_LABELS = {
+  'espresso-based': 'Еспресо',
+  'milk-based': 'З молоком',
+  'black coffee': 'Чорна кава',
+  'dessert coffee': 'Десертна кава',
+  'cold coffee': 'Холодна кава',
+  'specialty': 'Спешелті',
+  'alternative': 'Альтернатива'
+};
+const ROAST_LABELS = {
+  light: 'Світла',
+  medium: 'Середня',
+  dark: 'Темна',
+};
+
+const SYRUP_LABELS = {
+  none: 'Немає',
+  caramel: 'Карамель',
+  vanilla: 'Ваніль',
+};
+    let CATEGORY_NAMES = {};
+    const COFFEE_EMOJI = { 1:'', 2:'', 3:'', 4:'', 5:'', 6:'', 7:'' };
+    const ROAST_UA = { dark:'Темна', medium:'Середня', light:'Світла' };
+    const FACTS = {
+        1: "Еспресо містить менше кофеїну ніж американо — концентрат подається малою порцією.",
+        2: "Капучіно назвали на честь ченців-капуцинів через колір їхніх ряс.",
+        3: "Лате — найпопулярніший кавовий напій у світі. Придуманий в Італії у 1950-х.",
+        4: "Американо з'явився під час Другої світової — американські солдати розбавляли еспресо.",
+        5: "Флет вайт прийшов з Австралії та Нової Зеландії у 1980-х роках.",
+        6: "Рістрето — найкоротший і найінтенсивніший вид еспресо, лише 15-20 мл.",
+        7: "Раф кава — популярний вершковий напій зі збитими вершками та ваніллю.",
+        8: "Мокко поєднує каву та шоколад — назва від порту Мокха в Ємені.",
+        9: "Фрапе придумав співробітник Nescafé у 1957 році випадково збивши каву з молоком.",
+        10: "Айс лате — холодна версія класичного лате, популярна з 1990-х у США.",
+        11: "Аффогато означає 'потоплений' по-італійськи — еспресо буквально топить морозиво.",
+        12: "Колд брю настоюється 12-24 години — звідси м'якість і низька кислотність."
+    };
+
+    let allCoffees = [];
+    let activeCoffee = null;
+
+    // ── Пошук ──
+    const searchPanel   = document.getElementById('searchPanel');
+    const searchInput   = document.getElementById('catalogSearchInput');
+    const clearBtn      = document.getElementById('catalogClearBtn');
+    const searchResults = document.getElementById('catalogSearchResults');
+    const closeBtn      = document.getElementById('searchPanelClose');
+    const openBtn       = document.getElementById('catalogSearchBtn');
+
+    openBtn.addEventListener('click', () => {
+      searchPanel.style.display = 'block';
+      searchInput.focus();
+    });
+
+    closeBtn.addEventListener('click', () => {
+      searchPanel.style.display = 'none';
+      searchInput.value = '';
+      clearBtn.style.display = 'none';
+      searchResults.innerHTML = '';
+    });
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchResults.innerHTML = '';
+      clearBtn.style.display = 'none';
+      searchInput.focus();
+    });
+
+    searchInput.addEventListener('input', function() {
+      const q = this.value;
+      clearBtn.style.display = q ? 'flex' : 'none';
+      if (!q.trim()) { searchResults.innerHTML = ''; return; }
+
+      const matches = allCoffees.filter(c =>
+        c.name.toLowerCase().includes(q.toLowerCase())
+      );
+
+      if (!matches.length) {
+        searchResults.innerHTML = '<p style="color:rgba(240,224,204,0.45);font-size:13px;text-align:center;padding:12px 0;">Нічого не знайдено </p>';
+        return;
+      }
+
+      searchResults.innerHTML = matches.map(c => `
+        <div class="search-result-item" onclick="openDetailFromSearch(${c.id})">
+          ${c.name}
+        </div>
+      `).join('');
+    });
+
+    function openDetailFromSearch(id) {
+      searchPanel.style.display = 'none';
+      searchInput.value = '';
+      clearBtn.style.display = 'none';
+      searchResults.innerHTML = '';
+      openDetail(id);
+    }
+
+    // ── Завантаження даних ──
+    async function loadCategories() {
+  try {
+    const data = await fetch('/api/categories').then(r => r.json());
+    const categories = data.categories || [];
+    
+    categories.forEach(c => {
+      // Перекладаємо назву категорії за допомогою мапи CATEGORY_LABELS, 
+      // якщо перекладу немає — залишаємо оригінальну назву з бази даних
+      CATEGORY_NAMES[c.id] = CATEGORY_LABELS[c.name.toLowerCase()] || c.name;
+    });
+  } catch(e) {
+    console.error("Помилка завантаження категорій:", e);
+  }
+}
+
+    async function loadCoffees() {
+      try {
+        const data = await fetch('/api/coffee/all').then(r => r.json());
+        allCoffees = data.coffees || [];
+        renderGrid(allCoffees);
+      } catch {
+        document.getElementById('coffeeGrid').innerHTML =
+          '<div class="no-results">Не вдалось завантажити каталог.</div>';
+      }
+    }
+
+    function renderGrid(coffees) {
+      const grid = document.getElementById('coffeeGrid');
+      if (!coffees.length) {
+        grid.innerHTML = '<div class="no-results">Нічого не знайдено </div>';
+        return;
+      }
+      grid.innerHTML = coffees.map((c, i) => `
+        <div class="coffee-card" data-id="${c.id}" style="animation-delay:${0.30 + i * 0.06}s">
+          <span class="coffee-card-emoji">${COFFEE_EMOJI[c.categoryId] || ''}</span>
+          <div class="coffee-card-name">${c.name}</div>
+          <div class="coffee-card-desc">${c.description || '—'}</div>
+          <div class="coffee-card-footer">
+            <span class="coffee-card-tag">${CATEGORY_NAMES[c.categoryId] || 'Кава'}</span>
+            <button class="more-btn" data-id="${c.id}">•••</button>
+          </div>
+        </div>
+      `).join('');
+
+      grid.querySelectorAll('.more-btn').forEach(btn => {
+        btn.addEventListener('click', e => { e.stopPropagation(); openDetail(Number(btn.dataset.id)); });
+      });
+      grid.querySelectorAll('.coffee-card').forEach(card => {
+        card.addEventListener('click', () => openDetail(Number(card.dataset.id)));
+      });
+    }
+
+    function openDetail(id) {
+      activeCoffee = allCoffees.find(c => c.id === id);
+      if (!activeCoffee) return;
+      const c = activeCoffee;
+
+      document.getElementById('dEmoji').textContent = COFFEE_EMOJI[c.categoryId] || '';
+      document.getElementById('dName').textContent  = c.name;
+      document.getElementById('dTag').textContent   = CATEGORY_NAMES[c.categoryId] || 'Кава';
+      document.getElementById('dDesc').textContent  = c.description || '—';
+      document.getElementById('detailMsg').textContent = '';
+
+      // Цікавий факт
+      let factEl = document.getElementById('dFact');
+      if (!factEl) {
+        factEl = document.createElement('p');
+        factEl.id = 'dFact';
+        factEl.style.cssText = 'font-size:11px;color:rgba(240,224,204,0.45);margin:6px 0 0;line-height:1.5;font-style:italic;font-family:"Roboto",Arial,sans-serif;';
+        document.getElementById('dDesc').insertAdjacentElement('afterend', factEl);
+      }
+      factEl.textContent = FACTS[c.id] ? ` ${FACTS[c.id]}` : '';
+
+      // Фото
+      const dImg = document.getElementById('dImg');
+      dImg.src = `/img/${c.id}.jpg`;
+      dImg.style.display = 'block';
+
+      // Характеристики — тільки стандартні для кави
+      const dots = Array.from({length:5}, (_, i) =>
+        `<span class="strength-dot ${i < c.strength ? 'on' : ''}"></span>`
+      ).join('');
+
+      document.getElementById('dSpecs').innerHTML = `
+        <div class="spec-chip">
+          <span class="spec-chip-label">Міцність</span>
+          <div class="strength-dots">${dots}</div>
+        </div>
+        <div class="spec-chip">
+          <span class="spec-chip-label">Обсмажка</span>
+          <span class="spec-chip-value">${ROAST_UA[c.levelRoast] || c.levelRoast || '—'}</span>
+        </div>
+        <div class="spec-chip">
+          <span class="spec-chip-label">Молоко за стандартом</span>
+          <span class="spec-chip-value">${c.milk ? 'Так' : 'Ні'}</span>
+        </div>
+        <div class="spec-chip">
+          <span class="spec-chip-label">Категорія</span>
+          <span class="spec-chip-value">${CATEGORY_NAMES[c.categoryId] || '—'}</span>
+        </div>
+      `;
+
+      const favBtn = document.getElementById('favBtn');
+      favBtn.innerHTML = `<img src="/img/fav.svg" alt="" onerror="this.style.display='none'"> Додати до улюблених`;
+      favBtn.className = 'fav-btn';
+      document.getElementById('detailOverlay').classList.add('active');
+    }
+
+    document.getElementById('detailClose').addEventListener('click', () => {
+      document.getElementById('detailOverlay').classList.remove('active');
+    });
+    document.getElementById('detailOverlay').addEventListener('click', e => {
+      if (e.target === e.currentTarget) e.currentTarget.classList.remove('active');
+    });
+
+    document.getElementById('favBtn').addEventListener('click', async () => {
+      if (!activeCoffee) return;
+      const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      if (!user) {
+        document.getElementById('detailMsg').textContent = 'Увійдіть, щоб зберігати улюблене.';
+        return;
+      }
+      try {
+        const res = await fetch('/api/user/favorites/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id, coffeeId: activeCoffee.id })
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          const key = 'favorites_' + user.id;
+          const favs = JSON.parse(localStorage.getItem(key) || '[]');
+          if (!favs.find(f => f.id === activeCoffee.id)) {
+            favs.push({ id: activeCoffee.id, name: activeCoffee.name });
+            localStorage.setItem(key, JSON.stringify(favs));
+          }
+          document.getElementById('favBtn').innerHTML = 'Збережено';
+          document.getElementById('favBtn').className = 'fav-btn added';
+          document.getElementById('detailMsg').textContent = 'Додано до вашого профілю!';
+        }
+      } catch {
+        document.getElementById('detailMsg').textContent = "Помилка з'єднання.";
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadCategories();
+      await loadCoffees();
+      const openId = sessionStorage.getItem('openCoffeeId');
+      if (openId) {
+        sessionStorage.removeItem('openCoffeeId');
+        setTimeout(() => openDetail(Number(openId)), 500);
+      }
+    });
+  </script>
+</body>
+</html>

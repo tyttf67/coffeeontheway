@@ -1,0 +1,1150 @@
+/* ── СКИДАННЯ СТИЛІВ ── */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+.round-btn img,
+.catalog-topbar .round-btn img,
+.profile-topbar .round-btn img {
+  flex-shrink: 0;
+  min-width: 13px;
+  min-height: 13px;
+}
+
+.round-btn {
+  flex-shrink: 0;
+}
+html, body {
+  min-height: 100vh;
+ font-family: "Roboto", Arial, sans-serif;
+  overflow: hidden;
+}
+
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+[data-theme="dark"] body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+/* ── ІДЕАЛЬНИЙ ФОН ЗГІДНО ДИЗАЙНУ (СВІТЛА ТЕМА) ── */
+body::before {
+  content: "";
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  z-index: -1;
+  pointer-events: none; /* Щоб фон не перекривав кліки */
+  
+  background: repeating-linear-gradient(
+    -170deg,
+    #6F3D28 0px,
+    #6F3D28 30px,
+    #73402A 30px,
+    #73402A 60px,
+    #77432C 60px,
+    #77432C 90px,
+    #7B462E 90px,
+    #7B462E 120px,
+    #7F4930 120px,
+    #7F4930 150px,
+    #834C32 150px,
+    #834C32 180px,
+    #874F34 180px,
+    #874F34 210px,
+    #8B5236 210px,
+    #8B5236 240px,
+    #8F5538 240px,
+    #8F5538 270px,
+    #93583A 270px,
+    #93583A 300px,
+    #975B3C 300px,
+    #975B3C 330px,
+    #9B5E3E 330px,
+    #9B5E3E 360px,
+    #9F6140 360px,
+    #9F6140 390px,
+    #A36442 390px,
+    #A36442 420px,
+    #A76744 420px,
+    #A76744 450px,
+    #AB6A46 450px,
+    #AB6A46 480px,
+    #AF6D48 480px,
+    #AF6D48 510px,
+    #B3704A 510px,
+    #B3704A 540px,
+    #B7734C 540px,
+    #B7734C 570px,
+    #BB764E 570px,
+    #BB764E 600px,
+
+    /* Назад (дзеркально, без повторів) */
+    #B7734C 600px,
+    #B7734C 630px,
+    #B3704A 630px,
+    #B3704A 660px,
+    #AF6D48 660px,
+    #AF6D48 690px,
+    #AB6A46 690px,
+    #AB6A46 720px,
+    #A76744 720px,
+    #A76744 750px,
+    #A36442 750px,
+    #A36442 780px,
+    #9F6140 780px,
+    #9F6140 810px,
+    #9B5E3E 810px,
+    #9B5E3E 840px,
+    #975B3C 840px,
+    #975B3C 870px,
+    #93583A 870px,
+    #93583A 900px,
+    #8F5538 900px,
+    #8F5538 930px,
+    #8B5236 930px,
+    #8B5236 960px,
+    #874F34 960px,
+    #874F34 990px,
+    #834C32 990px,
+    #834C32 1020px,
+    #7F4930 1020px,
+    #7F4930 1050px,
+    #7B462E 1050px,
+    #7B462E 1080px,
+    #77432C 1080px,
+    #77432C 1110px,
+    #73402A 1110px,
+    #73402A 1140px,
+    #6F3D28 1140px,
+    #6F3D28 1170px
+  );
+  filter: url(#smooth-wave);
+}
+
+/* ── 🌙 ТЕМНА ТЕМА — ФОН ── */
+/* ── 🌙 ТЕМНА ТЕМА — ФОН (кавова хвиля) ── */
+/* ── 🌙 ТЕМНА ТЕМА — хвиля (синхрон з головною) ── */
+/* ── 🌙 ТЕМНА ТЕМА — фон (під картку rgba(88,39,39,0.36)) ── */
+[data-theme="dark"] body::before {
+  position: fixed;
+  inset: -5%;
+  width: 110vw;
+  height: 110vh;
+
+ background: repeating-linear-gradient(
+    -170deg,
+    /* ── ВПЕРЕД (від темного до піку) ── */
+    #0a0401 0px,   #0a0401 30px,
+    #0e0603 30px,  #0e0603 60px,
+    #120805 60px,  #120805 90px,
+    #160a07 90px,  #160a07 120px,
+    #1a0c09 120px, #1a0c09 150px,
+    #1e0f0b 150px, #1e0f0b 180px,
+    #22110d 180px, #22110d 210px,
+    #26130f 210px, #26130f 240px,
+    #2a1511 240px, #2a1511 270px,
+    #2e1713 270px, #2e1713 300px,
+    #321915 300px, #321915 330px,
+    #361b17 330px, #361b17 360px,
+    #3a1d19 360px, #3a1d19 390px,
+    #3e1f1b 390px, #3e1f1b 420px,
+    #42211d 420px, #42211d 450px,
+    #46231f 450px, #46231f 480px,
+    #4a2521 480px, #4a2521 510px,
+    #4e2723 510px, #4e2723 540px,
+    #522925 540px, #522925 570px,
+    #562b27 570px, #562b27 600px,
+ 
+    /* ── НАЗАД (дзеркально, від піку до темного) ── */
+    #522925 600px, #522925 630px,
+    #4e2723 630px, #4e2723 660px,
+    #4a2521 660px, #4a2521 690px,
+    #46231f 690px, #46231f 720px,
+    #42211d 720px, #42211d 750px,
+    #3e1f1b 750px, #3e1f1b 780px,
+    #3a1d19 780px, #3a1d19 810px,
+    #361b17 810px, #361b17 840px,
+    #321915 840px, #321915 870px,
+    #2e1713 870px, #2e1713 900px,
+    #2a1511 900px, #2a1511 930px,
+    #26130f 930px, #26130f 960px,
+    #22110d 960px, #22110d 990px,
+    #1e0f0b 990px, #1e0f0b 1020px,
+    #1a0c09 1020px, #1a0c09 1050px,
+    #160a07 1050px, #160a07 1080px,
+    #120805 1080px, #120805 1110px,
+    #0e0603 1110px, #0e0603 1140px,
+    #0a0401 1140px, #0a0401 1170px
+  ) !important;
+  filter: url(#smooth-wave);
+}
+
+/* ── HEADER & NAVIGATION ── */
+.top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 18px;
+  left: 8px;
+  right: 8px;
+  padding: 0 12px;
+  z-index: 10;
+  height: 36px;
+}
+.header-left, .header-right {
+  flex-shrink: 0;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.top-header .brand-logo,
+.brand-logo {
+  position: static;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  font-family: "Rubik Bubbles", system-ui;
+  font-size: 30px;
+  font-weight: 400;
+  color: #e1dbca;
+  transform: rotate(-10deg) skewX(-9deg);
+  text-shadow: 4px 4px 4px rgba(0,0,0,0.25);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+[data-theme="dark"] .brand-logo { color: #c8b89a; }
+
+/* Кнопки навбару — однаковий розмір завжди */
+.top-header .round-btn,
+.profile-topbar .round-btn,
+.catalog-topbar .round-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(225, 219, 202, 0.2);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(255,255,255,0.18);
+  transition: background 0.2s, transform 0.15s;
+}
+[data-theme="dark"] .top-header .round-btn,
+[data-theme="dark"] .profile-topbar .round-btn,
+[data-theme="dark"] .catalog-topbar .round-btn {
+  background: rgba(200, 160, 120, 0.12);
+  border-color: rgba(255,255,255,0.10);
+}
+
+.top-header .round-btn::before,
+.profile-topbar .round-btn::before,
+.catalog-topbar .round-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(-45deg,
+    rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.03) 40%, rgba(0,0,0,0.10) 100%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.top-header .round-btn:hover,
+.profile-topbar .round-btn:hover,
+.catalog-topbar .round-btn:hover {
+  background: rgba(225, 219, 202, 0.32);
+  transform: translateY(-1px);
+}
+[data-theme="dark"] .top-header .round-btn:hover,
+[data-theme="dark"] .profile-topbar .round-btn:hover,
+[data-theme="dark"] .catalog-topbar .round-btn:hover {
+  background: rgba(200, 160, 120, 0.22);
+}
+
+.top-header .round-btn img,
+.profile-topbar .round-btn img,
+.catalog-topbar .round-btn img {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* Контент сторінок — однаковий відступ зверху під навбар */
+.quiz-container {
+  margin-top: 70px;
+}
+
+
+
+/* Спільні скляні стилі для кнопок хедера */
+
+.round-btn {
+ 
+  position: relative;
+  overflow: hidden;
+  background: rgba(225, 219, 202, 0.2);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  
+}
+
+
+.round-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    -45deg,
+    rgba(53, 50, 50, 0.25) 0%,
+    rgba(91, 82, 82, 0.05) 40%,
+    rgba(47, 44, 44, 0.15) 100%
+  );
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 3;
+}
+
+
+/* Кнопка профілю */
+.header-right {
+  width: 30px;
+  height: 28px;
+ 
+
+
+}
+
+
+[data-theme="dark"] .round-btn {
+ 
+    background: var(--surface);
+    backdrop-filter: blur(10px) saturate(110%);
+    -webkit-backdrop-filter: blur(10px) saturate(110%);
+    border: 12px solid var(--border);
+     box-shadow:
+    inset 0 1px 2px rgba(67, 61, 61, 0.65),
+    inset 0 -2px 5px rgba(80,40,18,0.22),
+    0 2px 8px rgba(0,0,0,0.28);
+}
+[data-theme="dark"] .round-btn:hover {
+ 
+    background: var(--surface);
+    backdrop-filter: blur(10px) saturate(110%);
+    -webkit-backdrop-filter: blur(10px) saturate(110%);
+    border: 12px solid var(--border);
+     box-shadow:
+    inset 0 1px 2px rgba(96, 87, 87, 0.65),
+    inset 0 -2px 5px rgba(80,40,18,0.22),
+    0 2px 8px rgba(0,0,0,0.28);
+}
+
+.round-btn img {
+
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+/* ── ПЕРЕМИКАЧ ТЕМИ ── */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 94px;
+  height: 35px;
+  border-radius: 18px;
+  padding: 3px 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.theme-toggle[data-theme="light"] {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.theme-toggle[data-theme="dark"] {
+  background: rgba(20, 10, 5, 0.36);
+}
+
+/* Повзунок-круг */
+.theme-toggle::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,0.65),
+    inset 0 -2px 5px rgba(80,40,18,0.22),
+    0 2px 8px rgba(0,0,0,0.28);
+  z-index: 1;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease;
+}
+
+.theme-toggle[data-theme="light"]::after {
+  background: rgba(255, 255, 255, 0.82);
+  transform: translateX(56px);
+}
+
+.theme-toggle[data-theme="dark"]::after {
+  background: rgba(255, 255, 255, 0.64);
+  transform: translateX(0);
+}
+
+/* Контейнери іконок */
+.toggle-icon {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.toggle-icon img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+/* Логіка кольору іконок залежно від стану */
+.theme-toggle .toggle-icon img {
+  filter: brightness(0) invert(1);
+  opacity: 0.7;
+}
+
+.theme-toggle .toggle-icon.active img {
+  filter: brightness(0);
+  opacity: 1;
+}
+
+/* ── ЛОГОТИП ── */
+
+
+/* ── QUIZ CONTAINER & CARD ── */
+.quiz-container {
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+}
+
+.quiz-card {
+  background: rgba(180, 105, 50, 0.32);
+  min-width: 400px;
+  border-radius: 26px;
+  padding: 34px 26px 26px;
+  border: 1px solid rgba(255,255,255,0.20);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.07),
+    0 0 50px rgba(200,130,60,0.15),
+    0 24px 60px rgba(40,15,3,0.4);
+}
+
+[data-theme="dark"]  .quiz-card{
+  background: rgba(88, 39, 39, 0.36);
+}
+
+ .quiz-question {
+  font-size: 0.98rem;
+  font-weight: 200;
+  color: #f0e0cc;
+  margin-bottom: 26px;
+  line-height: 1.45;
+}
+
+/* ── КНОПКИ ВАРІАНТІВ (OPTIONS) ── */
+.options-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-bottom: 26px;
+}
+
+.option-row {
+  border-radius: 50px;
+  padding: 13px 18px 13px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(186, 112, 66, 0.6);
+  
+  /* Початковий стан перед стартом анімації хвилі */
+  opacity: 0;
+  transform: translateY(80px); 
+  transition: filter 0.2s, transform 0.15s;
+}
+[data-theme="dark"] .option-row {
+  border-radius: 50px;
+  padding: 13px 18px 13px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(88, 39, 39, 0.36);
+  
+  /* Початковий стан перед стартом анімації хвилі */
+  opacity: 0;
+  transform: translateY(80px); 
+  transition: filter 0.2s, transform 0.15s;
+}
+
+.option-row:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px) !important;
+}
+[data-theme="dark"]  .option-row.selected {
+   border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(88, 39, 39, 0.36);
+}
+.option-row.selected {
+   border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(186, 112, 66, 0.6);
+}
+
+[data-theme="dark"] .custom-radio {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(88, 59, 39, 0.414);
+  backdrop-filter: blur(18px);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.custom-radio {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(186, 112, 66, 0.3);
+  backdrop-filter: blur(18px);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+[data-theme="dark"] .custom-radio {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(88, 39, 39, 0.36);
+  backdrop-filter: blur(18px);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.option-row.selected .custom-radio {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255,255,255,0.6);
+  box-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+
+.option-text {
+  color: #f0e0cc;
+  font-size: 0.87rem;
+   font-family: "Roboto", Arial, sans-serif;
+  flex: 1;
+  text-align: left;
+}
+
+/* ── ЗБІЛЬШЕНА АНІМАЦІЯ ХВИЛІ (WAVE ANIMATIONS) ── */
+[data-theme="dark"] .option-row.wave-in {
+  /* Збільшено час до 0.65s для більш благородного та масштабного польоту */
+  animation: waveIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i) * 0.12s); /* Каскадний крок став виразнішим */
+}
+
+.option-row.wave-in {
+  /* Збільшено час до 0.65s для більш благородного та масштабного польоту */
+  animation: waveIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i) * 0.12s); /* Каскадний крок став виразнішим */
+}
+
+.option-row.wave-out {
+  animation: waveOut 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i) * 0.08s);
+}
+
+@keyframes waveIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(80px); /* Було 30px -> Стало 80px (глибший виліт) */
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes waveOut {
+  from { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+  to { 
+    opacity: 0; 
+    transform: translateY(80px); /* Було 30px -> Стало 80px */
+  }
+}
+
+/* ── BOTTOM NAVIGATION ── */
+.quiz-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
+}
+
+.nav-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(180,110,55,0.38);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #f0e0cc;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  transition: filter 0.2s, transform 0.15s;
+}
+[data-theme="dark"] .nav-btn {
+  background: rgba(88, 39, 39, 0.36);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #f0e0cc;
+}
+.nav-btn:hover { filter: brightness(1.2); transform: scale(1.08); }
+.nav-btn:active { transform: scale(0.94); }
+
+/* ── 🌟🌟🌟 НОВИЙ РОЗДІЛ: АНІМАЦІЯ ПУЛЬСІВ 🌟🌟🌟 ── */
+
+/* Контейнер перекриття для анімації */
+.pulse-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0; /* Над фоном body::before, але ПІД карткою квізу */
+  pointer-events: none; /* Щоб не заважало клікам */
+  overflow: hidden;
+}
+
+/* Базовий стиль для кожного пульсу */
+.pulse {
+  position: absolute;
+  bottom: -20vh; /* Починаємо глибоко знизу */
+  left: 50%;
+  transform: translateX(-50%) scale(1);
+  width: 20vh; /* Початковий розмір */
+  height: 20vh;
+  border-radius: 50%;
+  opacity: 0;
+  
+  /* Колір пульсу для СВІТЛОЇ теми: м'який, напівпрозорий жовтий */
+  background: rgba(255, 230, 160, 0.4);
+  filter: blur(15px); /* Розмиття для м'якості */
+  box-shadow: 0 0 30px 10px rgba(255, 220, 130, 0.3);
+  
+  /* Основна анімація */
+  animation: pulseRise 6s infinite cubic-bezier(0.36, 0.11, 0.89, 0.32);
+}
+
+/* 🌙 Зміна кольору пульсу для ТЕМНОЇ теми: енергійний, насичений */
+[data-theme="dark"] .pulse {
+  background: rgba(255, 180, 50, 0.6);
+  filter: blur(20px);
+  box-shadow: 0 0 50px 20px rgba(255, 160, 20, 0.5);
+}
+
+/* Налаштування затримок для кожного пульсу, щоб створити черговість */
+.pulse-1 { animation-delay: 0s; }
+.pulse-2 { animation-delay: 1.2s; }
+.pulse-3 { animation-delay: 2.4s; }
+.pulse-4 { animation-delay: 3.6s; }
+.pulse-5 { animation-delay: 4.8s; }
+
+/* ── ОПИС АНІМАЦІЇ ПУЛЬСУ ── */
+@keyframes pulseRise {
+  /* Початковий стан: глибоко знизу, повністю прозорий, малий */
+  0% {
+    bottom: -20vh;
+    opacity: 0;
+    transform: translateX(-50%) scale(0.6);
+  }
+  
+  /* Виліт та збільшення інтенсивності пульсу */
+  20% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.1); /* Легке перебільшення для енергії */
+  }
+  
+  /* Плавний політ вгору, поступове загасання та розширення */
+  70% {
+    opacity: 0.6;
+    transform: translateX(-50%) scale(1.6); /* Пульс розширюється */
+  }
+  
+  /* Фінал: повністю зникає вгорі */
+  100% {
+    bottom: 120vh; /* Вилітає за межі екрану */
+    opacity: 0;
+    transform: translateX(-50%) scale(2.2); /* Завершується великим, розмитим */
+  }
+}
+/* ── Додай ЦЕЙ БЛОК в кінець test.css ── */
+
+/* Темна тема для сторінки тесту — читається з data-theme на html */
+
+.quiz-message {
+  text-align: center;
+  font-size: 12px;
+  color: #67481c;
+  min-height: 18px;
+  margin-bottom: 12px;
+}
+.quiz-question{
+
+   text-align: center;
+  font-size: 18px;
+  color: #f4f3f2;
+  padding-top: 8px;
+  min-height: 18px;
+  margin-bottom: 12px;
+}
+ 
+/* ════════════════════════════════════════
+   Coffee Rain Animation
+   (з'являється після завершення тесту)
+   ════════════════════════════════════════ */
+.coffee-rain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+ 
+.coffee-rain.active { opacity: 1; }
+ 
+.coffee-drop {
+  position: absolute;
+  top: -60px;
+  font-size: 24px;
+  animation: coffeeFall linear forwards;
+  pointer-events: none;
+  user-select: none;
+}
+ 
+.quiz-progress {
+  color: #FFffff;
+  position: center;
+  padding-left: 30%;
+}
+@keyframes coffeeFall {
+  0%   { transform: translateY(0) rotate(0deg);    opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+  /* ════════════════════════════════════════
+   МОБІЛЬНА АДАПТАЦІЯ
+   ════════════════════════════════════════ */
+
+/* Логотип — прибираємо фіксовану позицію зі % зліва, центруємо нормально */
+
+
+.top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  top: 2%;
+  left: 8px;
+  right: 8px;
+  padding: 0 12px;
+  z-index: 10;
+}
+
+.top-header .brand-logo {
+  flex: 1;
+  text-align: center;
+  font-size: 20px;
+}
+
+.header-left, .header-right {
+  flex-shrink: 0;
+  width: 34px;
+}
+
+@media (max-width: 600px) {
+  .quiz-card {
+    min-width: 0;
+    width: 100%;
+    padding: 28px 18px 22px;
+  }
+ .round-btn {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+  .round-btn img {
+    width: 16px !important;
+    height: 16px !important;
+    flex-shrink: 0;
+  }
+  .quiz-container {
+    max-width: 100%;
+    padding: 10px;
+    margin-top: 60px;
+  }
+
+  .top-header {
+    top: 10px;
+    padding: 0 6px;
+  }
+
+  .top-header .brand-logo {
+    font-size: 16px;
+  }
+
+  .round-btn {
+    zoom: 1;
+    width: 36px;
+    height: 36px;
+  }
+
+  .quiz-question {
+    font-size: 1rem;
+  }
+
+  .option-row {
+    padding: 12px 16px 12px 12px;
+  }
+
+  .nav-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  /* ── Результат ── */
+  .result-card {
+    width: 100% !important;
+    margin-top: 70px !important;
+    padding: 20px 16px 20px;
+  }
+
+  .result-content-img {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .wrapper-result-top {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .coffee-img {
+    width: 120px;
+    margin: 0 auto 10px;
+    align-self: center;
+  }
+
+  .result-description {
+    width: 100% !important;
+  }
+
+  .result-name {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  .result-eyebrow {
+    text-align: center;
+  }
+
+  .result-specs {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .result-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 380px) {
+  .quiz-card { padding: 22px 14px 18px; }
+  .result-specs { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .top-header {
+    top: 12px;
+    padding: 0 8px;
+    height: 34px;
+  }
+  .top-header .brand-logo,
+  .brand-logo {
+    font-size: 17px;
+  }
+  .top-header .round-btn,
+  .profile-topbar .round-btn,
+  .catalog-topbar .round-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .top-header .round-btn img,
+  .profile-topbar .round-btn img,
+  .catalog-topbar .round-btn img {
+    width: 14px;
+    height: 14px;
+  }
+  .quiz-container {
+    margin-top: 64px;
+  }
+}
+/* ════════════════════════════════════════
+   УНІФІКАЦІЯ НАВБАРУ — однаково на всіх сторінках
+   ════════════════════════════════════════ */
+.top-header,
+.profile-topbar,
+.catalog-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 5%;
+  left: 8px;
+  right: 8px;
+  padding: 0 16px;
+  height: 36px;
+  z-index: 10;
+}
+
+.header-left, .header-right,
+.profile-topbar .nav-group,
+.catalog-topbar .nav-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Кнопки — однаковий розмір 36x36 завжди */
+.top-header .round-btn,
+.profile-topbar .round-btn,
+.catalog-topbar .round-btn {
+  width: 40px;
+  height: 38px;
+  min-width: 40px;
+  min-height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(225, 219, 202, 0.2);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(255,255,255,0.18);
+  transition: background 0.2s, transform 0.15s;
+}
+[data-theme="dark"] .top-header .round-btn,
+[data-theme="dark"] .profile-topbar .round-btn,
+[data-theme="dark"] .catalog-topbar .round-btn {
+  background: rgba(200, 160, 120, 0.12);
+  border-color: rgba(255,255,255,0.10);
+}
+.top-header .round-btn::before,
+.profile-topbar .round-btn::before,
+.catalog-topbar .round-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(-45deg,
+    rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.03) 40%, rgba(0,0,0,0.10) 100%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.top-header .round-btn:hover,
+.profile-topbar .round-btn:hover,
+.catalog-topbar .round-btn:hover {
+  background: rgba(225, 219, 202, 0.32);
+  transform: translateY(-1px);
+}
+[data-theme="dark"] .top-header .round-btn:hover,
+[data-theme="dark"] .profile-topbar .round-btn:hover,
+[data-theme="dark"] .catalog-topbar .round-btn:hover {
+  background: rgba(200, 160, 120, 0.22);
+}
+
+.top-header .round-btn img,
+.profile-topbar .round-btn img,
+.catalog-topbar .round-btn img {
+  width: 15px !important;
+  height: 15px !important;
+  min-width: 15px;
+  min-height: 15px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* Логотип — однаковий стиль на всіх сторінках, як на головній */
+.top-header .brand-logo,
+.profile-topbar .brand-logo,
+.catalog-topbar .brand-logo,
+.brand-logo {
+  position: static !important;
+  top: 2% !important;
+  left: auto !important;
+  margin: 0 !important;
+  flex: 1;
+  text-align: center;
+  font-family: "Rubik Bubbles", system-ui;
+  font-size: 30px;
+
+  font-weight: 400;
+  color: #e1dbca;
+  transform: rotate(-10deg) skewX(-9deg);
+  text-shadow: 4px 4px 4px rgba(0,0,0,0.25);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  zoom: 1;
+}
+[data-theme="dark"] .brand-logo,
+[data-theme="dark"] .top-header .brand-logo,
+[data-theme="dark"] .profile-topbar .brand-logo,
+[data-theme="dark"] .catalog-topbar .brand-logo {
+  color: #c8b89a;
+}
+
+/* Контент під навбаром — однаковий відступ */
+.quiz-container { margin-top: 70px; }
+.profile-wrap { margin-top: 70px !important; }
+.coffee-grid { margin-top: 70px !important; }
+
+@media (max-width: 600px) {
+  .top-header, .profile-topbar, .catalog-topbar {
+    top: 10px;
+    padding: 0 10px;
+    height: 34px;
+  }
+  .top-header .brand-logo,
+  .profile-topbar .brand-logo,
+  .catalog-topbar .brand-logo,
+  .brand-logo {
+    font-size: 16px;
+  }
+  .top-header .round-btn,
+  .profile-topbar .round-btn,
+  .catalog-topbar .round-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+  .top-header .round-btn img,
+  .profile-topbar .round-btn img,
+  .catalog-topbar .round-btn img {
+    width: 13px !important;
+    height: 13px !important;
+  }
+  .quiz-container { margin-top: 60px; }
+  .profile-wrap { margin-top: 60px !important; }
+  .coffee-grid { margin-top: 60px !important; }
+}
+@media (max-width: 600px) {
+
+  html, body {
+    overflow: auto; /* ❗ ОБОВ’ЯЗКОВО */
+    height: auto;
+  }
+
+  body {
+    justify-content: flex-start;
+    padding-top: 60px;
+  }
+
+  .quiz-container {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .quiz-card {
+    min-width: unset;
+    width: 100%;
+    padding: 22px 16px;
+    border-radius: 20px;
+  }
+
+  .quiz-question {
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .option-row {
+    padding: 12px;
+  }
+
+  .nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* результат */
+  .result-card {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .result-name {
+    font-size: 20px;
+  }
+}

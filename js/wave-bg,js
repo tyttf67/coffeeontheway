@@ -1,0 +1,96 @@
+/**
+ * wave-bg.js
+ * Анімований фон з кавових смуг що вигинаються через Canvas.
+ * Підключати на: test.html, login.html, register.html, result.html
+ *
+ * Використання: просто підключи скрипт — він сам створить canvas.
+ */
+(function () {
+  // Кольори смуг — теплі кавові відтінки
+  var COLORS = [
+    '#6F3D28','#73402A','#77432C','#7B462E','#7F4930',
+    '#834C32','#874F34','#8B5236','#8F5538','#93583A',
+    '#975B3C','#9B5E3E','#9F6140','#A36442','#A76744',
+    '#AB6A46','#AF6D48','#B3704A','#B7734C','#BB764E',
+    '#B7734C','#B3704A','#AF6D48','#AB6A46','#A76744',
+    '#A36442','#9F6140','#9B5E3E','#975B3C','#93583A',
+    '#8F5538','#8B5236','#874F34','#834C32','#7F4930',
+    '#7B462E','#77432C','#73402A','#6F3D28',
+  ];
+
+  var STRIPE_H = 28;      // висота кожної смуги
+  var WAVE_AMP = 14;      // амплітуда хвилі (px)
+  var WAVE_FREQ = 0.008;  // частота хвилі
+  var SPEED = 0.0006;     // швидкість анімації
+
+  var canvas, ctx, raf, t = 0;
+
+  function init() {
+    canvas = document.createElement('canvas');
+    canvas.style.cssText = [
+      'position:fixed','top:0','left:0',
+      'width:100%','height:100%',
+      'z-index:-1','pointer-events:none',
+      'display:block'
+    ].join(';');
+    document.body.insertBefore(canvas, document.body.firstChild);
+
+    resize();
+    window.addEventListener('resize', resize);
+    draw();
+  }
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function draw() {
+    t += SPEED;
+    ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var totalStripes = Math.ceil(canvas.height / STRIPE_H) + 2;
+
+    for (var i = 0; i < totalStripes; i++) {
+      var colorIdx = i % COLORS.length;
+      ctx.fillStyle = COLORS[colorIdx];
+      ctx.beginPath();
+
+      // Верхня лінія смуги — хвиля
+      var y0 = i * STRIPE_H;
+
+      ctx.moveTo(0, y0 + Math.sin(t + 0 * WAVE_FREQ) * WAVE_AMP);
+
+      // Малюємо хвилю через кілька точок зліва направо
+      var steps = 12;
+      var dx = canvas.width / steps;
+      for (var s = 1; s <= steps; s++) {
+        var x = s * dx;
+        var wave = Math.sin(t * 1.3 + x * WAVE_FREQ) * WAVE_AMP
+                 + Math.sin(t * 0.7 + x * WAVE_FREQ * 2.1) * (WAVE_AMP * 0.4);
+        ctx.lineTo(x, y0 + wave);
+      }
+
+      // Нижня лінія смуги — зсунута фаза
+      for (var s2 = steps; s2 >= 0; s2--) {
+        var x2 = s2 * dx;
+        var wave2 = Math.sin(t * 1.3 + x2 * WAVE_FREQ + 0.6) * WAVE_AMP
+                  + Math.sin(t * 0.7 + x2 * WAVE_FREQ * 2.1 + 0.3) * (WAVE_AMP * 0.4);
+        ctx.lineTo(x2, y0 + STRIPE_H + wave2);
+      }
+
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  // Запускаємо після завантаження DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
